@@ -1,0 +1,32 @@
+.messages-page {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .conversations-list {
+    margin-top: 20px;
+  }
+  
+  .conversation-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .conversation-item img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+  }
+  
+  .conversation-preview h3 {
+    margin: 0;
+  }
+  
+  .conversation-preview p {
+    margin: 5px 0 0;
+    color: #666;
+  }

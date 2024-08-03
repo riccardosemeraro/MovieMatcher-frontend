@@ -1,0 +1,11 @@
+.app-footer {
+    background-color: #f9f9f9;
+    padding: 15px 20px;
+    text-align: center;
+  }
+  
+  .app-footer nav a {
+    color: #ff4458;
+    text-decoration: none;
+    margin: 0 10px;
+  }

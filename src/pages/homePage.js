@@ -11,30 +11,37 @@ import { useAuth0 } from '@auth0/auth0-react';
 
 function HomePage() {
 
-  const { user, isAuthenticated, isLoading, } = useAuth0();
+  const { user, isAuthenticated, isLoading, getAccessTokenSilently} = useAuth0();
 
   useEffect(() => {
 
-    if (isAuthenticated) {
-      //console.log(user);
+    if(!isLoading && isAuthenticated) {
+      getAccessTokenSilently()
+      .then(token => {
 
-      //devo mandare al backedn il token per verificare se l'utente è registrato
-      //se non è registrato lo registro
+        if (isAuthenticated) {
+          //console.log(user);
 
-      console.log('Invio della POST');
+          //devo mandare al backedn il token per verificare se l'utente è registrato
+          //se non è registrato lo registro
 
-      axios.post('http://localhost:9000/verify', { body:JSON.stringify(user) })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Success:', data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
+          console.log('Invio della POST');
+
+          axios.post('http://localhost:9000/user/verify', { body:JSON.stringify(user)}, {headers: {Authorization: 'Bearer '+token} })
+          .then(response => response.json())
+          .then(data => {
+            console.log('Success:', data);
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+
+        }
+
       });
+  }
 
-    }
-
-  }, []);
+  }, [isAuthenticated]);
 
   if (isLoading) {
     return <div>Loading...</div>;

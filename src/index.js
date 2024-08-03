@@ -11,7 +11,7 @@ root.render(
     <Auth0Provider
     domain="dev-u3m6ogvornq7wv88.us.auth0.com"
     clientId="9vCkdlV4e7Y2CzGbR2m9bq0ZI5bjsz71"
-    authorizationParams={{ redirect_uri: window.location.origin }}
+    authorizationParams={{ redirect_uri: window.location.origin, audience: 'moviematcher-certificate' }}
     useRefreshTokens={true} //si mantiene l'accesso al refresh della pagina (dato che safari blocca i cookie di terze parti)
     cacheLocation='localstorage'> {/*cambia la destinazione dei cookie e salva i dati nel local storage*/}
 

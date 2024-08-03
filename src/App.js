@@ -12,6 +12,7 @@ import ProfilePage from './pages/profilePage';
 import MessagesPage from './pages/messegesPage';
 import ExplorePage from './pages/explorePage';
 import SettingsPage from './pages/settingsPage';
+import AuthenticationGuard from './authenticationGard'; //importo il componente per la protezione delle rotte
 
 function App() {
 
@@ -21,10 +22,10 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/messages" element={<MessagesPage />} />
-          <Route path="/explore" element={<ExplorePage />} />
-          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/profile" element={<AuthenticationGuard component={ProfilePage} />} />
+          <Route path="/messages" element={<AuthenticationGuard component={MessagesPage} />} />
+          <Route path="/explore" element={<AuthenticationGuard component={ExplorePage} />} />
+          <Route path="/settings" element={<AuthenticationGuard component={SettingsPage} />} />
           {/* Aggiungi altre route qui */}
         </Routes>
       </Router>

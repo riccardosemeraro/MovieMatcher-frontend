@@ -13,6 +13,8 @@ import MessagesPage from './pages/messegesPage';
 import ExplorePage from './pages/explorePage';
 import SettingsPage from './pages/settingsPage';
 import AuthenticationGuard from './authenticationGard'; //importo il componente per la protezione delle rotte
+import Header from './components/header';
+import Footer from './components/footer';
 
 function App() {
 
@@ -20,6 +22,9 @@ function App() {
     <div className="App">
 
       <Router>
+
+        <Header />
+
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/profile" element={<AuthenticationGuard component={ProfilePage} />} />
@@ -28,9 +33,13 @@ function App() {
           <Route path="/settings" element={<AuthenticationGuard component={SettingsPage} />} />
           {/* Aggiungi altre route qui */}
         </Routes>
+
+        <Footer />
+
       </Router>
 
       <AuthenticationButton />
+
 
     
       {/*<AuthenticationButton />
@@ -41,3 +50,13 @@ function App() {
 }
 
 export default App;
+
+
+
+
+/* Cose per frontend:
+https://react-bootstrap.netlify.app
+https://mui.com/material-ui/getting-started/templates/
+https://getbootstrap.com/docs/5.0/getting-started/introduction/#starter-template
+https://mui.com/material-ui/getting-started/templates/
+*/

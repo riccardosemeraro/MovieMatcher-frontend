@@ -53,11 +53,9 @@ function HomePage() {
 
   return ( isAuthenticated &&
     <div className="home-page">
-      <Header />
       <ProfileCard />
       <ActionButtons />
       <MatchList />
-      <Footer />
     </div>
   );
 }

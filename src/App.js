@@ -3,8 +3,7 @@ import './App.css';
 import { Auth0Provider } from '@auth0/auth0-react';
 import Profile from './components/profile';
 import AuthenticationButton from './components/authentication-button';
-import LoginButton from './components/login-button';
-import LogoutButton from './components/logout-button';
+
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/homePage';
@@ -38,7 +37,7 @@ function App() {
 
       </Router>
 
-      <AuthenticationButton />
+      {/*<AuthenticationButton />*/}
 
 
     

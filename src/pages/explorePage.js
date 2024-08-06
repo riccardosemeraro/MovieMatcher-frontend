@@ -8,7 +8,6 @@ import '../style/explorePage.css';
 function ExplorePage() {
   return (
     <div className="explore-page">
-      <Header />
       <main>
         <h1>Esplora</h1>
         <div className="explore-content">
@@ -16,7 +15,6 @@ function ExplorePage() {
           <ActionButtons />
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

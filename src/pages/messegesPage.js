@@ -12,7 +12,6 @@ function MessagesPage() {
 
   return (
     <div className="messages-page">
-      <Header />
       <main>
         <h1>I tuoi messaggi</h1>
         <div className="conversations-list">
@@ -27,7 +26,6 @@ function MessagesPage() {
           ))}
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

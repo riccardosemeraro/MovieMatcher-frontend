@@ -1,19 +1,82 @@
-.app-header {
-    background-color: #ff4458;
-    color: white;
-    padding: 15px 20px;
+/*per desktop*/
+@media (min-width: 1024px){
+
+  .mobile-header{
+    display: none;
+  }
+
+  .desktop-header{
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  
+
+  .app-header {
+    background-color: #2A4DA9;
+    padding: 8px 20px;   
+    align-items: center;
+    text-align: center;
+  }
+
   .logo {
     font-size: 24px;
     font-weight: bold;
-  }
-  
-  .app-header nav a {
-    color: white;
+    color: #FFFFFF;
     text-decoration: none;
-    margin-left: 20px;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
   }
+
+  .logoImg {
+    margin: 0 -10px; /* Spazio tra l'immagine e il testo */
+    height: 80px; /* Altezza dell'immagine, adattala alle tue esigenze */
+  }
+}
+
+/*per mobile*/
+@media (max-width: 1023px){
+
+  .desktop-header{
+    display: none;
+  }
+
+  .mobile-header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .app-header {
+    background-color: #2A4DA9;
+    color: white;
+    padding: 8px 20px;   
+    align-items: center;
+    text-align: center;
+  }
+
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-decoration: none;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .logoImg {
+    margin: 0 -10px; /* Spazio tra l'immagine e il testo */
+    height: 80px; /* Altezza dell'immagine, adattala alle tue esigenze */
+  }
+}
+
+
+
+  /*
+Palette di Colori
+Primario: #E71D32 (Rosso)
+Secondario: #2A4DA9 (Blu)
+Accento: #FFD200 (Giallo)
+Sfondo: #FFFFFF (Bianco)
+*/

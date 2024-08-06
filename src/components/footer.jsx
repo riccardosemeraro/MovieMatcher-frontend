@@ -5,11 +5,20 @@ import '../style/footer.css';
 function Footer() {
   return (
     <footer className="app-footer">
-      <nav>
-        <Link to="/">Home</Link>
-        <Link to="/explore">Esplora</Link>
-        <Link to="/settings">Impostazioni</Link>
-      </nav>
+      <div className="desktop-footer">
+        <nav>
+          <Link to="/">Home</Link>
+          <Link to="/explore">Esplora</Link>
+          <Link to="/settings">Profilo</Link>
+        </nav>
+      </div>
+      <div className="mobile-footer">
+        <nav>
+          <Link to="/">Home</Link>
+          <Link to="/explore">Esplora</Link>
+          <Link to="/settings">Profilo</Link>
+        </nav>
+      </div>
     </footer>
   );
 }

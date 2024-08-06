@@ -6,7 +6,6 @@ import '../style/profilePage.css';
 function ProfilePage() {
   return (
     <div className="profile-page">
-      <Header />
       <main>
         <h1>Il tuo profilo</h1>
         <div className="profile-content">
@@ -18,7 +17,6 @@ function ProfilePage() {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

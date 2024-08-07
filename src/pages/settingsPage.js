@@ -6,7 +6,6 @@ import '../style/settingsPage.css';
 function SettingsPage() {
   return (
     <div className="settings-page">
-      <Header />
       <main>
         <h1>Impostazioni</h1>
         <div className="settings-content">
@@ -37,7 +36,6 @@ function SettingsPage() {
           </section>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../components/header';
 import ProfileCard from '../components/profileCard';
 import ActionButtons from '../components/actionButton';
@@ -13,19 +13,22 @@ function HomePage() {
 
   const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
 
+  //const [isVerified, setIsVerified] = useState(false); //al momento tutto con lo useState è commentato
+
   useEffect(() => {
 
     if(!isLoading && isAuthenticated) {
       getAccessTokenSilently()
       .then(token => {
 
-        if (isAuthenticated) {
-          //console.log(user);
-
+        if (isAuthenticated) { //&& !isVerified
+          
           //devo mandare al backedn il token per verificare se l'utente è registrato
           //se non è registrato lo registro
 
           console.log('Invio della POST');
+
+          //setIsVerified(true);
 
           axios.post('http://localhost:9000/user/verify', { body:JSON.stringify(user)}, {headers: {Authorization: 'Bearer '+token} })
           .then(response => response.json())
@@ -41,7 +44,7 @@ function HomePage() {
       });
   }
 
-  }, [isAuthenticated]);
+  }, [isAuthenticated]); //, isVerified
 
   if (isLoading) {
     return <div>Loading...</div>;

@@ -32,6 +32,33 @@
     margin: 0 -10px; /* Spazio tra l'immagine e il testo */
     height: 80px; /* Altezza dell'immagine, adattala alle tue esigenze */
   }
+
+  .home{
+    font-size: 18px;
+    color: #FFFFFF;
+    text-decoration: none;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .gameRoom{
+    font-size: 18px;
+    color: #FFFFFF;
+    text-decoration: none;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .profile{
+    font-size: 18px;
+    color: #FFFFFF;
+    text-decoration: none;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+  }
 }
 
 /*per mobile*/

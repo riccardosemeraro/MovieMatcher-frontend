@@ -1,0 +1,19 @@
+.sliderContainer{
+    display: flex;
+}
+
+.sliderContainer h2{
+    margin-left: 10px;
+}
+
+.slider{
+    display: flex;
+}
+
+.film{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 10px;
+}
+

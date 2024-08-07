@@ -9,7 +9,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/homePage';
 import ProfilePage from './pages/profilePage';
 import MessagesPage from './pages/messegesPage';
-import ExplorePage from './pages/explorePage';
+import GameRoomPage from './pages/GameRoomPage';
 import SettingsPage from './pages/settingsPage';
 import AuthenticationGuard from './authenticationGard'; //importo il componente per la protezione delle rotte
 import Header from './components/header';
@@ -24,14 +24,16 @@ function App() {
 
         <Header />
 
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/profile" element={<AuthenticationGuard component={ProfilePage} />} />
-          <Route path="/messages" element={<AuthenticationGuard component={MessagesPage} />} />
-          <Route path="/explore" element={<AuthenticationGuard component={ExplorePage} />} />
-          <Route path="/settings" element={<AuthenticationGuard component={SettingsPage} />} />
-          {/* Aggiungi altre route qui */}
-        </Routes>
+        <div className='content'>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/profile" element={<AuthenticationGuard component={ProfilePage} />} />
+            <Route path="/messages" element={<AuthenticationGuard component={MessagesPage} />} />
+            <Route path="/gameRoom" element={<AuthenticationGuard component={GameRoomPage} />} />
+            <Route path="/settings" element={<AuthenticationGuard component={SettingsPage} />} />
+            {/* Aggiungi altre route qui */}
+          </Routes>
+        </div>
 
         <Footer />
 

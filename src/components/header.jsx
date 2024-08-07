@@ -15,6 +15,9 @@ function Header() {
     <header className="app-header">
       <div className="desktop-header">
         <Link to="/" className="logo">Movie<img src={logo} className="logoImg" alt="logo" />Matcher</Link>
+        <Link to="/" className='home'>Home</Link>
+        <Link to="/gameRoom" className='gameRoom'>Game Room</Link>
+        <Link to="/profile" className='profile'>Profilo</Link>
         {!isAuthenticated ? < LoginButton /> : <LogoutButton />}
       </div>
       <div className="mobile-header">

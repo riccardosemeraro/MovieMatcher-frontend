@@ -4,6 +4,7 @@ import ProfileCard from '../components/profileCard';
 import ActionButtons from '../components/actionButton';
 import MatchList from '../components/matchList';
 import Footer from '../components/footer';
+import Slider from '../components/slider';
 import '../style/homePage.css';
 import axios from 'axios';
 
@@ -56,7 +57,7 @@ function HomePage() {
 
   return ( isAuthenticated &&
     <div className="home-page">
-      <ProfileCard />
+      <Slider /> {/* da capire se basta 1 "pagina" slider per gestirli entrambi */}
     </div>
   );
 }

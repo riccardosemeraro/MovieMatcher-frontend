@@ -1,17 +1,13 @@
 import React from 'react';
-import Header from '../components/header';
-import Footer from '../components/footer';
-import ProfileCard from '../components/profileCard';
 import ActionButtons from '../components/actionButton';
-import '../style/explorePage.css';
+import '../style/explorePage.css'; //rivedere nomi file css
 
-function ExplorePage() {
+function GameRoomPage() {
   return (
     <div className="explore-page">
       <main>
         <h1>Game Room</h1>
         <div className="explore-content">
-          <ProfileCard />
           <ActionButtons />
         </div>
       </main>
@@ -19,4 +15,4 @@ function ExplorePage() {
   );
 }
 
-export default ExplorePage;
+export default GameRoomPage;

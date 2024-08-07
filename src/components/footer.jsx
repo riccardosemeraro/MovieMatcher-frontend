@@ -6,17 +6,13 @@ function Footer() {
   return (
     <footer className="app-footer">
       <div className="desktop-footer">
-        <nav>
-          <Link to="/">Home</Link>
-          <Link to="/explore">Game Room</Link>
-          <Link to="/settings">Profilo</Link>
-        </nav>
+        <p>footer sito</p>
       </div>
       <div className="mobile-footer">
         <nav>
           <Link to="/">Home</Link>
-          <Link to="/explore">Game Room</Link>
-          <Link to="/settings">Profilo</Link>
+          <Link to="/gameRoom">Game Room</Link>
+          <Link to="/profile">Profilo</Link>
         </nav>
       </div>
     </footer>

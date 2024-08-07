@@ -57,8 +57,6 @@ function HomePage() {
   return ( isAuthenticated &&
     <div className="home-page">
       <ProfileCard />
-      <ActionButtons />
-      <MatchList />
     </div>
   );
 }

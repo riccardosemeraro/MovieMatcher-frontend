@@ -4,10 +4,13 @@ import '../style/profileCard.css';
 function ProfileCard() {
   return (
     <div className="profile-card">
-      <img src="https://example.com/placeholder-image.jpg" alt="Profilo" />
       <div className="profile-info">
-        <h2>Nome, Età</h2>
-        <p>Breve bio o descrizione</p>
+        <h2>Nome Utente</h2>
+        <p>Info Utente</p>
+        <p>Lista Film visti</p>
+        <p>Lista Film da veder</p>
+        <p>Cronologia Partite</p>
+        <p>^questa sezione va spostata nel profilo poi^</p>
       </div>
     </div>
   );

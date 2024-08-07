@@ -8,14 +8,14 @@ function Footer() {
       <div className="desktop-footer">
         <nav>
           <Link to="/">Home</Link>
-          <Link to="/explore">Esplora</Link>
+          <Link to="/explore">Game Room</Link>
           <Link to="/settings">Profilo</Link>
         </nav>
       </div>
       <div className="mobile-footer">
         <nav>
           <Link to="/">Home</Link>
-          <Link to="/explore">Esplora</Link>
+          <Link to="/explore">Game Room</Link>
           <Link to="/settings">Profilo</Link>
         </nav>
       </div>

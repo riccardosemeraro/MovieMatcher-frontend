@@ -26,7 +26,7 @@ function App() {
 
         <div className='content'>
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/*" element={<HomePage />} />
             <Route path="/profile" element={<AuthenticationGuard component={ProfilePage} />} />
             <Route path="/messages" element={<AuthenticationGuard component={MessagesPage} />} />
             <Route path="/gameRoom" element={<AuthenticationGuard component={GameRoomPage} />} />

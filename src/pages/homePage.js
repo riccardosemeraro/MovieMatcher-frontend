@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import LoginButton from '../components/login-button';
-import LogoutButton from '../components/logout-button'; //solo per il momento finche non è implementato nel profilo
 import MoviePlayingSlider from '../components/moviePlayingSlider';
 import '../style/homePage.css';
 import axios from 'axios';
@@ -60,7 +59,6 @@ function HomePage() {
   return ( isAuthenticated &&
     <div className="home-page">
       <MoviePlayingSlider /> {/* da capire se basta 1 "pagina" slider per gestirli entrambi */}
-      <LogoutButton />
     </div>
   );
 }

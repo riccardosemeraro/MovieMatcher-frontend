@@ -5,7 +5,7 @@ import Profile from './components/profile';
 import AuthenticationButton from './components/authentication-button';
 
 
-import { Link, BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Navigate, BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/homePage';
 import ProfilePage from './pages/profilePage';
 import MessagesPage from './pages/messegesPage';
@@ -26,7 +26,8 @@ function App() {
 
         <div className='content'>
           <Routes>
-            <Route path="/*" element={ <Link to="/" />} />
+            {/* quando leggi la wildcard reindirizzami alla root*/}
+            <Route path="/*" element={<Navigate to="/" />} />
             <Route path="/" element={<HomePage />} />
             <Route path="/profile" element={<AuthenticationGuard component={ProfilePage} />} />
             <Route path="/messages" element={<AuthenticationGuard component={MessagesPage} />} />

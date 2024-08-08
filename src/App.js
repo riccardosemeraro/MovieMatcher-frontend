@@ -5,7 +5,7 @@ import Profile from './components/profile';
 import AuthenticationButton from './components/authentication-button';
 
 
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Link, BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/homePage';
 import ProfilePage from './pages/profilePage';
 import MessagesPage from './pages/messegesPage';
@@ -26,7 +26,8 @@ function App() {
 
         <div className='content'>
           <Routes>
-            <Route path="/*" element={<HomePage />} />
+            <Route path="/*" element={ <Link to="/" />} />
+            <Route path="/" element={<HomePage />} />
             <Route path="/profile" element={<AuthenticationGuard component={ProfilePage} />} />
             <Route path="/messages" element={<AuthenticationGuard component={MessagesPage} />} />
             <Route path="/gameRoom" element={<AuthenticationGuard component={GameRoomPage} />} />

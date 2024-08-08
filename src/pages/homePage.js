@@ -4,7 +4,7 @@ import ProfileCard from '../components/profileCard';
 import ActionButtons from '../components/actionButton';
 import MatchList from '../components/matchList';
 import Footer from '../components/footer';
-import Slider from '../components/slider';
+import MoviePlayingSlider from '../components/moviePlayingSlider';
 import '../style/homePage.css';
 import axios from 'axios';
 
@@ -31,8 +31,8 @@ function HomePage() {
 
           //setIsVerified(true);
 
-          axios.post('http://localhost:9000/user/verify', { body:JSON.stringify(user)}, {headers: {Authorization: 'Bearer '+token} })
-          .then(response => response.json())
+          axios.post('https:moviematcher-backend.onrender.com/user/verify', { body:JSON.stringify(user)}, {headers: {Authorization: 'Bearer '+token} })
+          //.then(response => response.json())
           .then(data => {
             console.log('Success:', data);
           })
@@ -57,7 +57,7 @@ function HomePage() {
 
   return ( isAuthenticated &&
     <div className="home-page">
-      <Slider /> {/* da capire se basta 1 "pagina" slider per gestirli entrambi */}
+      <MoviePlayingSlider /> {/* da capire se basta 1 "pagina" slider per gestirli entrambi */}
     </div>
   );
 }

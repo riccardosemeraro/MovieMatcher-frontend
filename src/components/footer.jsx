@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../style/footer.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome, faGamepad, faUser } from '@fortawesome/free-solid-svg-icons';
 
 function Footer() {
   return (
@@ -9,10 +11,10 @@ function Footer() {
         <p>footer sito</p>
       </div>
       <div className="mobile-footer">
-        <nav className='nav-footer'>
-          <Link to="/">Home</Link>
-          <Link to="/gameRoom">Game Room</Link>
-          <Link to="/profile">Profilo</Link>
+        <nav className="nav-footer">
+          <Link to="/"><FontAwesomeIcon icon={faHome}/></Link>
+          <Link to="/gameRoom"><FontAwesomeIcon icon={faGamepad}/></Link>
+          <Link to="/profile"><FontAwesomeIcon icon={faUser}/></Link>
         </nav>
       </div>
     </footer>

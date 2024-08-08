@@ -1,68 +1,26 @@
-  /*per desktop*/
-@media (min-width: 1024px){
 
-  .mobile-footer{
-    display: none;
-  }
+/* per mobile */
+@media (max-width: 1023px) {
 
-  .desktop-footer{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .app-footer {
-    background-color:  #2A4DA9;
-    padding: 15px 20px;
-    align-items: center;
-    text-align: center;
-
-  }
-
-  .app-footer nav a {
-    color: #FFFFFF;
-    text-decoration: none;
-    margin: 0 10px;
-  }
-
+.app-footer {
+  margin-top: 2%;
+}
+  
 }
 
-/*per mobile*/
-@media (max-width: 1023px){
-
-  .desktop-footer{
-    display: none;
-  }
-
-  .mobile-footer{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
+/* per desktop */
+@media (min-width: 1024px){
   .app-footer {
-    background-color: #2A4DA9;
-    padding: 15px 20px;
-    text-align: center;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 5%;
+    margin-top: 2%;
   }
+}
 
-  .nav-footer{
-    display: flex;
-    justify-content: space-around;
-    padding: 0 20px;
-  }
 
-  .app-footer nav a {
-    flex: 1;
-    color: #FFFFFF;
-    text-decoration: none;
-    padding: 20px;
-    text-align: center;
-  }
 
-  
+.app-footer {
+  background-color:  #003366;
+  padding: 15px 20px;
+  align-items: center;
+  text-align: center;
+  color: white;
 }

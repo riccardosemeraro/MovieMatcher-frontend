@@ -51,6 +51,7 @@ function HomePage() {
     return(
       <>
         <div>Non sei autenticato</div>
+
         <LoginButton />
       </>
     );

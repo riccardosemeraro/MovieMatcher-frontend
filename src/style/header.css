@@ -1,21 +1,19 @@
+
 /*per desktop*/
 @media (min-width: 1024px){
+
+  body {
+    margin-top: 110px;
+  }
 
   .mobile-header{
     display: none;
   }
 
-  .desktop-header{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
   .app-header {
-    background-color: #2A4DA9;
-    padding: 8px 20px;   
     align-items: center;
     text-align: center;
+    display: flex;
   }
 
   .logo {
@@ -33,36 +31,97 @@
     height: 80px; /* Altezza dell'immagine, adattala alle tue esigenze */
   }
 
-  .home{
-    font-size: 18px;
-    color: #FFFFFF;
-    text-decoration: none;
-    text-align: center;
-    display: inline-flex;
+  .desktop-header{
+    display: flex;
     align-items: center;
+    padding: 0px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100000000;
+    
   }
 
-  .gameRoom{
-    font-size: 18px;
-    color: #FFFFFF;
-    text-decoration: none;
+  .top{
+    width: 100%;
+
+    background-color: #003366;
     text-align: center;
-    display: inline-flex;
+    height: fit-content;
+
+    justify-content: center;
     align-items: center;
+    display: flex;
   }
 
-  .profile{
+  .top > a {
+    margin: 1px 50px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  a {
     font-size: 18px;
-    color: #FFFFFF;
+    color: #FFD200;
     text-decoration: none;
     text-align: center;
     display: inline-flex;
     align-items: center;
+    padding: 0;
   }
+
+  .top ul{
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    flex-direction: row;
+    padding: 0;
+    margin: 0;
+  }
+
+  li a {
+    color: #FFFFFF;
+    padding: 0px;
+    text-decoration: none;
+    font-size: 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  li{
+    list-style: none;
+  }
+
+  .active a{
+    color: #FFD200;
+  }
+
+  .icon{
+    margin-bottom: 8px;
+    
+  }
+
+  
 }
+
+
+
+
+
+
+
+
+
 
 /*per mobile*/
 @media (max-width: 1023px){
+
+  body {
+    margin-top: 80px;
+  }
 
   .desktop-header{
     display: none;
@@ -75,7 +134,6 @@
   }
 
   .app-header {
-    background-color: #2A4DA9;
     color: white;
     padding: 8px 20px;   
     align-items: center;
@@ -95,6 +153,62 @@
   .logoImg {
     margin: 0 -10px; /* Spazio tra l'immagine e il testo */
     height: 80px; /* Altezza dell'immagine, adattala alle tue esigenze */
+  }
+
+  .top{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    background-color: #003366;
+    width: 100%;
+  }
+
+  .bottom{
+    position: fixed;
+    z-index: 100;
+    bottom: 0%;
+
+    background-color: #003366;
+    padding: 15px 0px;
+    text-align: center;
+    width: 100%;
+    height: 5%;
+
+    justify-content: center;
+    align-items: center;
+    display: flex;
+  }
+
+  .nav-bottom{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    padding: 0 20px;
+    
+  }
+
+  .nav-bottom ul{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    flex-direction: row;
+    padding: 0;
+  }
+
+  li a {
+    color: #FFFFFF;
+    padding: 20px;
+    text-decoration: none;
+  }
+
+  li{
+    list-style: none;
+  }
+
+  .active a{
+    color: #FFD200;
   }
 }
 

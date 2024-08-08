@@ -9,7 +9,7 @@ function Footer() {
         <p>footer sito</p>
       </div>
       <div className="mobile-footer">
-        <nav>
+        <nav className='nav-footer'>
           <Link to="/">Home</Link>
           <Link to="/gameRoom">Game Room</Link>
           <Link to="/profile">Profilo</Link>

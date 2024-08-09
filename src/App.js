@@ -14,6 +14,7 @@ import SettingsPage from './pages/settingsPage';
 import AuthenticationGuard from './authenticationGard'; //importo il componente per la protezione delle rotte
 import Header from './components/header';
 import Footer from './components/footer';
+import FilmPage from './pages/FilmPage';
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
             <Route path="/messages" element={<AuthenticationGuard component={MessagesPage} />} />
             <Route path="/gameRoom" element={<AuthenticationGuard component={GameRoomPage} />} />
             <Route path="/settings" element={<AuthenticationGuard component={SettingsPage} />} />
+            <Route path="/film" element={<AuthenticationGuard component={FilmPage} />} />
             {/* Aggiungi altre route qui */}
           </Routes>
         </div>

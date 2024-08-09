@@ -54,27 +54,40 @@ function MoviePlayingSlider() {
               overflow: hidden;
               display: flex;
               flex-direction: column;
+              color: white;
+
             }
 
             .slider {
               display: flex;
 
               overflow-x: auto;
-              
-              
+
+
+
               scroll-snap-type: x mandatory;
-              gap: 10px;
-              background-color: #003366;
+              -webkit-overflow-scrolling: touch;
 
+              gap: 0px;
+              
+              background-color: #6a0795;
               padding: 10px;
-
               border-radius: 10px;
+
+              /* Nascondo la scrollbar */
+              scrollbar-width: none; /* Per Firefox */
+              -ms-overflow-style: none; /* Per Internet Explorer e Edge */
+            }
+
+            .slider::-webkit-scrollbar {
+              /* Nascondo la scrollbar */
+              display: none; /* Per Chrome, Safari e Opera */
             }
 
             .film {
               flex: 0 0 auto;
-              width: 200px;
-              height: 300px;
+              width: 210px;
+              height: auto;
               background-color: #f5f5f5;
               border-radius: 10px;
               padding: 2px;      
@@ -85,6 +98,8 @@ function MoviePlayingSlider() {
               height: 100%;
               border-radius: 10px;
             }
+
+            
           `}
         </style>
 
@@ -109,56 +124,3 @@ function MoviePlayingSlider() {
   }
 
 export default MoviePlayingSlider;
-
-
-/*
-import React, { useEffect, useState } from 'react';
-import Slider from 'react-slick';
-import axios from 'axios';
-import "slick-carousel/slick/slick.css"; 
-import "slick-carousel/slick/slick-theme.css";
-
-const MovieSlider = () => {
-  const [movies, setMovies] = useState([]);
-
-  useEffect(() => {
-    const options = {
-      headers: {
-        accept: 'application/json',
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlYjAxNjQzNjI0ZGY2OTY5NDMwNTRjMzJkNGY3NmI3ZSIsIm5iZiI6MTcyMzExNTUxNy41NDEyMDMsInN1YiI6IjY2YjRhNTcyZGUzODU5OGY2YTZkMDBmMCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vZangTWOxjICVMDKP5tSevGWu3fS_0a_Nd-8GqBheGc'
-      }
-    };
-
-    axios.get('https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1', options)
-      .then(response => {
-        setMovies(response.data.results);
-      })
-      .catch(err => console.error(err));
-  }, []);
-
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 3
-  };
-
-  return (
-    <div>
-      <h2>Now Playing</h2>
-      <Slider {...settings}>
-        {movies.map(movie => (
-          <div key={movie.id}>
-            <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
-            <h3>{movie.title}</h3>
-            <p>{movie.overview}</p>
-          </div>
-        ))}
-      </Slider>
-    </div>
-  );
-};
-
-export default MovieSlider;
-*/

@@ -39,13 +39,17 @@
     top: 0;
     width: 100%;
     z-index: 100000000;
+
+  margin: 20px solid #6a0795;
+
     
   }
 
   .top{
     width: 100%;
-
-    background-color: #FFD200;
+    
+    background: linear-gradient(0deg, #00000000 0%, #6a0795 40%);
+    /*background-color: #6a0795; VIOLA*/
     text-align: center;
     height: fit-content;
 
@@ -62,7 +66,7 @@
 
   a {
     font-size: 18px;
-    color: #003366;
+    color: #FFD200;
     text-decoration: none;
     text-align: center;
     display: inline-flex;
@@ -80,10 +84,12 @@
   }
 
   li a {
-    color: #003366;
+    color: #FFFFFF;
     padding: 0px;
     text-decoration: none;
     font-size: 20px;
+    
+    font-weight: bold;
 
     display: flex;
     flex-direction: column;
@@ -96,18 +102,7 @@
   }
 
   .active a{
-    color: #FFD200;
-    background-color: #003366;
-  }
-
-  .activeDiv{
-    background-color: #003366;
-    color: #FFD200;
-    padding: 10px;
-    border-radius: 10px;
-  }
-
-  .inactiveDiv{
+      color: #FFD200;
     
   }
   .icon{
@@ -132,6 +127,7 @@
 
   body {
     margin-top: 80px;
+    margin-bottom: 65px;
   }
 
   .desktop-header{
@@ -167,13 +163,19 @@
   }
 
   .top{
+    background: radial-gradient(ellipse, #6a0795f0 50%, #00000000 70%);
+
     display: flex;
     justify-content: center;
     align-items: center;
     position: fixed;
     top: 0;
-    background-color: #003366;
+    /*background-color: #6a0795;*/
     width: 100%;
+  }
+
+  .top a {
+    color: #FFD200;
   }
 
   .bottom{
@@ -181,7 +183,7 @@
     z-index: 100;
     bottom: 0%;
 
-    background-color: #003366;
+    background-color: #6a0795;
     padding: 15px 0px;
     text-align: center;
     width: 100%;
@@ -212,6 +214,9 @@
     color: #FFFFFF;
     padding: 20px;
     text-decoration: none;
+
+    font-size: 25px;
+    
   }
 
   li{

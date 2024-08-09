@@ -53,6 +53,9 @@ function HomePage() {
   return (
     <div className="home-page">
 
+      {/*input type="search" placeholder="Cerca un film" className="search-bar" />*/}
+
+      <MoviePlayingSlider /> {/* da capire se basta 1 "pagina" slider per gestirli entrambi */}
       <MoviePlayingSlider /> {/* da capire se basta 1 "pagina" slider per gestirli entrambi */}
 
     </div>

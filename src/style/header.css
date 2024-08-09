@@ -45,7 +45,7 @@
   .top{
     width: 100%;
 
-    background-color: #003366;
+    background-color: #FFD200;
     text-align: center;
     height: fit-content;
 
@@ -62,7 +62,7 @@
 
   a {
     font-size: 18px;
-    color: #FFD200;
+    color: #003366;
     text-decoration: none;
     text-align: center;
     display: inline-flex;
@@ -80,7 +80,7 @@
   }
 
   li a {
-    color: #FFFFFF;
+    color: #003366;
     padding: 0px;
     text-decoration: none;
     font-size: 20px;
@@ -97,8 +97,19 @@
 
   .active a{
     color: #FFD200;
+    background-color: #003366;
   }
 
+  .activeDiv{
+    background-color: #003366;
+    color: #FFD200;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .inactiveDiv{
+    
+  }
   .icon{
     margin-bottom: 8px;
     

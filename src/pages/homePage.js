@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import LoginButton from '../components/login-button';
+import LogoutButton from '../components/logout-button';
 import MoviePlayingSlider from '../components/moviePlayingSlider';
 import '../style/homePage.css';
 import axios from 'axios';
@@ -47,19 +48,13 @@ function HomePage() {
     return <div>Loading...</div>;
   }
 
-  if (!isAuthenticated) {
-    return(
-      <>
-        <div>Non sei autenticato</div>
+  
 
-        <LoginButton />
-      </>
-    );
-  }
-
-  return ( isAuthenticated &&
+  return (
     <div className="home-page">
+
       <MoviePlayingSlider /> {/* da capire se basta 1 "pagina" slider per gestirli entrambi */}
+
     </div>
   );
 }

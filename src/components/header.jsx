@@ -51,8 +51,10 @@ function Header() {
               <li  className = {location.pathname === "/gameRoom" ? 'active' : ''} > 
                 <Link to="/gameRoom"><FontAwesomeIcon icon={faGamepad}/></Link> 
               </li>
-              <li  className = {location.pathname === "/profile" ? 'active' : ''} > 
-                <Link to="/profile"><FontAwesomeIcon icon={faUser}/></Link> 
+              <li  className = {location.pathname === "/profile" ? 'active' : ''} >
+                <div className={location.pathname === "inactiveDiv" ? 'activeDiv' : ''}>
+                  <Link to="/profile"><FontAwesomeIcon icon={faUser}/></Link> 
+                </div>
               </li>
             </ul>
         </nav>

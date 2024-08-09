@@ -1,69 +1,112 @@
 import '../style/slider.css';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
+
+
 
 function MoviePlayingSlider() {
 
-   const chiaveAPI = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlYjAxNjQzNjI0ZGY2OTY5NDMwNTRjMzJkNGY3NmI3ZSIsIm5iZiI6MTcyMzExNTUzMS4zNzI1OTgsInN1YiI6IjY2YjRhNTcyZGUzODU5OGY2YTZkMDBmMCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.QjgGj9sr5Euk1A8LEyl4riJw0YthkeujM1mT0rpoiX0";
+  const [films, setFilms] = useState([]);
 
-    const risposta = [];
+  const chiaveAPI = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlYjAxNjQzNjI0ZGY2OTY5NDMwNTRjMzJkNGY3NmI3ZSIsIm5iZiI6MTcyMzExNTUzMS4zNzI1OTgsInN1YiI6IjY2YjRhNTcyZGUzODU5OGY2YTZkMDBmMCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.QjgGj9sr5Euk1A8LEyl4riJw0YthkeujM1mT0rpoiX0";
 
-    const options = {
-        method: 'GET',
-        headers: {
-          accept: 'application/json',
-          Authorization: 'Bearer ' + chiaveAPI
-        }
-      };
-      
-    
-    fetch('https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1', options)
-        .then(response => response.json())
-        //.then(response => console.log(response))
-        .then(response => {
+  useEffect(() => {
 
-            //voglio uno slider formato dagli elementi di response.results
+      /*
+      Attributi di ogni film da TMDB
 
-            /*
-            response.results.map((film) => {
-                risposta.push(
-                    <div className="film">
-                        <img src={film.poster_path} alt={film.title} />
-                        <h3>{film.title}</h3>
-                        <p>{film.overview}</p>
-                    </div>
-                );
-            });
-            */
+      adult: false
+      backdrop_path: "/9l1eZiJHmhr5jIlthMdJN5WYoff.jpg"
+      genre_ids: [28, 35, 878] (3)
+      id: 533535
+      original_language: "en"
+      original_title: "Deadpool & Wolverine"
+      overview: "A listless Wade Wilson toils away in civilian life with his days as the morally flexible mercenary, Deadpool, behind him. But when hi…"
+      popularity: 12303.037
+      poster_path: "/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg"
+      release_date: "2024-07-24"
+      title: "Deadpool & Wolverine"
+      video: false
+      vote_average: 7.9
+      vote_count: 1542
 
-            console.log(risposta);
-            
+      'https://image.tmdb.org/t/p/w780' + film.poster_path
+      */
 
-        })
-        .catch(err => console.error(err));
+    const options = { method: 'GET', headers: { accept: 'application/json', Authorization: 'Bearer ' + chiaveAPI } };
 
-    
+    axios.get('https://api.themoviedb.org/3/movie/now_playing?language=it-IT&page=1', options)
+      .then (response => {
+        setFilms(response.data.results);
+        console.log(response.data.results[0]);
+      })
+      .catch(err => console.error(err));
+  }, []);
 
-    return (
-        <>
+  return (
+      <>
+        <style>
+          {`
+            .sliderContainer {
+              width: 95%;
+              margin: 0 auto;
+              text-align: left;
+              overflow: hidden;
+              display: flex;
+              flex-direction: column;
+            }
+
+            .slider {
+              display: flex;
+
+              overflow-x: auto;
+              
+              
+              scroll-snap-type: x mandatory;
+              gap: 10px;
+              background-color: #003366;
+
+              padding: 10px;
+
+              border-radius: 10px;
+            }
+
+            .film {
+              flex: 0 0 auto;
+              width: 200px;
+              height: 300px;
+              background-color: #f5f5f5;
+              border-radius: 10px;
+              padding: 2px;      
+            }
+
+            .film img {
+              width: 100%;
+              height: 100%;
+              border-radius: 10px;
+            }
+          `}
+        </style>
+
         <div className="sliderContainer">
             <h2>Film della settimana</h2>
-            <div className="slider">
-                <div className="film"> {risposta} </div> {/*array di film*/}
-            </div>                
+
+            <div className='slider'>
+              {films.map(film => (
+                <div className='film' key={film.id}>
+                  <img className = "img" src={"https://image.tmdb.org/t/p/w780" + film.poster_path} alt={film.title} />
+                </div>
+              ))}
+
+            </div>
+
+
+
         </div>
-        
-        {/*
-        <div className="sliderContainer">
-            <h2>Consigliati per te</h2>
-            <div className="slider">
-                {/*array di film/}
-            </div>                
-        </div>
-        */}
 
         </>
     );
-}
+  }
 
 export default MoviePlayingSlider;
 

@@ -1,6 +1,9 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import ProfileCard from "./profileCard";
+import "../style/profileCard.css";
+import { Link } from 'react-router-dom';
+import LogoutButton from './logout-button';
 
 const Profile = () => {
   const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
@@ -11,10 +14,26 @@ const Profile = () => {
 
   return (
     isAuthenticated && (
-      <div>
+      <>
         {/* https://auth0.com/docs/manage-users/user-accounts/user-profiles/user-profile-structure#user-profile-attributes */}
-        <ProfileCard />
-      </div>
+        <div className="profile-card">
+          <div className="profile-info">
+            {user && (
+              <>
+                  <img src={user.picture} alt={user.name} style={{ width: '100px', height: '100px' }} />    
+                  <h2>{user.name}</h2>
+              </>
+            )}
+            <ul>
+              <li><Link to="/settings">Info Utente</Link></li>
+              <li><Link to="/settings">Film visti</Link></li>
+              <li><Link to="/settings">Film da vedere</Link></li>
+              <li><Link to="/settings">Generi</Link></li>
+              <li><LogoutButton /></li>
+            </ul>
+          </div>
+        </div>
+      </>
     )
   );
 };

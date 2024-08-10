@@ -80,7 +80,7 @@ function MoviePlayingSlider() {
               
               background-color: #6a0795;
               padding: 10px;
-              border-radius: 10px;
+              border-radius: 20px;
 
               /* Nascondo la scrollbar */
               scrollbar-width: none; /* Per Firefox */
@@ -97,14 +97,14 @@ function MoviePlayingSlider() {
               width: 210px;
               height: auto;
               background-color: #f5f5f5;
-              border-radius: 10px;
+              border-radius: 20px;
               padding: 2px;      
             }
 
             .film img {
               width: 100%;
               height: 100%;
-              border-radius: 10px;
+              border-radius: 20px;
             }
 
             

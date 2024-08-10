@@ -30,3 +30,48 @@
     border-radius: 20px;
     cursor: pointer;
   }
+
+  .ul-header{
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 10px;
+    /* Nascondo la scrollbar */
+    scrollbar-width: none; /* Per Firefox */
+    -ms-overflow-style: none; /* Per Internet Explorer e Edge */
+
+    list-style-type: none;
+    justify-content: start;
+    padding: 0;
+    margin: 0px 0px 20px 0px;
+  }
+
+  .slider::-webkit-scrollbar {
+    /* Nascondo la scrollbar */
+    display: none; /* Per Chrome, Safari e Opera */
+  }
+
+  .ul-header li{
+    display: flex;
+    background-color: #6a0795f0;
+    border-radius: 20px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    white-space: nowrap;
+    padding: 0px 5px;
+  }
+
+  .ul-header li a{
+    display: block;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 20px;
+    padding: 5px 5px;
+    font-weight: bold;
+  }
+
+  .ul-header li.selected a {
+    color: #FFD200; /* Colore del testo selezionato */
+  }

@@ -35,6 +35,14 @@ function MoviePlayingSlider() {
 
     const options = { method: 'GET', headers: { accept: 'application/json', Authorization: 'Bearer ' + chiaveAPI } };
 
+    /*
+    Popular: 'https://api.themoviedb.org/3/movie/popular?language=it-IT&page=1'
+    Top Rated: 'https://api.themoviedb.org/3/movie/top_rated?language=it-IT&page=1'
+    Now Playing: 'https://api.themoviedb.org/3/movie/now_playing?language=it-IT&page=1'
+    */
+
+
+
     axios.get('https://api.themoviedb.org/3/movie/now_playing?language=it-IT&page=1', options)
       .then (response => {
         setFilms(response.data.results);

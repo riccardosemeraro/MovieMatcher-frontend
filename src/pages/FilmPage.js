@@ -110,6 +110,9 @@ function FilmPage() {
         <style>
             {`
 
+                /*per mobile @media (max-width: 1023px){}*/
+                /*per desktop @media (min-width: 1024px){}*/
+
                 h1 {
                     color: white;
                     text-align: center;
@@ -135,7 +138,7 @@ function FilmPage() {
                 .info-film-container{
                     display: flex;
                     flex-direction: row;
-                    justify-content: fit-content;
+                    justify-content: fit-content; //center da mettere su cell, flex-start su desktop (probabile) - al momento è ok per entrambi fit-content finche non si fa la distinzione
                     align-items: center;
 
                 }
@@ -209,6 +212,8 @@ function FilmPage() {
                     background-color: #6a0795 !important;
                     color: white !important;
                 }
+                        
+                
 
             `}
 

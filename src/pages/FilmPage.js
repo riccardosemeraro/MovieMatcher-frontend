@@ -4,7 +4,7 @@ import { useParams, useLocation } from 'react-router-dom';
 
 import Button from '@mui/material/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBookmark, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark, faCheck, faTimes, faHeart, faH } from '@fortawesome/free-solid-svg-icons';
 
 
 
@@ -17,8 +17,8 @@ function FilmPage() {
     const [data, setData] = useState([]);
     const [italianReleaseDate, setItalianReleaseDate] = useState('');
 
-    const [add_remove_1, setAdd_remove_1] = useState(false);
-    const [add_remove_2, setAdd_remove_2] = useState(false);
+    const [add_remove_1, setAdd_remove_1] = useState(true);
+    const [add_remove_2, setAdd_remove_2] = useState(true);
 
     /* per prendere le cose dalle query dall'url
     const location = useLocation();
@@ -187,6 +187,7 @@ function FilmPage() {
 
                     .mobile-page{
                         display: auto; //no flex perche scompiglia tutto
+                        
                     }
 
                     .desktop-page{
@@ -221,6 +222,10 @@ function FilmPage() {
                         justify-content: fit-content; //center da mettere su cell, flex-start su desktop (probabile) - al momento è ok per entrambi fit-content finche non si fa la distinzione
                         align-items: center;
 
+                        background-size: cover; /* Assicura che l'immagine di sfondo copra tutto il div */
+                        background-position: center; /* Centra l'immagine di sfondo */
+                        background-repeat: no-repeat; /* Evita che l'immagine di sfondo si ripeta */
+
                     }
                 
                     .film {
@@ -245,6 +250,8 @@ function FilmPage() {
                     .info-film{
                         color: white;
 
+                        width: 100%;
+
                         display: flex;
                         flex-direction: column;
                         align-items: center;
@@ -264,13 +271,18 @@ function FilmPage() {
                         flex-direction: row;
                         text-align: center;
                         justify-content: center;
+                        
 
                         margin: 5px;
                         border-radius: 20px;
                         padding: 5px;
 
                         flex: 1;
-                        width: 100%;
+                        width: 80%;
+                    }
+
+                    .custom-button p {
+                        margin: 0px;
                     }
 
                     .icon {
@@ -313,10 +325,10 @@ function FilmPage() {
                 <p>Valutazione: {film.vote_average}</p>
                 <p>Liste Film:</p>
                 <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_1(!add_remove_1)}> 
-                        &nbsp; <FontAwesomeIcon icon={add_remove_1 ? faCheck : faTimes} /> &nbsp; Visti
+                        &nbsp; <FontAwesomeIcon icon={add_remove_1 ? faHeart : faTimes} /> &nbsp; Aggiungi ai Film Visti
                 </Button>
                 <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_2(!add_remove_2)}> 
-                        &nbsp; <FontAwesomeIcon icon={add_remove_2 ? faCheck : faTimes} /> &nbsp; Da vedere
+                        &nbsp; <FontAwesomeIcon icon={add_remove_2 ? faBookmark : faTimes} /> &nbsp; Aggiungi ai Film da Vedere
                 </Button>
             </div>
 
@@ -353,7 +365,7 @@ function FilmPage() {
         
         <div className='mobile-page'>
             <h1>{film.title}</h1>
-            <div className='info-film-container'>
+            <div className='info-film-container' style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${film.backdrop_path})`} }>
                 <div className='film'>
                     <img src={'https://image.tmdb.org/t/p/w500'+film.poster_path} alt={film.title} />
                 </div>
@@ -364,12 +376,13 @@ function FilmPage() {
                         <p>Generi: <br/> {film.genres.map(genre => genre.name).sort().join(', ')}</p>
                     }
                     <p>Valutazione: <br/> {film.vote_average}</p>
-                    <p>Liste Film:</p>
                     <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_1(!add_remove_1)}> 
-                            &nbsp; <FontAwesomeIcon icon={add_remove_1 ? faCheck : faTimes} /> &nbsp; Visti
+                        <p> &nbsp; <FontAwesomeIcon icon={add_remove_1 ? faHeart : faTimes} /> 
+                        &nbsp; {add_remove_1 ? "Aggiungi ai " : "Rimuovi dai "} <br/>Film Visti</p>
                     </Button>
                     <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_2(!add_remove_2)}> 
-                            &nbsp; <FontAwesomeIcon icon={add_remove_2 ? faCheck : faTimes} /> &nbsp; Da vedere
+                        <p> &nbsp; <FontAwesomeIcon icon={add_remove_2 ? faBookmark : faTimes} /> 
+                        &nbsp; {add_remove_2 ? "Aggiungi ai " : "Rimuovi dai "} <br/>Film da Vedere </p>
                     </Button>
                 </div>            
             </div>

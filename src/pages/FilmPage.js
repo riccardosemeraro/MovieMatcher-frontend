@@ -260,8 +260,9 @@ function FilmPage() {
                         border-radius: 20px;
                         padding: 2px;      
                         margin-bottom: 10px;
-                        margin-right: 8px;
+                        margin-right: 5px;
                         margin-left: 0px;
+                        margin-top: 5px;
                     }
 
                     .film img {
@@ -277,8 +278,9 @@ function FilmPage() {
                         flex-direction: column;
                         align-items: center;
                         margin-bottom: 10px;
-                        margin-left: 8px;
+                        margin-left: 5px;
                         margin-right: 0px;
+                        margin-top: 5px;
 
                         width: auto;
                         height: auto;
@@ -433,8 +435,8 @@ function FilmPage() {
                         <p>Voto: {voto}</p>
                     </div>
                     <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_1(!add_remove_1)}> 
-                        <p> &nbsp; <FontAwesomeIcon icon={add_remove_1 ? faHeart : faTimes} /> 
-                        &nbsp; {add_remove_1 ? "Aggiungi ai " : "Rimuovi dai "} <br/>miei Film</p>
+                        <p> &nbsp; <FontAwesomeIcon icon={add_remove_1 ? faCheck : faTimes} /> 
+                        &nbsp; {add_remove_1 ? "Aggiungi ai " : "Rimuovi dai "} <br/>Film visti</p>
                     </Button>
                     <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_2(!add_remove_2)}> 
                         <p> &nbsp; <FontAwesomeIcon icon={add_remove_2 ? faBookmark : faTimes} /> 

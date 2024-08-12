@@ -62,6 +62,7 @@ function MovieSlider({type, id}) {
       case 'similar':
         url = 'https://api.themoviedb.org/3/movie/'+{id}+'/similar?language=it-IT&page=1'
         setTitle('Film simili');
+        break;
       default:
         url = 'https://api.themoviedb.org/3/movie/now_playing?language=it-IT&page=1';
         setTitle('Film della settimana');

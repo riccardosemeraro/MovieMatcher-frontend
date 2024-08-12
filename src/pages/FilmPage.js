@@ -428,7 +428,7 @@ function FilmPage() {
                 <div className='info-film'>
                     <div className='info'>
                         <p >{italianReleaseDate || film.release_date} </p>
-                        <p>Voto: {(film.vote_average).toFixed(2)}</p>
+                        <p>Voto: {(film.vote_average * 10).toFixed(1)}/100</p>
                     </div>
                     <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_1(!add_remove_1)}> 
                         <p> &nbsp; <FontAwesomeIcon icon={add_remove_1 ? faHeart : faTimes} /> 

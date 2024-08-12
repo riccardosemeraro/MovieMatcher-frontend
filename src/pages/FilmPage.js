@@ -191,6 +191,18 @@ function FilmPage() {
                         width: 100vw;
                         height: auto;
                         box-sizing: border-box;
+
+                        border-radius: 20px;
+                        margin-left: 10px;
+                        margin-right: 10px;
+                        margin-top: -10px;
+                        border: 2px solid white;
+
+                        
+                        background-size: cover; /* Assicura che l'immagine di sfondo copra tutto il div */
+                        background-position: center; /* Centra l'immagine di sfondo */
+                        background-repeat: no-repeat; /* Evita che l'immagine di sfondo si ripeta */
+
                         }
 
                     .desktop-page{
@@ -219,18 +231,22 @@ function FilmPage() {
                         align-items: center;
                     } non usata piu*/
 
+                    .generi{
+                        background-color: #6a0795;
+                        color: white;
+                        border-radius: 20px;
+
+                        padding: 10px;
+                        display: inline-block;
+                    }
+
                     .info-film-container{
                         display: flex;
                         flex-direction: row;
                         justify-content: fit-content; //center da mettere su cell, flex-start su desktop (probabile) - al momento è ok per entrambi fit-content finche non si fa la distinzione
-                        align-items: center;
-
-                        
-
-                        background-size: cover; /* Assicura che l'immagine di sfondo copra tutto il div */
-                        background-position: center; /* Centra l'immagine di sfondo */
-                        background-repeat: no-repeat; /* Evita che l'immagine di sfondo si ripeta */
-
+                        align-items: center;                        
+                        margin-left: 10px;
+                        margin-right: 10px;
                     }
                 
                     .film {
@@ -241,7 +257,7 @@ function FilmPage() {
                         border-radius: 20px;
                         padding: 2px;      
                         margin-bottom: 10px;
-                        margin-right: 2px;
+                        margin-right: 8px;
                         margin-left: 8px;
 
                     }
@@ -263,18 +279,20 @@ function FilmPage() {
                         align-items: center;
                         margin-bottom: 10px;
                         margin-right: 8px;
-                        margin-left: 2px;
+                        margin-left: 8px;
                     }
 
                     .info {
                         background-color: #6a0795;
 
                         color: white;
+                        font-size: 16px;
+                        flex-direction: column;
                         
                         display: flex;
                         text-align: center;
                         justify-content: center;
-                        flex-direction: column;                        
+                        
 
                         margin: 5px;
                         border-radius: 20px;
@@ -282,6 +300,7 @@ function FilmPage() {
 
                         flex: 1;
                         width: 100%;
+                        box-sizing: border-box;
                     }
 
                     .custom-button {
@@ -313,7 +332,15 @@ function FilmPage() {
                     }
 
                     .descrizione {
-                        margin-bottom: 40px;
+                        margin-bottom: 10px;
+                        background-color: #6a0795;
+                        color: white;
+                        border-radius: 20px;
+
+                        margin-left: 10px;
+                        margin-right: 10px;
+
+                        padding: 5px;
                     }
 
                     .text-descrizione {
@@ -386,24 +413,26 @@ function FilmPage() {
             
         </div>
         
-        <div className='mobile-page'>
+        <div className='mobile-page' style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${film.backdrop_path})`} }>
             <h1>{film.title}</h1>
+            <div className='generi'>
             {
                             film.genres &&
                             <p>{film.genres.map(genre => genre.name).sort().join(', ')}</p>
             }
-            <div className='info-film-container' style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${film.backdrop_path})`} }>
+            </div>
+            <div className='info-film-container' >
                 <div className='film'>
                     <img src={'https://image.tmdb.org/t/p/w500'+film.poster_path} alt={film.title} />
                 </div>
                 <div className='info-film'>
                     <div className='info'>
                         <p >{italianReleaseDate || film.release_date} </p>
-                        <p>Valutazione: {film.vote_average}</p>
+                        <p>Voto: {(film.vote_average).toFixed(2)}</p>
                     </div>
                     <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_1(!add_remove_1)}> 
                         <p> &nbsp; <FontAwesomeIcon icon={add_remove_1 ? faHeart : faTimes} /> 
-                        &nbsp; {add_remove_1 ? "Aggiungi ai " : "Rimuovi dai "} <br/>Film Visti</p>
+                        &nbsp; {add_remove_1 ? "Aggiungi ai " : "Rimuovi dai "} <br/>miei Film</p>
                     </Button>
                     <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_2(!add_remove_2)}> 
                         <p> &nbsp; <FontAwesomeIcon icon={add_remove_2 ? faBookmark : faTimes} /> 

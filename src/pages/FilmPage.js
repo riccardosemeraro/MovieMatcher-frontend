@@ -122,7 +122,7 @@ function FilmPage() {
                     margin: 0px;
                     margin-bottom: 10px;
 
-                    font-size: 18px;
+                    font-size: 16px;
                 }
 
                 .data-generi {
@@ -135,7 +135,7 @@ function FilmPage() {
                 .info-film-container{
                     display: flex;
                     flex-direction: row;
-                    justify-content: center;
+                    justify-content: fit-content;
                     align-items: center;
 
                 }
@@ -148,6 +148,8 @@ function FilmPage() {
                     border-radius: 20px;
                     padding: 2px;      
                     margin-bottom: 10px;
+                    margin-right: 2px;
+                    margin-left: 8px;
 
                 }
 
@@ -164,6 +166,8 @@ function FilmPage() {
                     flex-direction: column;
                     align-items: center;
                     margin-bottom: 10px;
+                    margin-right: 8px;
+                    margin-left: 2px;
                 }
 
                 .custom-button {
@@ -171,27 +175,19 @@ function FilmPage() {
 
                     color: white;
                     text-transform: none;
+                    font-size: 16px;
                     
                     display: flex;
                     flex-direction: row;
                     text-align: center;
-                    justify-content: flex-start;
+                    justify-content: center;
 
                     margin: 5px;
                     border-radius: 20px;
                     padding: 5px;
-                    font-size: 20px;
 
                     flex: 1;
                     width: 100%;
-                }
-
-                .icon-container {
-                    margin-right: 10px;
-                }
-
-                .text-container {
-                    text-align: center;
                 }
 
                 .icon {
@@ -236,17 +232,12 @@ function FilmPage() {
                 }
 
                 <p>Valutazione: <br/> {film.vote_average}</p>
+                <p>Liste Film:</p>
                 <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_1(!add_remove_1)}> 
-                    <span className='icon-container'>
-                        &nbsp; <FontAwesomeIcon icon={add_remove_1 ? faCheck : faTimes} />
-                    </span>
-                    <span className='text-container'> &nbsp; &nbsp; Film visti</span>
+                        &nbsp; <FontAwesomeIcon icon={add_remove_1 ? faCheck : faTimes} /> &nbsp; Visti
                 </Button>
                 <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_2(!add_remove_2)}> 
-                    <span className='icon-container'>
-                        &nbsp; <FontAwesomeIcon icon={add_remove_2 ? faCheck : faTimes} />
-                    </span>
-                    <span className='text-container'>Film da vedere</span>
+                        &nbsp; <FontAwesomeIcon icon={add_remove_2 ? faCheck : faTimes} /> &nbsp; Da vedere
                 </Button>
             </div>            
         </div>

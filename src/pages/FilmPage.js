@@ -58,6 +58,8 @@ function FilmPage() {
         fetchFilmData();
     }, [id]);
 
+    const voto = Math.floor(film.vote_average * 100)/100;
+
     //voglio accedere alla data italiana di uscita del film
     let italianDate = "";
     useEffect(() => {
@@ -243,10 +245,11 @@ function FilmPage() {
                     .info-film-container{
                         display: flex;
                         flex-direction: row;
-                        justify-content: fit-content; //center da mettere su cell, flex-start su desktop (probabile) - al momento è ok per entrambi fit-content finche non si fa la distinzione
+                        justify-content: center; //center da mettere su cell, flex-start su desktop (probabile) - al momento è ok per entrambi fit-content finche non si fa la distinzione
                         align-items: center;                        
                         margin-left: 10px;
                         margin-right: 10px;
+
                     }
                 
                     .film {
@@ -258,8 +261,7 @@ function FilmPage() {
                         padding: 2px;      
                         margin-bottom: 10px;
                         margin-right: 8px;
-                        margin-left: 8px;
-
+                        margin-left: 0px;
                     }
 
                     .film img {
@@ -271,15 +273,15 @@ function FilmPage() {
                     .info-film{
                         color: white;
 
-                        width: auto;
-                        height: auto;
-
                         display: flex;
                         flex-direction: column;
                         align-items: center;
                         margin-bottom: 10px;
-                        margin-right: 8px;
                         margin-left: 8px;
+                        margin-right: 0px;
+
+                        width: auto;
+                        height: auto;
                     }
 
                     .info {
@@ -428,7 +430,7 @@ function FilmPage() {
                 <div className='info-film'>
                     <div className='info'>
                         <p >{italianReleaseDate || film.release_date} </p>
-                        <p>Voto: {(film.vote_average * 10).toFixed(1)}/100</p>
+                        <p>Voto: {voto}</p>
                     </div>
                     <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_1(!add_remove_1)}> 
                         <p> &nbsp; <FontAwesomeIcon icon={add_remove_1 ? faHeart : faTimes} /> 

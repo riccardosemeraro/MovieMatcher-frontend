@@ -110,133 +110,207 @@ function FilmPage() {
         <style>
             {`
 
-                /*per mobile @media (max-width: 1023px){}*/
-                /*per desktop @media (min-width: 1024px){}*/
+                /*per desktop */
+                @media (min-width: 1024px){
 
-                h1 {
-                    color: white;
-                    text-align: center;
-                    margin:10px;
-                }
+                    .desktop-page {
+                        display: flex;
+                        flex-direction: row;
+                        background-size: cover; /* Assicura che l'immagine di sfondo copra tutto il div */
+                        background-position: center; /* Centra l'immagine di sfondo */
+                        background-repeat: no-repeat; /* Evita che l'immagine di sfondo si ripeta */
+                    }
 
-                p {
-                    color: white;
-                    text-align: center;
-                    margin: 0px;
-                    margin-bottom: 10px;
+                    .mobile-page{
+                        display: none;
+                    }
 
-                    font-size: 16px;
-                }
+                    .film {
+                        flex: 0 0 auto;
+                        width: 400px;
+                        height: auto;
+                        background-color: #f5f5f5;
+                        border-radius: 20px;
+                        padding: 2px;      
+                        margin-bottom: 10px;
+                        margin-right:10px;
+                        margin-left: 10px;
+                    }
 
-                .data-generi {
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: center;
-                    align-items: center;
-                }
+                    .film img {
+                        width: 100%;
+                        height: 100%;
+                        border-radius: 20px;
+                    }
 
-                .info-film-container{
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: fit-content; //center da mettere su cell, flex-start su desktop (probabile) - al momento è ok per entrambi fit-content finche non si fa la distinzione
-                    align-items: center;
-
-                }
-            
-                .film {
-                    flex: 0 0 auto;
-                    width: 200px;
-                    height: auto;
-                    background-color: #f5f5f5;
-                    border-radius: 20px;
-                    padding: 2px;      
-                    margin-bottom: 10px;
-                    margin-right: 2px;
-                    margin-left: 8px;
-
-                }
-
-                .film img {
-                    width: 100%;
-                    height: 100%;
-                    border-radius: 20px;
-                }
-
-                .info-film{
-                    color: white;
-
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    margin-bottom: 10px;
-                    margin-right: 8px;
-                    margin-left: 2px;
-                }
-
-                .custom-button {
-                    background-color: #6a0795;
-
-                    color: white;
-                    text-transform: none;
-                    font-size: 16px;
-                    
-                    display: flex;
-                    flex-direction: row;
-                    text-align: center;
-                    justify-content: center;
-
-                    margin: 5px;
-                    border-radius: 20px;
-                    padding: 5px;
-
-                    flex: 1;
-                    width: 100%;
-                }
-
-                .icon {
-                    font-size: auto;
-                }
-
-                .descrizione {
-                    margin-bottom: 40px;
-                }
-
-                .text-descrizione {
-                    color: white;
-                    text-align: justify;
-                    margin: 10px ;
-                    font-size: 18px;
-                }
-
-                .no-color-change {
-                    background-color: #6a0795 !important;
-                    color: white !important;
-                }
-                        
+                    .info-film{
+                        flex-direction: column;
+                    }
                 
+                    h1 {
+                        color: white;
+                        text-align: center;
+                        margin:10px;
+                    }
+
+                    p {
+                        color: white;
+                        text-align: center;
+                        margin: 0px;
+                        margin-bottom: 10px;
+
+                        font-size: 18px;
+                    }
+
+                    /*.data-generi {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: center;
+                        align-items: center;
+                    } non usata piu*/
+
+                    .icon {
+                        font-size: auto;
+                    }
+
+
+                    .no-color-change {
+                        background-color: #6a0795 !important;
+                        color: white !important;
+                    }
+
+
+                }
+
+                /*per mobile */
+                @media (max-width: 1023px){
+
+                    .mobile-page{
+                        display: auto; //no flex perche scompiglia tutto
+                    }
+
+                    .desktop-page{
+                        display: none;
+                    }
+
+                    h1 {
+                        color: white;
+                        text-align: center;
+                        margin:10px;
+                    }
+
+                    p {
+                        color: white;
+                        text-align: center;
+                        margin: 0px;
+                        margin-bottom: 10px;
+
+                        font-size: 16px;
+                    }
+
+                    /*.data-generi {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: center;
+                        align-items: center;
+                    } non usata piu*/
+
+                    .info-film-container{
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: fit-content; //center da mettere su cell, flex-start su desktop (probabile) - al momento è ok per entrambi fit-content finche non si fa la distinzione
+                        align-items: center;
+
+                    }
+                
+                    .film {
+                        flex: 0 0 auto;
+                        width: 200px;
+                        height: auto;
+                        background-color: #f5f5f5;
+                        border-radius: 20px;
+                        padding: 2px;      
+                        margin-bottom: 10px;
+                        margin-right: 2px;
+                        margin-left: 8px;
+
+                    }
+
+                    .film img {
+                        width: 100%;
+                        height: 100%;
+                        border-radius: 20px;
+                    }
+
+                    .info-film{
+                        color: white;
+
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        margin-bottom: 10px;
+                        margin-right: 8px;
+                        margin-left: 2px;
+                    }
+
+                    .custom-button {
+                        background-color: #6a0795;
+
+                        color: white;
+                        text-transform: none;
+                        font-size: 16px;
+                        
+                        display: flex;
+                        flex-direction: row;
+                        text-align: center;
+                        justify-content: center;
+
+                        margin: 5px;
+                        border-radius: 20px;
+                        padding: 5px;
+
+                        flex: 1;
+                        width: 100%;
+                    }
+
+                    .icon {
+                        font-size: auto;
+                    }
+
+                    .descrizione {
+                        margin-bottom: 40px;
+                    }
+
+                    .text-descrizione {
+                        color: white;
+                        text-align: justify;
+                        margin: 10px ;
+                        font-size: 18px;
+                    }
+
+                    .no-color-change {
+                        background-color: #6a0795 !important;
+                        color: white !important;
+                    }
+
+                }                   
 
             `}
 
         </style>
 
-
-        <h1>{film.title}</h1>
-        
-
-        <div className='info-film-container'>
+        <div className='desktop-page' style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${film.backdrop_path})` }}>
             <div className='film'>
-                <img src={'https://image.tmdb.org/t/p/w500'+film.poster_path} alt={film.title} />
+                    <img src={'https://image.tmdb.org/t/p/w500'+film.poster_path} alt={film.title} />
             </div>
-            
             <div className='info-film'>
-
-                <p>Data di uscita: <br/> {italianReleaseDate || film.release_date}</p>
+                <h1>{film.title}</h1>
+                <p>Data di uscita: {italianReleaseDate || film.release_date }</p>
                 {
                     film.genres &&
-                    <p>Generi: <br/> {film.genres.map(genre => genre.name).sort().join(', ')}</p>
+                    <p>Generi: {film.genres.map(genre => genre.name).sort().join(', ')}</p>
                 }
-
-                <p>Valutazione: <br/> {film.vote_average}</p>
+                <p>Valutazione: {film.vote_average}</p>
                 <p>Liste Film:</p>
                 <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_1(!add_remove_1)}> 
                         &nbsp; <FontAwesomeIcon icon={add_remove_1 ? faCheck : faTimes} /> &nbsp; Visti
@@ -244,10 +318,64 @@ function FilmPage() {
                 <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_2(!add_remove_2)}> 
                         &nbsp; <FontAwesomeIcon icon={add_remove_2 ? faCheck : faTimes} /> &nbsp; Da vedere
                 </Button>
-            </div>            
+            </div>
+
+            {/*
+            <h1>{film.title}</h1>
+            <div className='info-film-container'>
+                <div className='film'>
+                    <img src={'https://image.tmdb.org/t/p/w500'+film.poster_path} alt={film.title} />
+                </div>
+                <div className='info-film'>
+                    <div className='info-brevi'>
+                        <p>Data di uscita: {italianReleaseDate || film.release_date}</p>
+                        {
+                            film.genres &&
+                            <p>Generi: {film.genres.map(genre => genre.name).sort().join(', ')}</p>
+                        }
+                        <p>Valutazione: {film.vote_average}</p>
+                        <p>Liste Film:</p>
+                        <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_1(!add_remove_1)}> 
+                                &nbsp; <FontAwesomeIcon icon={add_remove_1 ? faCheck : faTimes} /> &nbsp; Visti
+                        </Button>
+                        <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_2(!add_remove_2)}> 
+                                &nbsp; <FontAwesomeIcon icon={add_remove_2 ? faCheck : faTimes} /> &nbsp; Da vedere
+                        </Button>
+                    </div>
+                    <div className='descrizione'>
+                        <p className='text-descrizione'>{film.overview}</p>
+                    </div>
+                </div>         
+            </div>
+            */}
+            
         </div>
-        <div className='descrizione'>
-                <p className='text-descrizione'>{film.overview}</p>
+        
+        <div className='mobile-page'>
+            <h1>{film.title}</h1>
+            <div className='info-film-container'>
+                <div className='film'>
+                    <img src={'https://image.tmdb.org/t/p/w500'+film.poster_path} alt={film.title} />
+                </div>
+                <div className='info-film'>
+                    <p>Data di uscita: <br/> {italianReleaseDate || film.release_date}</p>
+                    {
+                        film.genres &&
+                        <p>Generi: <br/> {film.genres.map(genre => genre.name).sort().join(', ')}</p>
+                    }
+                    <p>Valutazione: <br/> {film.vote_average}</p>
+                    <p>Liste Film:</p>
+                    <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_1(!add_remove_1)}> 
+                            &nbsp; <FontAwesomeIcon icon={add_remove_1 ? faCheck : faTimes} /> &nbsp; Visti
+                    </Button>
+                    <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_2(!add_remove_2)}> 
+                            &nbsp; <FontAwesomeIcon icon={add_remove_2 ? faCheck : faTimes} /> &nbsp; Da vedere
+                    </Button>
+                </div>            
+            </div>
+            <div className='descrizione'>
+                    <p className='text-descrizione'>{film.overview}</p>
+            </div>
         </div>
 
         </>

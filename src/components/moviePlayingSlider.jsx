@@ -1,6 +1,8 @@
 import '../style/slider.css';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+
 
 
 
@@ -46,7 +48,7 @@ function MoviePlayingSlider() {
     axios.get('https://api.themoviedb.org/3/movie/now_playing?language=it-IT&page=1', options)
       .then (response => {
         setFilms(response.data.results);
-        console.log(response.data.results[0]);
+        //console.log(response.data.results[0]);
       })
       .catch(err => console.error(err));
   }, []);
@@ -97,14 +99,22 @@ function MoviePlayingSlider() {
               width: 210px;
               height: auto;
               background-color: #f5f5f5;
-              border-radius: 20px;
+              border-radius: 10px;
               padding: 2px;      
+            }
+
+            .film a {
+              text-decoration: none;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 100%;
             }
 
             .film img {
               width: 100%;
               height: 100%;
-              border-radius: 20px;
+              border-radius: 10px;
             }
 
             
@@ -117,7 +127,7 @@ function MoviePlayingSlider() {
             <div className='slider'>
               {films.map(film => (
                 <div className='film' key={film.id}>
-                  <img className = "img" src={"https://image.tmdb.org/t/p/w780" + film.poster_path} alt={film.title} />
+                  <Link to = {'/film/'+film.id+'-'+(film.title).split(" ").join("-")}> <img className = "img" src={"https://image.tmdb.org/t/p/w780" + film.poster_path} alt={film.title} /> </Link>
                 </div>
               ))}
 

@@ -34,7 +34,8 @@ function App() {
             <Route path="/messages" element={<AuthenticationGuard component={MessagesPage} />} />
             <Route path="/gameRoom" element={<AuthenticationGuard component={GameRoomPage} />} />
             <Route path="/settings" element={<AuthenticationGuard component={SettingsPage} />} />
-            <Route path="/film" element={<AuthenticationGuard component={FilmPage} />} />
+            <Route path="/film/:idName" element={<FilmPage />} />
+
             {/* Aggiungi altre route qui */}
           </Routes>
         </div>

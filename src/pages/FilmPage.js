@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookmark, faCheck, faTimes, faHeart, faH } from '@fortawesome/free-solid-svg-icons';
 
+import MovieSlider from '../components/MovieSlider';
 
 
 
@@ -186,9 +187,11 @@ function FilmPage() {
                 @media (max-width: 1023px){
 
                     .mobile-page{
-                        display: auto; //no flex perche scompiglia tutto
-                        
-                    }
+                        display: block; //no flex perche scompiglia tutto
+                        width: 100vw;
+                        height: auto;
+                        box-sizing: border-box;
+                        }
 
                     .desktop-page{
                         display: none;
@@ -204,7 +207,7 @@ function FilmPage() {
                         color: white;
                         text-align: center;
                         margin: 0px;
-                        margin-bottom: 10px;
+                        margin-bottom: 0px;
 
                         font-size: 16px;
                     }
@@ -221,6 +224,8 @@ function FilmPage() {
                         flex-direction: row;
                         justify-content: fit-content; //center da mettere su cell, flex-start su desktop (probabile) - al momento è ok per entrambi fit-content finche non si fa la distinzione
                         align-items: center;
+
+                        
 
                         background-size: cover; /* Assicura che l'immagine di sfondo copra tutto il div */
                         background-position: center; /* Centra l'immagine di sfondo */
@@ -250,7 +255,8 @@ function FilmPage() {
                     .info-film{
                         color: white;
 
-                        width: 100%;
+                        width: auto;
+                        height: auto;
 
                         display: flex;
                         flex-direction: column;
@@ -258,6 +264,24 @@ function FilmPage() {
                         margin-bottom: 10px;
                         margin-right: 8px;
                         margin-left: 2px;
+                    }
+
+                    .info {
+                        background-color: #6a0795;
+
+                        color: white;
+                        
+                        display: flex;
+                        text-align: center;
+                        justify-content: center;
+                        flex-direction: column;                        
+
+                        margin: 5px;
+                        border-radius: 20px;
+                        padding: 5px;
+
+                        flex: 1;
+                        width: 100%;
                     }
 
                     .custom-button {
@@ -268,7 +292,6 @@ function FilmPage() {
                         font-size: 16px;
                         
                         display: flex;
-                        flex-direction: row;
                         text-align: center;
                         justify-content: center;
                         
@@ -278,7 +301,7 @@ function FilmPage() {
                         padding: 5px;
 
                         flex: 1;
-                        width: 80%;
+                        width: 100%;
                     }
 
                     .custom-button p {
@@ -365,17 +388,19 @@ function FilmPage() {
         
         <div className='mobile-page'>
             <h1>{film.title}</h1>
+            {
+                            film.genres &&
+                            <p>{film.genres.map(genre => genre.name).sort().join(', ')}</p>
+            }
             <div className='info-film-container' style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${film.backdrop_path})`} }>
                 <div className='film'>
                     <img src={'https://image.tmdb.org/t/p/w500'+film.poster_path} alt={film.title} />
                 </div>
                 <div className='info-film'>
-                    <p>Data di uscita: <br/> {italianReleaseDate || film.release_date}</p>
-                    {
-                        film.genres &&
-                        <p>Generi: <br/> {film.genres.map(genre => genre.name).sort().join(', ')}</p>
-                    }
-                    <p>Valutazione: <br/> {film.vote_average}</p>
+                    <div className='info'>
+                        <p >{italianReleaseDate || film.release_date} </p>
+                        <p>Valutazione: {film.vote_average}</p>
+                    </div>
                     <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_1(!add_remove_1)}> 
                         <p> &nbsp; <FontAwesomeIcon icon={add_remove_1 ? faHeart : faTimes} /> 
                         &nbsp; {add_remove_1 ? "Aggiungi ai " : "Rimuovi dai "} <br/>Film Visti</p>
@@ -389,6 +414,7 @@ function FilmPage() {
             <div className='descrizione'>
                     <p className='text-descrizione'>{film.overview}</p>
             </div>
+            <MovieSlider type="similar" id={id}/>
         </div>
 
         </>

@@ -4,7 +4,7 @@ import { useParams, useLocation } from 'react-router-dom';
 
 import Button from '@mui/material/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBookmark, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 
 
@@ -16,6 +16,9 @@ function FilmPage() {
     const [film, setFilm] = useState([]);
     const [data, setData] = useState([]);
     const [italianReleaseDate, setItalianReleaseDate] = useState('');
+
+    const [add_remove_1, setAdd_remove_1] = useState(false);
+    const [add_remove_2, setAdd_remove_2] = useState(false);
 
     /* per prendere le cose dalle query dall'url
     const location = useLocation();
@@ -118,6 +121,8 @@ function FilmPage() {
                     text-align: center;
                     margin: 0px;
                     margin-bottom: 10px;
+
+                    font-size: 18px;
                 }
 
                 .data-generi {
@@ -132,7 +137,7 @@ function FilmPage() {
                     flex-direction: row;
                     justify-content: center;
                     align-items: center;
-                
+
                 }
             
                 .film {
@@ -142,6 +147,8 @@ function FilmPage() {
                     background-color: #f5f5f5;
                     border-radius: 20px;
                     padding: 2px;      
+                    margin-bottom: 10px;
+
                 }
 
                 .film img {
@@ -152,19 +159,59 @@ function FilmPage() {
 
                 .info-film{
                     color: white;
+
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    margin-bottom: 10px;
+                }
+
+                .custom-button {
+                    background-color: #6a0795;
+
+                    color: white;
+                    text-transform: none;
+                    
+                    display: flex;
+                    flex-direction: row;
+                    text-align: center;
+                    justify-content: flex-start;
+
+                    margin: 5px;
+                    border-radius: 20px;
+                    padding: 5px;
+                    font-size: 20px;
+
+                    flex: 1;
+                    width: 100%;
+                }
+
+                .icon-container {
+                    margin-right: 10px;
+                }
+
+                .text-container {
+                    text-align: center;
                 }
 
                 .icon {
                     font-size: auto;
                 }
 
-                .custom-button {
-                    background-color: #6a0795;
+                .descrizione {
+                    margin-bottom: 40px;
+                }
+
+                .text-descrizione {
                     color: white;
-                    margin: 5px;
-                    border-radius: 20px;
-                    padding: 5px;
-                    font-size: 20px;
+                    text-align: justify;
+                    margin: 10px ;
+                    font-size: 18px;
+                }
+
+                .no-color-change {
+                    background-color: #6a0795 !important;
+                    color: white !important;
                 }
 
             `}
@@ -173,27 +220,38 @@ function FilmPage() {
 
 
         <h1>{film.title}</h1>
-        <div className="data-generi">
-            <p>{italianReleaseDate || film.release_date}</p>
-            {
-                film.genres &&
-                <p>&nbsp;- {film.genres.map(genre => genre.name).sort().join(', ')}</p>
-            }
-        </div>
+        
 
         <div className='info-film-container'>
-            
             <div className='film'>
                 <img src={'https://image.tmdb.org/t/p/w500'+film.poster_path} alt={film.title} />
             </div>
             
             <div className='info-film'>
-                
-                <p>Valutazione: {film.vote_average}</p>
-                <p>Data di rilascio: {film.release_date}</p>
-                <Button variant="contained" className='custom-button'> <FontAwesomeIcon icon={faCheck} /> </Button>
-                <Button variant="contained" className='custom-button'> <FontAwesomeIcon icon={faBookmark} /> </Button>
-            </div>
+
+                <p>Data di uscita: <br/> {italianReleaseDate || film.release_date}</p>
+                {
+                    film.genres &&
+                    <p>Generi: <br/> {film.genres.map(genre => genre.name).sort().join(', ')}</p>
+                }
+
+                <p>Valutazione: <br/> {film.vote_average}</p>
+                <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_1(!add_remove_1)}> 
+                    <span className='icon-container'>
+                        &nbsp; <FontAwesomeIcon icon={add_remove_1 ? faCheck : faTimes} />
+                    </span>
+                    <span className='text-container'> &nbsp; &nbsp; Film visti</span>
+                </Button>
+                <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_2(!add_remove_2)}> 
+                    <span className='icon-container'>
+                        &nbsp; <FontAwesomeIcon icon={add_remove_2 ? faCheck : faTimes} />
+                    </span>
+                    <span className='text-container'>Film da vedere</span>
+                </Button>
+            </div>            
+        </div>
+        <div className='descrizione'>
+                <p className='text-descrizione'>{film.overview}</p>
         </div>
 
         </>

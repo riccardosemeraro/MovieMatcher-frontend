@@ -1,4 +1,4 @@
-import '../style/slider.css';
+import '../style/movieSlider.css';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -6,9 +6,10 @@ import { Link } from 'react-router-dom';
 
 
 
-function MoviePlayingSlider() {
+function MovieSlider({type, id}) {
 
   const [films, setFilms] = useState([]);
+  const [title, setTitle] = useState('');
 
   const chiaveAPI = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlYjAxNjQzNjI0ZGY2OTY5NDMwNTRjMzJkNGY3NmI3ZSIsIm5iZiI6MTcyMzExNTUzMS4zNzI1OTgsInN1YiI6IjY2YjRhNTcyZGUzODU5OGY2YTZkMDBmMCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.QjgGj9sr5Euk1A8LEyl4riJw0YthkeujM1mT0rpoiX0";
 
@@ -43,9 +44,34 @@ function MoviePlayingSlider() {
     Now Playing: 'https://api.themoviedb.org/3/movie/now_playing?language=it-IT&page=1'
     */
 
+    let url = '';
+
+    switch (type) {
+      case 'popular':
+        url = 'https://api.themoviedb.org/3/movie/popular?language=it-IT&page=1';
+        setTitle('Film popolari');
+        break;
+      case 'top_rated':
+        url = 'https://api.themoviedb.org/3/movie/top_rated?language=it-IT&page=1';
+        setTitle('Film più votati');
+        break;
+      case 'now_playing':
+        url = 'https://api.themoviedb.org/3/movie/now_playing?language=it-IT&page=1';
+        setTitle('Film della settimana');
+        break;
+      case 'similar':
+        url = 'https://api.themoviedb.org/3/movie/'+{id}+'/similar?language=it-IT&page=1'
+        setTitle('Film simili');
+      default:
+        url = 'https://api.themoviedb.org/3/movie/now_playing?language=it-IT&page=1';
+        setTitle('Film della settimana');
+        break;
+    }
+
+    console.log(type);
 
 
-    axios.get('https://api.themoviedb.org/3/movie/now_playing?language=it-IT&page=1', options)
+    axios.get(url, options)
       .then (response => {
         setFilms(response.data.results);
         //console.log(response.data.results[0]);
@@ -55,74 +81,9 @@ function MoviePlayingSlider() {
 
   return (
       <>
-        <style>
-          {`
-            .sliderContainer {
-              width: 95%;
-              margin: 0 auto;
-              text-align: left;
-              overflow: hidden;
-              display: flex;
-              flex-direction: column;
-              color: white;
-
-            }
-
-            .slider {
-              display: flex;
-
-              overflow-x: auto;
-
-
-
-              scroll-snap-type: x mandatory;
-              -webkit-overflow-scrolling: touch;
-
-              gap: 0px;
-              
-              background-color: #6a0795;
-              padding: 10px;
-              border-radius: 20px;
-
-              /* Nascondo la scrollbar */
-              scrollbar-width: none; /* Per Firefox */
-              -ms-overflow-style: none; /* Per Internet Explorer e Edge */
-            }
-
-            .slider::-webkit-scrollbar {
-              /* Nascondo la scrollbar */
-              display: none; /* Per Chrome, Safari e Opera */
-            }
-
-            .film {
-              flex: 0 0 auto;
-              width: 210px;
-              height: auto;
-              background-color: #f5f5f5;
-              border-radius: 10px;
-              padding: 2px;      
-            }
-
-            .film a {
-              text-decoration: none;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              height: 100%;
-            }
-
-            .film img {
-              width: 100%;
-              height: 100%;
-              border-radius: 10px;
-            }
-
-            
-          `}
-        </style>
 
         <div className="sliderContainer">
-            <h2>Film della settimana</h2>
+            <h2>{title}</h2>
 
             <div className='slider'>
               {films.map(film => (
@@ -141,4 +102,4 @@ function MoviePlayingSlider() {
     );
   }
 
-export default MoviePlayingSlider;
+export default MovieSlider;

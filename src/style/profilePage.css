@@ -37,6 +37,7 @@
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     gap: 10px;
+    
     /* Nascondo la scrollbar */
     scrollbar-width: none; /* Per Firefox */
     -ms-overflow-style: none; /* Per Internet Explorer e Edge */

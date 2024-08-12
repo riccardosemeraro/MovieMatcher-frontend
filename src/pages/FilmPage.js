@@ -174,7 +174,7 @@ function FilmPage() {
 
         <h1>{film.title}</h1>
         <div className="data-generi">
-            <p>{italianReleaseDate}</p>
+            <p>{italianReleaseDate || film.release_date}</p>
             {
                 film.genres &&
                 <p>&nbsp;- {film.genres.map(genre => genre.name).sort().join(', ')}</p>

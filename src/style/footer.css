@@ -15,6 +15,21 @@
   }
 }
 
+.app-footer a {
+  color: white;
+  text-decoration: underline;
+}
+
+.app-footer p {
+  margin: 5px;
+}
+
+.smaller {
+  font-size: 12px;
+}
+.smaller a {
+  font-size: 12px;
+}
 
 
 .app-footer {

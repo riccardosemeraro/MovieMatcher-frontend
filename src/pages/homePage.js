@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import LoginButton from '../components/login-button';
 import LogoutButton from '../components/logout-button';
 import MovieSlider from '../components/MovieSlider';
+import SearchBar from '../components/searchBar';
+
+
 import '../style/homePage.css';
 import axios from 'axios';
 
@@ -55,8 +58,12 @@ function HomePage() {
 
       {/*input type="search" placeholder="Cerca un film" className="search-bar" />*/}
 
-      <MovieSlider type="now_playing"/> {/* da capire se basta 1 "pagina" slider per gestirli entrambi */}
-      <MovieSlider type="top_rated"/> {/* da capire se basta 1 "pagina" slider per gestirli entrambi */}
+      <div className='search'>
+        <SearchBar />
+      </div>
+
+      <MovieSlider type="now_playing"/> 
+      <MovieSlider type="top_rated"/>
 
     </div>
   );

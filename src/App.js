@@ -16,6 +16,8 @@ import Header from './components/header';
 import Footer from './components/footer';
 import FilmPage from './pages/FilmPage';
 
+
+
 function App() {
 
   return (

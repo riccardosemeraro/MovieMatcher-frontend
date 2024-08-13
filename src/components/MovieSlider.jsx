@@ -11,6 +11,7 @@ function MovieSlider({type, id}) {
   const [films, setFilms] = useState([]);
   const [title, setTitle] = useState('');
 
+
   const chiaveAPI = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlYjAxNjQzNjI0ZGY2OTY5NDMwNTRjMzJkNGY3NmI3ZSIsIm5iZiI6MTcyMzExNTUzMS4zNzI1OTgsInN1YiI6IjY2YjRhNTcyZGUzODU5OGY2YTZkMDBmMCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.QjgGj9sr5Euk1A8LEyl4riJw0YthkeujM1mT0rpoiX0";
 
   useEffect(() => {
@@ -45,7 +46,6 @@ function MovieSlider({type, id}) {
     */
 
     let url = '';
-
     switch (type) {
       case 'popular':
         url = 'https://api.themoviedb.org/3/movie/popular?language=it-IT&page=1';
@@ -60,8 +60,12 @@ function MovieSlider({type, id}) {
         setTitle('Film della settimana');
         break;
       case 'similar':
-        url = 'https://api.themoviedb.org/3/movie/'+ id +'/similar?language=it-IT&page=1'
+        url = 'https://api.themoviedb.org/3/movie/'+ id +'/recommendations?language=it-IT&page=1';
         setTitle('Film simili');
+        break;
+      case 'recommendation':
+        url = 'recommendation system costruito lato backend';
+        setTitle('Consigliati per te');
         break;
       default:
         url = 'https://api.themoviedb.org/3/movie/now_playing?language=it-IT&page=1';
@@ -72,13 +76,16 @@ function MovieSlider({type, id}) {
     console.log(type);
     console.log(url);
 
+    setFilms([]);
 
-    axios.get(url, options)
+
+     axios.get(url, options)
       .then (response => {
         setFilms(response.data.results);
         //console.log(response.data.results[0]);
       })
       .catch(err => console.error(err));
+
   }, [id, type]);
 
   return (

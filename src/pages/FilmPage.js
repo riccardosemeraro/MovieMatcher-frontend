@@ -179,6 +179,13 @@ function FilmPage() {
                         margin: 0px;
 
                         font-size: 36px;
+
+                        text-shadow: 
+                            1px 1px 0 #6a0795,  /* Ombra in basso a destra */
+                            -1px 1px 0 #6a0795, /* Ombra in basso a sinistra */
+                            1px -1px 0 #6a0795, /* Ombra in alto a destra */
+                            -1px -1px 0 #6a0795;/* Ombra in alto a sinistra */
+
                     }
 
                     p {
@@ -340,6 +347,12 @@ function FilmPage() {
                         color: white;
                         text-align: center;
                         margin:10px;
+
+                        text-shadow: 
+                            1px 1px 0 #6a0795,  /* Ombra in basso a destra */
+                            -1px 1px 0 #6a0795, /* Ombra in basso a sinistra */
+                            1px -1px 0 #6a0795, /* Ombra in alto a destra */
+                            -1px -1px 0 #6a0795;/* Ombra in alto a sinistra */
                     }
 
                     p {
@@ -380,7 +393,7 @@ function FilmPage() {
                         margin-bottom: 10px;
                         margin-right: 5px;
                         margin-left: 0px;
-                        margin-top: 5px;
+                        margin-top: 10px;
                     }
 
                     .film-image img {
@@ -508,15 +521,17 @@ function FilmPage() {
                             </div>
                             <div className='bottoni'>
                                 <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_1(!add_remove_1)}> 
-                                        &nbsp; <FontAwesomeIcon icon={add_remove_1 ? faHeart : faTimes} /> &nbsp; Aggiungi ai Film Visti
+                                        <p> <FontAwesomeIcon icon={add_remove_1 ? faCheck : faTimes} /> 
+                                        &nbsp; {add_remove_1 ? "Aggiungi ai " : "Rimuovi dai "} Film Visti</p>
                                 </Button>
                                 <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_2(!add_remove_2)}> 
-                                        &nbsp; <FontAwesomeIcon icon={add_remove_2 ? faBookmark : faTimes} /> &nbsp; Aggiungi ai Film da Vedere
+                                        <p> <FontAwesomeIcon icon={add_remove_2 ? faBookmark : faTimes} /> 
+                                        &nbsp; {add_remove_2 ? "Aggiungi ai " : "Rimuovi dai "} Film da Vedere</p>
                                 </Button>
                             </div>
                         </div>
                         <div className='descrizione'>
-                            <p className='text-descrizione'>{film.overview}</p>
+                            <p className='text-descrizione'>{(film.overview && film.overview.length>0) ? film.overview : "Spiacenti, ma la descrizione non è ancora disponibile..."}</p>
                         </div>
                     </div>
                 </div>
@@ -543,17 +558,17 @@ function FilmPage() {
                         <p>Voto: {voto}</p>
                     </div>
                     <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_1(!add_remove_1)}> 
-                        <p> &nbsp; <FontAwesomeIcon icon={add_remove_1 ? faCheck : faTimes} /> 
+                        <p> <FontAwesomeIcon icon={add_remove_1 ? faCheck : faTimes} /> 
                         &nbsp; {add_remove_1 ? "Aggiungi ai " : "Rimuovi dai "} <br/>Film visti</p>
                     </Button>
                     <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_2(!add_remove_2)}> 
-                        <p> &nbsp; <FontAwesomeIcon icon={add_remove_2 ? faBookmark : faTimes} /> 
+                        <p> <FontAwesomeIcon icon={add_remove_2 ? faBookmark : faTimes} /> 
                         &nbsp; {add_remove_2 ? "Aggiungi ai " : "Rimuovi dai "} <br/>Film da Vedere </p>
                     </Button>
                 </div>            
             </div>
             <div className='descrizione'>
-                    <p className='text-descrizione'>{film.overview}</p>
+                    <p className='text-descrizione'>{(film.overview && film.overview.length>0) ? film.overview : "Spiacenti, ma la descrizione non è ancora disponibile..."}</p>
             </div>
             <MovieSlider type="similar" id={id}/>
         </div>

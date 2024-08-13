@@ -118,26 +118,29 @@ function FilmPage() {
 
                     .desktop-page {
                         display: flex;
-                        flex-direction: row;
                         background-size: cover; /* Assicura che l'immagine di sfondo copra tutto il div */
                         background-position: center; /* Centra l'immagine di sfondo */
-                        background-repeat: no-repeat; /* Evita che l'immagine di sfondo si ripeta */
+                        background-repeat: space; /* Evita che l'immagine di sfondo si ripeta */
                     }
 
                     .mobile-page{
                         display: none;
                     }
 
+                    .container {
+                        display: flex;
+                    }
+
                     .film {
-                        flex: 0 0 auto;
-                        width: 400px;
+                        width: 360px;
                         height: auto;
                         background-color: #f5f5f5;
                         border-radius: 20px;
                         padding: 2px;      
                         margin-bottom: 10px;
-                        margin-right:10px;
-                        margin-left: 10px;
+                        margin-top: 10px;
+                        margin-right:20px;
+                        margin-left: 20px;
                     }
 
                     .film img {
@@ -146,42 +149,155 @@ function FilmPage() {
                         border-radius: 20px;
                     }
 
-                    .info-film{
+
+                    .info-film {
+                        display: flex;
                         flex-direction: column;
+                        align-items: flex-start; /* Posiziona tutti i figli all'inizio del div */
+                        margin-top: 10px;
+                        margin-right: 20px;
+                        margin-left: 20px;
+                        margin-bottom: 10px;
                     }
                 
                     h1 {
                         color: white;
-                        text-align: center;
-                        margin:10px;
+                        text-align: start;
+                        margin: 0px;
+
+                        font-size: 36px;
                     }
 
                     p {
                         color: white;
                         text-align: center;
-                        margin: 0px;
-                        margin-bottom: 10px;
+                        margin-top: 0px;
+                        margin-bottom: 0px;
+                        margin-left: 10px;
+                        margin-right: 10px;
 
-                        font-size: 18px;
+                        font-size: 16px;
                     }
 
-                    /*.data-generi {
+                    .info-container {
                         display: flex;
                         flex-direction: row;
+                        width: 100%;
+                        justify-content: flex-start;
+                    }
+
+                    .info {
+                        display: flex;
+                        flex-direction: column;
+                    }
+
+                    .generi{
+                        background-color: #6a0795;
+                        color: white;
+                        border-radius: 20px;
+
+                        padding: 5px;
+                        display: inline-block;
+                        margin-top: 20px;
+                        margin-bottom: 20px;
+                        margin-left: 0px;
+                        margin-right: 0px;
+                    }
+
+                    .data {
+                        background-color: #6a0795;
+                        color: white;
+                        border-radius: 20px;
+
+                        padding: 5px;
+                        display: inline-block;
+                        margin-top: 20px;
+                        margin-bottom: 20px;
+                        margin-left: 0px;
+                        margin-right: 0px;
+                    }
+
+                    .voto {
+                        background-color: #6a0795;
+                        color: white;
+                        border-radius: 20px;
+
+                        padding: 5px;
+                        display: inline-block;
+                        margin-top: 20px;
+                        margin-bottom: 20px;
+                        margin-left: 0px;
+                        margin-right: 0px;
+                    }
+
+                    .bottoni {
+                        
+                        display: flex;
+                        flex-direction: column;
+                    }
+
+                    .custom-button {
+                        background-color: #6a0795;
+
+                        color: white;
+                        text-transform: none;
+                        font-size: 16px;
+                        
+                        display: flex;
+                        text-align: center;
                         justify-content: center;
-                        align-items: center;
-                    } non usata piu*/
+                        
+
+                        margin-left: 80px;
+                        margin-right: 80px;
+                        margin-top: 20px;
+                        margin-bottom: 20px;
+
+                        border-radius: 20px;
+                        padding: 5px;
+
+                        flex: 1;
+                        width: 100%;
+                    }
+
+                    .custom-button p {
+                        margin: 0px;
+                    }
+
 
                     .icon {
                         font-size: auto;
                     }
 
+                    .descrizione {
+                        
+                        background-color: #6a0795;
+                        color: white;
+                        border-radius: 20px;
+
+                        margin-left: 0px;
+                        margin-right: 0px;
+                        margin-bottom: 0px;
+                        margin-top: 10px;
+
+                        padding: 5px;
+                    }
+
+                    .text-descrizione {
+                        color: white;
+                        text-align: justify;
+                        margin: 10px ;
+                        font-size: 18px;
+                    }
+
+                    .slider {
+                        display: flex;
+                    }
 
                     .no-color-change {
                         background-color: #6a0795 !important;
                         color: white !important;
                     }
-
 
                 }
 
@@ -225,13 +341,6 @@ function FilmPage() {
 
                         font-size: 16px;
                     }
-
-                    /*.data-generi {
-                        display: flex;
-                        flex-direction: row;
-                        justify-content: center;
-                        align-items: center;
-                    } non usata piu*/
 
                     .generi{
                         background-color: #6a0795;
@@ -366,55 +475,46 @@ function FilmPage() {
         </style>
 
         <div className='desktop-page' style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${film.backdrop_path})` }}>
-            <div className='film'>
-                    <img src={'https://image.tmdb.org/t/p/w500'+film.poster_path} alt={film.title} />
-            </div>
-            <div className='info-film'>
-                <h1>{film.title}</h1>
-                <p>Data di uscita: {italianReleaseDate || film.release_date }</p>
-                {
-                    film.genres &&
-                    <p>Generi: {film.genres.map(genre => genre.name).sort().join(', ')}</p>
-                }
-                <p>Valutazione: {film.vote_average}</p>
-                <p>Liste Film:</p>
-                <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_1(!add_remove_1)}> 
-                        &nbsp; <FontAwesomeIcon icon={add_remove_1 ? faHeart : faTimes} /> &nbsp; Aggiungi ai Film Visti
-                </Button>
-                <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_2(!add_remove_2)}> 
-                        &nbsp; <FontAwesomeIcon icon={add_remove_2 ? faBookmark : faTimes} /> &nbsp; Aggiungi ai Film da Vedere
-                </Button>
-            </div>
-
-            {/*
-            <h1>{film.title}</h1>
-            <div className='info-film-container'>
+            <div className='container'>
                 <div className='film'>
-                    <img src={'https://image.tmdb.org/t/p/w500'+film.poster_path} alt={film.title} />
+                        <img src={'https://image.tmdb.org/t/p/w500'+film.poster_path} alt={film.title} />
                 </div>
                 <div className='info-film'>
-                    <div className='info-brevi'>
-                        <p>Data di uscita: {italianReleaseDate || film.release_date}</p>
-                        {
-                            film.genres &&
-                            <p>Generi: {film.genres.map(genre => genre.name).sort().join(', ')}</p>
-                        }
-                        <p>Valutazione: {film.vote_average}</p>
-                        <p>Liste Film:</p>
-                        <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_1(!add_remove_1)}> 
-                                &nbsp; <FontAwesomeIcon icon={add_remove_1 ? faCheck : faTimes} /> &nbsp; Visti
-                        </Button>
-                        <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_2(!add_remove_2)}> 
-                                &nbsp; <FontAwesomeIcon icon={add_remove_2 ? faCheck : faTimes} /> &nbsp; Da vedere
-                        </Button>
+                    <h1>{film.title}</h1>
+                    <div className='info-container'>
+                        <div className='info'>
+                            <div className='generi'>
+                                {
+                                    film.genres &&
+                                    <p>{film.genres.map(genre => genre.name).sort().join(', ')}</p>
+                                }
+                            </div>
+                            <div className='data'>
+                                <p>Data di uscita: {italianReleaseDate || film.release_date }</p>
+                            </div>
+                            <div className='voto'>
+                                <p>Voto: {film.vote_average}</p>
+                            </div>
+                        </div>
+                        <div className='bottoni'>
+                            <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_1(!add_remove_1)}> 
+                                    &nbsp; <FontAwesomeIcon icon={add_remove_1 ? faHeart : faTimes} /> &nbsp; Aggiungi ai Film Visti
+                            </Button>
+                            <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_2(!add_remove_2)}> 
+                                    &nbsp; <FontAwesomeIcon icon={add_remove_2 ? faBookmark : faTimes} /> &nbsp; Aggiungi ai Film da Vedere
+                            </Button>
+                        </div>
                     </div>
                     <div className='descrizione'>
                         <p className='text-descrizione'>{film.overview}</p>
                     </div>
-                </div>         
+                </div>
+            </div>
+            {/*
+            <div className='slider'>
+                    {/*<MovieSlider type="similar" id={id}/> VIENE INSERITO SEMPRE A LATO 
             </div>
             */}
-            
         </div>
         
         <div className='mobile-page' style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${film.backdrop_path})`} }>

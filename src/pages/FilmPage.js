@@ -10,6 +10,7 @@ import MovieSlider from '../components/MovieSlider';
 
 
 
+
 function FilmPage() {
 
     const { idName } = useParams(); //per predenre i parametri dall'url con i :nomeParametro
@@ -135,13 +136,13 @@ function FilmPage() {
                     .content-wrapper {
                         display: flex;
                         flex-direction: column;
-                        }
+                    }
 
                     .container {
                         display: flex;
                     }
 
-                    .film {
+                    .film-image {
                         width: 360px;
                         height: auto;
                         background-color: #f5f5f5;
@@ -151,9 +152,11 @@ function FilmPage() {
                         margin-top: 10px;
                         margin-right:20px;
                         margin-left: 20px;
+
+                        flex: 0 0 auto;
                     }
 
-                    .film img {
+                    .film-image img {
                         width: 100%;
                         height: 100%;
                         border-radius: 20px;
@@ -367,7 +370,7 @@ function FilmPage() {
 
                     }
                 
-                    .film {
+                    .film-image {
                         flex: 0 0 auto;
                         width: 200px;
                         height: auto;
@@ -380,7 +383,7 @@ function FilmPage() {
                         margin-top: 5px;
                     }
 
-                    .film img {
+                    .film-image img {
                         width: 100%;
                         height: 100%;
                         border-radius: 20px;
@@ -483,8 +486,8 @@ function FilmPage() {
         <div className='desktop-page' style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${film.backdrop_path})` }}>
             <div className='content-wrapper'>
                 <div className='container'>
-                    <div className='film'>
-                            <img src={'https://image.tmdb.org/t/p/w500'+film.poster_path} alt={film.title} />
+                    <div className='film-image'>
+                        <img src={'https://image.tmdb.org/t/p/w500'+film.poster_path} alt={film.title} />
                     </div>
                     <div className='info-film'>
                         <h1>{film.title}</h1>
@@ -531,7 +534,7 @@ function FilmPage() {
             }
             </div>
             <div className='info-film-container' >
-                <div className='film'>
+                <div className='film-image'>
                     <img src={'https://image.tmdb.org/t/p/w500'+film.poster_path} alt={film.title} />
                 </div>
                 <div className='info-film'>

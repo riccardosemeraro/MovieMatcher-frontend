@@ -76,7 +76,7 @@ function MovieSlider({type, id}) {
     console.log(type);
     console.log(url);
 
-    setFilms([]);
+    setFilms([]); //riporta tutto lo slider a sinistra al cambio pagina
 
 
      axios.get(url, options)

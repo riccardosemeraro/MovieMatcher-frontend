@@ -58,7 +58,7 @@ function FilmPage() {
     
         fetchFilmData();
 
-        window.scrollTo(0, 0);
+        window.scrollTo(0, 0); //per far tornare la pagina in alto quando si carica
 
     }, [id]);
 
@@ -516,7 +516,7 @@ function FilmPage() {
                                     <p>Data di uscita: {italianReleaseDate || film.release_date }</p>
                                 </div>
                                 <div className='voto'>
-                                    <p>Voto: {voto}</p>
+                                    <p>Voto: {voto}/10</p>
                                 </div>
                             </div>
                             <div className='bottoni'>
@@ -555,7 +555,7 @@ function FilmPage() {
                 <div className='info-film'>
                     <div className='info'>
                         <p >{italianReleaseDate || film.release_date} </p>
-                        <p>Voto: {voto}</p>
+                        <p>Voto: {voto}/10</p>
                     </div>
                     <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_1(!add_remove_1)}> 
                         <p> <FontAwesomeIcon icon={add_remove_1 ? faCheck : faTimes} /> 

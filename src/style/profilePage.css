@@ -1,78 +1,151 @@
-.profile-page {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  .profile-content {
-    display: flex;
-    align-items: center;
-    margin-top: 20px;
-  }
-  
-  .profile-picture {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 20px;
-  }
-  
-  .profile-details h2 {
-    margin-top: 0;
-  }
-  
-  .edit-profile-btn {
-    background-color: #ff4458;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 20px;
-    cursor: pointer;
-  }
+/*mobile*/
+@media (max-width: 1024px) {
 
-  .ul-header{
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    gap: 10px;
-    
-    /* Nascondo la scrollbar */
-    scrollbar-width: none; /* Per Firefox */
-    -ms-overflow-style: none; /* Per Internet Explorer e Edge */
-
-    list-style-type: none;
-    justify-content: start;
-    padding: 0;
-    margin: 0px 0px 20px 0px;
-  }
-
-  .slider::-webkit-scrollbar {
-    /* Nascondo la scrollbar */
-    display: none; /* Per Chrome, Safari e Opera */
-  }
-
-  .ul-header li{
-    display: flex;
-    background-color: #6a0795f0;
-    border-radius: 20px;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    white-space: nowrap;
-    padding: 0px 5px;
-  }
-
-  .ul-header li a{
+  .mobile-page {
     display: block;
-    color: #FFFFFF;
-    text-decoration: none;
-    font-size: 20px;
-    padding: 5px 5px;
-    font-weight: bold;
   }
 
-  .ul-header li.selected a {
-    color: #FFD200; /* Colore del testo selezionato */
+  .desktop-page {
+    display: none;
+  }
+
+  .profile-page {
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 10px;
+      margin-right: 10px;
+
+      padding: 10px;
+    }
+    
+    .ul-header{
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      gap: 10px;
+      
+      /* Nascondo la scrollbar */
+      scrollbar-width: none; /* Per Firefox */
+      -ms-overflow-style: none; /* Per Internet Explorer e Edge */
+
+      list-style-type: none;
+      justify-content: start;
+
+      padding: 0;
+      margin: 0px 0px 0px 0px;
+    }
+
+    .ul-header::-webkit-scrollbar {
+      /* Nascondo la scrollbar */
+      display: none; /* Per Chrome, Safari e Opera */
+    }
+
+    .ul-header li{
+      display: flex;
+      background-color: #6a0795f0;
+      border-radius: 20px;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      white-space: nowrap;
+      padding: 0px 5px;
+    }
+
+    .ul-header li a{
+      display: block;
+      color: #FFFFFF;
+      text-decoration: none;
+      font-size: 20px;
+      padding: 5px 5px;
+      font-weight: bold;
+    }
+
+    .ul-header li.selected a {
+      color: #FFD200; /* Colore del testo selezionato */
+    }
+
+    /*.edit-profile-btn {
+      background-color: #ff4458;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+    } a che serviva?*/
+
+    .profile-card{
+      display: block;
+      margin-top: 10px;
+      margin-bottom: 10px;
+
+      border: none;
+    }
+
+    .profile-info{
+      display: block;
+      margin-top: 10px;
+      margin-bottom: 10px;
+
+      padding: 0px;
+    }
+
+    .ul-info{
+      display: flex;
+      flex-direction: column;
+      
+      padding: 0;
+      margin: 0;
+    }
+
+    .ul-info li{
+      display:inline-flex;
+      align-items: center;
+      
+      justify-content: center;
+      text-align: center;
+
+      color:  #FFFFFF;
+      background-color: #6a0795f0;
+      border-radius: 20px;
+
+      margin-top: 5px;
+      margin-bottom: 5px;
+
+      padding-left: 5px;
+      padding-right: 5px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+
+    .ul-info li a{
+      display: block;
+      color: #FFFFFF;
+      text-decoration: none;
+      font-size: 16px;
+      
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 0px;
+      margin-right: 0px;
+
+      padding: 5px;
+    }
+
+    input{
+      border-radius: 20px;
+      padding: 5px;
+
+      text-align: left;
+
+      width: auto;
+      height: auto;
+    }
+
+    .li-content{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 100%;
+    }   
   }

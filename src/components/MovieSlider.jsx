@@ -79,7 +79,7 @@ function MovieSlider({type, id}) {
         //console.log(response.data.results[0]);
       })
       .catch(err => console.error(err));
-  }, []);
+  }, [id, type]);
 
   return (
       <>

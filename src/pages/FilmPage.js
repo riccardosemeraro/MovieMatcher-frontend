@@ -56,6 +56,9 @@ function FilmPage() {
         };
     
         fetchFilmData();
+
+        window.scrollTo(0, 0);
+
     }, [id]);
 
     const voto = Math.floor(film.vote_average * 100)/100;
@@ -497,7 +500,7 @@ function FilmPage() {
                                     <p>Data di uscita: {italianReleaseDate || film.release_date }</p>
                                 </div>
                                 <div className='voto'>
-                                    <p>Voto: {film.vote_average}</p>
+                                    <p>Voto: {voto}</p>
                                 </div>
                             </div>
                             <div className='bottoni'>
@@ -515,6 +518,7 @@ function FilmPage() {
                     </div>
                 </div>
             </div> 
+
             <MovieSlider type="similar" id={id}/>             
         </div>
         

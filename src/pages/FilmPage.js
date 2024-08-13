@@ -118,14 +118,21 @@ function FilmPage() {
 
                     .desktop-page {
                         display: flex;
+                        flex-direction: column;
+
                         background-size: cover; /* Assicura che l'immagine di sfondo copra tutto il div */
                         background-position: center; /* Centra l'immagine di sfondo */
-                        background-repeat: space; /* Evita che l'immagine di sfondo si ripeta */
+                        background-repeat: no-repeat; /* Evita che l'immagine di sfondo si ripeta */
                     }
 
                     .mobile-page{
                         display: none;
                     }
+
+                    .content-wrapper {
+                        display: flex;
+                        flex-direction: column;
+                        }
 
                     .container {
                         display: flex;
@@ -288,10 +295,6 @@ function FilmPage() {
                         text-align: justify;
                         margin: 10px ;
                         font-size: 18px;
-                    }
-
-                    .slider {
-                        display: flex;
                     }
 
                     .no-color-change {
@@ -475,46 +478,44 @@ function FilmPage() {
         </style>
 
         <div className='desktop-page' style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${film.backdrop_path})` }}>
-            <div className='container'>
-                <div className='film'>
-                        <img src={'https://image.tmdb.org/t/p/w500'+film.poster_path} alt={film.title} />
-                </div>
-                <div className='info-film'>
-                    <h1>{film.title}</h1>
-                    <div className='info-container'>
-                        <div className='info'>
-                            <div className='generi'>
-                                {
-                                    film.genres &&
-                                    <p>{film.genres.map(genre => genre.name).sort().join(', ')}</p>
-                                }
+            <div className='content-wrapper'>
+                <div className='container'>
+                    <div className='film'>
+                            <img src={'https://image.tmdb.org/t/p/w500'+film.poster_path} alt={film.title} />
+                    </div>
+                    <div className='info-film'>
+                        <h1>{film.title}</h1>
+                        <div className='info-container'>
+                            <div className='info'>
+                                <div className='generi'>
+                                    {
+                                        film.genres &&
+                                        <p>{film.genres.map(genre => genre.name).sort().join(', ')}</p>
+                                    }
+                                </div>
+                                <div className='data'>
+                                    <p>Data di uscita: {italianReleaseDate || film.release_date }</p>
+                                </div>
+                                <div className='voto'>
+                                    <p>Voto: {film.vote_average}</p>
+                                </div>
                             </div>
-                            <div className='data'>
-                                <p>Data di uscita: {italianReleaseDate || film.release_date }</p>
-                            </div>
-                            <div className='voto'>
-                                <p>Voto: {film.vote_average}</p>
+                            <div className='bottoni'>
+                                <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_1(!add_remove_1)}> 
+                                        &nbsp; <FontAwesomeIcon icon={add_remove_1 ? faHeart : faTimes} /> &nbsp; Aggiungi ai Film Visti
+                                </Button>
+                                <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_2(!add_remove_2)}> 
+                                        &nbsp; <FontAwesomeIcon icon={add_remove_2 ? faBookmark : faTimes} /> &nbsp; Aggiungi ai Film da Vedere
+                                </Button>
                             </div>
                         </div>
-                        <div className='bottoni'>
-                            <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_1(!add_remove_1)}> 
-                                    &nbsp; <FontAwesomeIcon icon={add_remove_1 ? faHeart : faTimes} /> &nbsp; Aggiungi ai Film Visti
-                            </Button>
-                            <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_2(!add_remove_2)}> 
-                                    &nbsp; <FontAwesomeIcon icon={add_remove_2 ? faBookmark : faTimes} /> &nbsp; Aggiungi ai Film da Vedere
-                            </Button>
+                        <div className='descrizione'>
+                            <p className='text-descrizione'>{film.overview}</p>
                         </div>
                     </div>
-                    <div className='descrizione'>
-                        <p className='text-descrizione'>{film.overview}</p>
-                    </div>
                 </div>
-            </div>
-            {/*
-            <div className='slider'>
-                    {/*<MovieSlider type="similar" id={id}/> VIENE INSERITO SEMPRE A LATO 
-            </div>
-            */}
+            </div> 
+            <MovieSlider type="similar" id={id}/>             
         </div>
         
         <div className='mobile-page' style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${film.backdrop_path})`} }>

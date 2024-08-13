@@ -60,7 +60,7 @@ function MovieSlider({type, id}) {
         setTitle('Film della settimana');
         break;
       case 'similar':
-        url = 'https://api.themoviedb.org/3/movie/'+{id}+'/similar?language=it-IT&page=1'
+        url = 'https://api.themoviedb.org/3/movie/'+ id +'/similar?language=it-IT&page=1'
         setTitle('Film simili');
         break;
       default:
@@ -70,6 +70,7 @@ function MovieSlider({type, id}) {
     }
 
     console.log(type);
+    console.log(url);
 
 
     axios.get(url, options)

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Form, FormControl, ListGroup } from 'react-bootstrap';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const SearchBar = () => {
 
@@ -11,12 +11,18 @@ const SearchBar = () => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
 
+  const navigate = useNavigate();
+
   const handleSearch = async (e) => {
     const query = e.target.value;
     setQuery(query);
+    
+    navigate('/');
 
     if (query.length > 0) {
       try {
+
+        navigate('/?search='+query);
 
         const response = axios.get('https://api.themoviedb.org/3/search/movie?query='+query+'&include_adult=false&language=it-IT&page=1', options)
           .then (response => {
@@ -53,20 +59,21 @@ const SearchBar = () => {
       </Form>
 
       {results.length > 0 && (
-        <div style={{display:'flex', flexDirection:'row', justifyContent:'center', alignItems:'center', alignContent:'center'}}>
-          <ListGroup style={{ position: 'absolute', top: '50px', width: '700px', zIndex: 1000, backgroundColor:'#6a0795', borderRadius:'20px', margin:'10px', overflow:'hidden', height:'fit-content', maxHeight:'600px', overflowY:'auto'}}>
+        <div style={{display:'flex', justifyContent:'center', alignItems:'center', alignContent:'center'}}>
+          <ListGroup style={{ position: 'absolute', top: '50px', width: '700px', zIndex: 1000, backgroundColor:'#6a0795', borderRadius:'20px', margin:'10px', overflow:'hidden', height:'fit-content', maxHeight:'600px', overflowY:'auto', display:'flex', flexDirection:'column'}}>
             {results.map((film) => (
-              <ListGroup.Item key={film.id} style={{display:'flex', flexDirection:'row'}}>
-                <Link to = {'/film/'+film.id+'-'+(film.title).split(" ").join("-")} style={{color:'white'}}>
 
-                  <div className='film' key={film.id} style={{width: '100px', height:'auto'}}>
-                      <img className = "img" src={"https://image.tmdb.org/t/p/w780" + film.poster_path} alt={film.title}/> 
-                  </div>
+              <Link to = {'/film/'+film.id+'-'+(film.title).split(" ").join("-")} style={{color:'white'}}>
+                <ListGroup.Item key={film.id} style={{display:'flex', flexDirection:'row', alignItems:'center',}}>
 
-                  {film.title} ({film.release_date ? film.release_date.split('-')[0] : 'N/A'})
+                    <div className='film' key={film.id} style={{width: '100px', height:'auto'}}>
+                        <img className = "img" src={"https://image.tmdb.org/t/p/w780" + film.poster_path} alt={film.title}/> 
+                    </div>
 
-                </Link>
-              </ListGroup.Item>
+                    {film.title} ({film.release_date ? film.release_date.split('-')[0] : 'N/A'})
+
+                </ListGroup.Item>
+              </Link>
             ))}
           </ListGroup>
         </div>

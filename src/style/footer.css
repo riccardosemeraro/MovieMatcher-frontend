@@ -2,16 +2,24 @@
 /* per mobile */
 @media (max-width: 1023px) {
 
-.app-footer {
-  margin-top: 2%;
-}
-  
+  .app-footer {
+    margin-top: 2%;
+  }
+    
+  .desktop-footer {
+    display: none;
+  }
+
 }
 
 /* per desktop */
 @media (min-width: 1024px){
   .app-footer {
     margin-top: 2%;
+  }
+
+  .mobile-footer {
+    display: none;
   }
 }
 

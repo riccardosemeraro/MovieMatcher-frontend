@@ -48,43 +48,30 @@ const SearchBar = () => {
   };
 
   return (
-    <div className='searchBar' style={{ position: 'relative', width: '100%', maxWidth: '900px', margin: 'auto', fontSize:'20px'}}>
+    <div className='searchBar'>
       <Form>
         <FormControl
+          className='formControl'
           ref={inputRef}
           type="search"
           placeholder="Cerca il film adatto a te..."
           value={query}
           onChange={handleSearch} //ogni volta che si scrive qualcosa nella search bar, viene chiamata la funzione handleSearch
           onKeyPress={(e) => e.key === 'Enter' && e.preventDefault() && inputRef.current.blur()} // Nasconde la tastiera su mobile
-          style={{
-            width: '800px',
-            height: '50px',
-            padding: '10px 15px',
-            borderRadius: '50px',
-            boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.1)',
-            border: 'none',
-            outline: 'none',
-            fontSize: '15px',
-          }}
         />
-        <FontAwesomeIcon icon={faSearch} style={{ position: 'absolute', right: '20px', top: '15px', color: 'white' }} />
+        <FontAwesomeIcon className='iconItem' icon={faSearch} />
       </Form>
 
       {results.length > 0 && (
-        <div style={{display:'flex', justifyContent:'center', alignItems:'center', alignContent:'center'}}>
-          <ListGroup style={{ position: 'absolute', top: '50px', width: '700px', zIndex: 1000, backgroundColor:'#6a0795', borderRadius:'20px', margin:'10px', overflow:'hidden', height:'fit-content', maxHeight:'600px', overflowY:'auto', display:'flex', flexDirection:'column'}}>
+        <div className='responseContainer'>
+          <ListGroup className='listGroup'>
             {results.map((film) => (
-
-              <Link to = {'/film/'+film.id+'-'+(film.title).split(" ").join("-")} style={{color:'white'}}>
-                <ListGroup.Item key={film.id} style={{display:'flex', flexDirection:'row', alignItems:'center',}}>
-
-                    <div className='film' key={film.id} style={{width: '100px', height:'auto'}}>
-                        <img className = "img" src={"https://image.tmdb.org/t/p/w780" + film.poster_path} alt={film.title}/> 
+              <Link to = {'/film/'+film.id+'-'+(film.title).split(" ").join("-")} className='linkItem'>
+                <ListGroup.Item key={film.id} className='listGroupItem'>
+                    <div className='filmItem' key={film.id}>
+                        <img src={"https://image.tmdb.org/t/p/w780" + film.poster_path} alt={film.title}/> 
                     </div>
-
                     {film.title} ({film.release_date ? film.release_date.split('-')[0] : 'N/A'})
-
                 </ListGroup.Item>
               </Link>
             ))}

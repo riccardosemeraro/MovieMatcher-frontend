@@ -57,10 +57,8 @@ function HomePage() {
     <div className="home-page">
 
       {/*input type="search" placeholder="Cerca un film" className="search-bar" />*/}
-
-      <div className='search'>
-        <SearchBar />
-      </div>
+      
+      <SearchBar />
 
       <MovieSlider type="now_playing"/> 
       <MovieSlider type="top_rated"/>

@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
-import { Form, FormControl, ListGroup } from 'react-bootstrap';
+import React, { useEffect, useRef, useState } from 'react';
+import { Form, FormControl, ListGroup, InputGroup } from 'react-bootstrap';
 import axios from 'axios';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const SearchBar = () => {
 
@@ -10,15 +13,18 @@ const SearchBar = () => {
 
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
+  const [queryAlreadySet, setQueryAlreadySet] = useState('');
+  const inputRef = useRef(null);
 
   const location = useLocation(); //accedo all'url
   const navigate = useNavigate(); //per cambiare l'url
 
   const handleSearch = async (e) => {
     const query = e.target.value;
+
     setQuery(query);
     
-    navigate(location.pathname); //se la search bar è vuota, riporto l'url alla pagina attiva
+    if (query.length == 0) navigate(location.pathname); //se la search bar è vuota, riporto l'url alla pagina attiva
 
     if (query.length > 0) {
       try {
@@ -39,14 +45,15 @@ const SearchBar = () => {
   };
 
   return (
-    <div className='searchBar' style={{ position: 'relative', width: '100%', maxWidth: '900px', margin: 'auto',  }}>
+    <div className='searchBar' style={{ position: 'relative', width: '100%', maxWidth: '900px', margin: 'auto', fontSize:'20px'}}>
       <Form>
         <FormControl
+          ref={inputRef}
           type="search"
-          placeholder="Cerca un film..."
+          placeholder="Cerca il film adatto a te..."
           value={query}
-          onChange={handleSearch}
-          onKeyPress={(e) => e.key === 'Enter' && e.preventDefault()}
+          onChange={handleSearch} //ogni volta che si scrive qualcosa nella search bar, viene chiamata la funzione handleSearch
+          onKeyPress={(e) => e.key === 'Enter' && e.preventDefault() && inputRef.current.blur()} // Nasconde la tastiera su mobile
           style={{
             width: '800px',
             height: '50px',
@@ -55,8 +62,10 @@ const SearchBar = () => {
             boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.1)',
             border: 'none',
             outline: 'none',
+            fontSize: '15px',
           }}
         />
+        <FontAwesomeIcon icon={faSearch} style={{ position: 'absolute', right: '20px', top: '15px', color: 'white' }} />
       </Form>
 
       {results.length > 0 && (

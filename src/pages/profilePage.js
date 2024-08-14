@@ -1,6 +1,5 @@
 import React, { useState} from 'react';
 import { Link } from 'react-router-dom';
-import Profile from '../components/profile';
 import '../style/profilePage.css';
 import LogoutButton from '../components/logout-button';
 import { useAuth0 } from '@auth0/auth0-react';

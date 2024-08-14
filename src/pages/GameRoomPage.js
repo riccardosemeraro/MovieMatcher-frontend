@@ -1,6 +1,5 @@
 import React from 'react';
 import ActionButtons from '../components/actionButton';
-import '../style/explorePage.css'; //rivedere nomi file css
 
 function GameRoomPage() {
   return (

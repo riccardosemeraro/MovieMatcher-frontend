@@ -16,36 +16,64 @@ const SearchBar = () => {
 
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
-  const [search, setSearch] = useState(false);
-  const inputRef = useRef(null);
+  const [search, setSearch] = useState(true);
+  const inputRef = useRef(null); //per nascondere la tastiera su mobile
 
   const location = useLocation(); //accedo all'url
+  const searchParams = new URLSearchParams(location.search); //per accedere ai parametri dell'url
   const navigate = useNavigate(); //per cambiare l'url
 
-  const handleSearch = async (e) => {
+  const fetchResults = async (query) => { //funzione per fare la richiesta API a TMDB
+    try {
+      const response = axios.get('https://api.themoviedb.org/3/search/movie?query='+query+'&include_adult=false&language=it-IT&page=1', options)
+        .then (response => {
+          setResults(response.data.results);})
+        .catch(err => console.error(err));
+
+    } catch (error) {
+      console.error('Errore nella richiesta API a TMDB:', error);
+    }
+  };
+
+
+  useEffect(() => { //funzione per controllare se c'è una query nell'url e mostrare subito i risultati della ricerca
+    const param = searchParams.get('search');
+
+    setQuery(param) //se c'è una query nell'url, la setto come query;
+
+    if (param) {
+        setSearch(false); //iconOff
+    } else {
+        setSearch(true); //iconItem
+    }
+
+    if (param !== null) {
+      fetchResults(param);
+    }
+
+  }, [location.pathname]); //ogni volta che cambia l'url, viene chiamata lo UseEffect
+
+
+  const handleSearch = async (e) => { //funzione per gestire la ricerca
     const query = e.target.value;
 
     setQuery(query);
     
-    if (query.length > 0) setSearch(false);
-    else setSearch(true);
-    
     if (query.length == 0) navigate(location.pathname); //se la search bar è vuota, riporto l'url alla pagina attiva
 
-    if (query.length > 0) {
+    if (query) {
       try {
-
+        setSearch(false); //iconOff
+        
         navigate(location.pathname + '?search='+query); //cambia l'url con la query
 
-        const response = axios.get('https://api.themoviedb.org/3/search/movie?query='+query+'&include_adult=false&language=it-IT&page=1', options)
-          .then (response => {
-            setResults(response.data.results);})
-          .catch(err => console.error(err));
+        fetchResults(query);
 
       } catch (error) {
         console.error('Errore nella richiesta API a TMDB:', error);
       }
     } else {
+      setSearch(true); //iconItem
       setResults([]);
     }
   };
@@ -61,8 +89,8 @@ const SearchBar = () => {
           value={query}
           onChange={handleSearch} //ogni volta che si scrive qualcosa nella search bar, viene chiamata la funzione handleSearch
           onKeyPress={(e) => {
-                              if(e.key === 'Enter') {
-                                e.preventDefault();
+                              if(e.key === 'Enter' && e.key !== ' ') {
+                                e.preventDefault(); //previene il refresh della pagina
                                 inputRef.current.blur(); // Nasconde la tastiera su mobile
                             }   
                           }

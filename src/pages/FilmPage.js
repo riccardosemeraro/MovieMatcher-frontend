@@ -9,6 +9,7 @@ import { faBookmark, faCheck, faTimes, faHeart, faH } from '@fortawesome/free-so
 import MovieSlider from '../components/MovieSlider';
 
 
+
 function FilmPage() {
 
     const { idName } = useParams(); //per predenre i parametri dall'url con i :nomeParametro

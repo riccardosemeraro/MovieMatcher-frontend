@@ -17,56 +17,19 @@ function ProfilePage() {
     <>
     <div className="desktop-page">
       <div className="profile-page">
-        <ul className="ul-header">
-          <li className={view === 'profile' ? 'selected' : ''}>
-            <Link to="#" onClick={() => setView('profile')}>Le mie info</Link>
-          </li>
-          <li className={view === 'list' ? 'selected' : ''}>
-            <Link to="#" onClick={() => setView('list')}>Le mie liste</Link>
-          </li>
-          <li className={view === 'genres' ? 'selected' : ''}>
-            <Link to="#" onClick={() => setView('genres')}>I miei Generi</Link>
-          </li>
-          <li>
-            <LogoutButton/>
-          </li>
-        </ul>
-        
-        {
-          view === 'profile' && <div className="profile-card">
-            <div className="profile-info">
-              {user && (
-                <>    
-                    <ul>
-                      <li><img src={user.picture} alt={user.name} style={{ width: '100px', height: '100px' }} /></li>
-                      <li><a>{user.name}</a></li>
-                      <li><a>{user.email}</a></li>
-                      <li><a>{user.nickname}</a></li>
-                    </ul>
-                </>
-              )}
-            </div>
-          </div>
-        }
-        {view === 'list' && <div style={{ color: '#FFFFFF' }}>Liste FIlm</div>}
-        {view === 'genres' && <div style={{ color: '#FFFFFF' }}>Generi Content</div>}
-      </div>
-    </div>
-
-
-    <div className="mobile-page">
-      <div className="profile-page">
-        <ul className="ul-header">
-          <li className={view === 'profile' ? 'selected' : ''}>
-            <Link to="#" onClick={() => setView('profile')} style={{ display: 'block', width: '100%' }}>Le mie info</Link>
-          </li>
-          <li className={view === 'list' ? 'selected' : ''}>
-            <Link to="#" onClick={() => setView('list')} style={{ display: 'block', width: '100%' }}>Le mie liste</Link>
-          </li>
-          <li className={view === 'genres' ? 'selected' : ''}>
-            <Link to="#" onClick={() => setView('genres')} style={{ display: 'block', width: '100%' }}>I miei Generi</Link>
-          </li>
-        </ul>
+        <div className="sidebar">
+          <ul className="ul-header">
+            <li className={view === 'profile' ? 'selected' : ''}>
+              <Link to="#" onClick={() => setView('profile')} style={{ display: 'block', width: '100%' }}>Le mie info</Link>
+            </li>
+            <li className={view === 'list' ? 'selected' : ''}>
+              <Link to="#" onClick={() => setView('list')} style={{ display: 'block', width: '100%' }}>Le mie liste</Link>
+            </li>
+            <li className={view === 'genres' ? 'selected' : ''}>
+              <Link to="#" onClick={() => setView('genres')} style={{ display: 'block', width: '100%' }}>I miei Generi</Link>
+            </li>
+          </ul>
+        </div>
         
         {
           view === 'profile' && <div className="profile-card">
@@ -74,11 +37,6 @@ function ProfilePage() {
               {user && (
                 <>    
                     <ul className='ul-info'>
-                      <li>
-                        <Link to="#" onClick={() => setUpdate(!update)} style={{ display: 'block', width: '100%' }}>
-                          {update ? 'Salva modifiche' : 'Modifica'}
-                        </Link>
-                      </li>
                       <li>
                         <div className='li-content'>
                           <a>Username: &nbsp;</a>
@@ -102,6 +60,78 @@ function ProfilePage() {
                           <a>Cognome: &nbsp;</a>
                           <input type="text" value={" "+user.family_name} disabled={!update}/>
                         </div>
+                      </li>
+                    </ul>
+                    <ul className='mini-button'>
+                      <li>
+                        <Link to="#" onClick={() => setUpdate(!update)} style={{ display: 'block', width: '100%' }}>
+                          {update ? 'Salva modifiche' : 'Modifica'}
+                        </Link>
+                      </li>
+                      <li>
+                        <LogoutButton/>
+                      </li>
+                    </ul>
+                </>
+              )}
+            </div>
+          </div>
+        }
+        {view === 'list' && <div style={{ color: '#FFFFFF' }}>Liste FIlm</div>}
+        {view === 'genres' && <div style={{ color: '#FFFFFF' }}>Generi Content</div>}
+      </div>
+    </div>
+
+    <div className="mobile-page">
+      <div className="profile-page">
+        <ul className="ul-header">
+          <li className={view === 'profile' ? 'selected' : ''}>
+            <Link to="#" onClick={() => setView('profile')} style={{ display: 'block', width: '100%' }}>Le mie info</Link>
+          </li>
+          <li className={view === 'list' ? 'selected' : ''}>
+            <Link to="#" onClick={() => setView('list')} style={{ display: 'block', width: '100%' }}>Le mie liste</Link>
+          </li>
+          <li className={view === 'genres' ? 'selected' : ''}>
+            <Link to="#" onClick={() => setView('genres')} style={{ display: 'block', width: '100%' }}>I miei Generi</Link>
+          </li>
+        </ul>
+        
+        {
+          view === 'profile' && <div className="profile-card">
+            <div className="profile-info">
+              {user && (
+                <>    
+                    <ul className='ul-info'>
+                      <li>
+                        <div className='li-content'>
+                          <a>Username: &nbsp;</a>
+                          <input type="text" value={" "+user.nickname} disabled={!update} />
+                        </div>
+                      </li>
+                      <li>
+                        <div className='li-content'>
+                          <a>Email: &nbsp;</a>
+                          <input type="text" value={" "+user.email} disabled={!update} />
+                        </div>
+                      </li>
+                      <li>
+                        <div className='li-content'>
+                          <a>Nome: &nbsp;</a>
+                          <input type="text" value={" "+user.given_name} disabled={!update} />
+                        </div>
+                      </li>
+                      <li>
+                        <div className='li-content'>
+                          <a>Cognome: &nbsp;</a>
+                          <input type="text" value={" "+user.family_name} disabled={!update}/>
+                        </div>
+                      </li>
+                    </ul>
+                    <ul className='mini-button'>
+                      <li>
+                        <Link to="#" onClick={() => setUpdate(!update)} style={{ display: 'block', width: '100%' }}>
+                          {update ? 'Salva modifiche' : 'Modifica'}
+                        </Link>
                       </li>
                       <li>
                         <LogoutButton/>

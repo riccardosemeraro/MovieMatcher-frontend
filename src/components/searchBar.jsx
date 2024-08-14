@@ -60,7 +60,13 @@ const SearchBar = () => {
           placeholder="Cerca il film adatto a te..."
           value={query}
           onChange={handleSearch} //ogni volta che si scrive qualcosa nella search bar, viene chiamata la funzione handleSearch
-          onKeyPress={(e) => e.key === 'Enter' && e.preventDefault() && inputRef.current.blur()} // Nasconde la tastiera su mobile
+          onKeyPress={(e) => {
+                              if(e.key === 'Enter') {
+                                e.preventDefault();
+                                inputRef.current.blur(); // Nasconde la tastiera su mobile
+                            }   
+                          }
+          }
         />
       </Form>
       <FontAwesomeIcon className={search ? 'iconItem' : 'iconOff'} icon={faSearch} />

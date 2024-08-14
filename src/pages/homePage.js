@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import LoginButton from '../components/login-button';
-import LogoutButton from '../components/logout-button';
 import MovieSlider from '../components/MovieSlider';
 import SearchBar from '../components/searchBar';
 
@@ -50,8 +48,6 @@ function HomePage() {
   if (isLoading) {
     return <div>Loading...</div>;
   }
-
-  
 
   return (
     <div className="home-page">

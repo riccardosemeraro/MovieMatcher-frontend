@@ -162,7 +162,9 @@
   }
 
   .top{
-    background: radial-gradient(ellipse, #6a0795f0 50%, #00000000 70%);
+    /*background: radial-gradient(ellipse, #6a0795f0 50%, #00000000 70%);*/
+    background: linear-gradient(0deg, #00000000 0%, #6a0795 40%);
+
 
     display: flex;
     justify-content: center;

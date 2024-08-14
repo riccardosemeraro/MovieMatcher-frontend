@@ -95,11 +95,20 @@ function MovieSlider({type, id}) {
             <h2>{title}</h2>
 
             <div className='slider'>
-              {films.map(film => (
-                <div className='film' key={film.id}>
-                  <Link to = {'/film/'+film.id+'-'+(film.title).split(" ").join("-")}> <img className = "img" src={"https://image.tmdb.org/t/p/w780" + film.poster_path} alt={film.title} /> </Link>
-                </div>
-              ))}
+
+
+              {
+                (films && films.length > 0 ) ? 
+              
+                films.map(film => (
+                  <div className='film' key={film.id}>
+                    <Link to = {'/film/'+film.id+'-'+(film.title).split(" ").join("-")}> <img className = "img" src={"https://image.tmdb.org/t/p/w780" + film.poster_path} alt={film.title} /> </Link>
+                  </div>
+                ))
+
+                : <p> Nessun film trovato... </p>
+              
+              }
 
             </div>
 

@@ -16,7 +16,7 @@ const SearchBar = () => {
 
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
-  const [queryAlreadySet, setQueryAlreadySet] = useState('');
+  const [search, setSearch] = useState(false);
   const inputRef = useRef(null);
 
   const location = useLocation(); //accedo all'url
@@ -26,6 +26,9 @@ const SearchBar = () => {
     const query = e.target.value;
 
     setQuery(query);
+    
+    if (query.length > 0) setSearch(false);
+    else setSearch(true);
     
     if (query.length == 0) navigate(location.pathname); //se la search bar è vuota, riporto l'url alla pagina attiva
 
@@ -59,8 +62,8 @@ const SearchBar = () => {
           onChange={handleSearch} //ogni volta che si scrive qualcosa nella search bar, viene chiamata la funzione handleSearch
           onKeyPress={(e) => e.key === 'Enter' && e.preventDefault() && inputRef.current.blur()} // Nasconde la tastiera su mobile
         />
-        <FontAwesomeIcon className='iconItem' icon={faSearch} />
       </Form>
+      <FontAwesomeIcon className={search ? 'iconItem' : 'iconOff'} icon={faSearch} />
 
       {results.length > 0 && (
         <div className='responseContainer'>

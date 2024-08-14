@@ -544,8 +544,9 @@ function FilmPage() {
             <h1>{film.title}</h1>
             <div className='generi'>
             {
-                film.genres &&
-                <p>{film.genres.map(genre => genre.name).sort().join(', ')}</p>
+                (film.genres && film.genres.length>0) ? (
+                    film.genres && <p>{film.genres.map(genre => genre.name).sort().join(', ')}</p> ) :
+                    "Nessun genere collegato..."
             }
             </div>
             <div className='info-film-container' >

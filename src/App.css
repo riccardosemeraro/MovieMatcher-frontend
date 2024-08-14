@@ -45,3 +45,10 @@ body{
 .content{
   flex: 1;
 }
+
+/* Applica a tutti gli elementi, da verificare se funzioni (evidenzia di blu al click) */
+* {
+  -webkit-tap-highlight-color: transparent;
+  -moz-tap-highlight-color: transparent;
+  -ms-tap-highlight-color: transparent;
+}

@@ -1,8 +1,10 @@
 import React, { useState} from 'react';
 import { Link } from 'react-router-dom';
+
 import '../style/profilePage.css';
 import LogoutButton from '../components/logout-button';
 import { useAuth0 } from '@auth0/auth0-react';
+import MovieSlider from '../components/MovieSlider';
 
 function ProfilePage() {
 
@@ -10,7 +12,23 @@ function ProfilePage() {
 
   const [view, setView] = useState('profile');
 
+  const [formData, setFormData] = useState({
+    email: user.email,
+    nick: user.nickname,
+    name: user.given_name,
+    surname: user.family_name
+    // Aggiungi altri campi necessari
+  });
+
   const [update, setUpdate] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   return (
     <>
@@ -39,25 +57,49 @@ function ProfilePage() {
                       <li>
                         <div className='li-content'>
                           <a>Username: &nbsp;</a>
-                          <input type="text" value={" "+user.nickname} disabled={!update} />
+                          <input
+                              type="text" 
+                              name="nick"
+                              value={formData.nick}
+                              disabled={!update} 
+                              onChange={handleChange}
+                          />
                         </div>
                       </li>
                       <li>
                         <div className='li-content'>
                           <a>Email: &nbsp;</a>
-                          <input type="text" value={" "+user.email} disabled={!update} />
+                          <input
+                              type="text" 
+                              name="email"
+                              value={formData.email}
+                              disabled={!update} 
+                              onChange={handleChange}
+                          /> 
                         </div>
                       </li>
                       <li>
                         <div className='li-content'>
                           <a>Nome: &nbsp;</a>
-                          <input type="text" value={" "+user.given_name} disabled={!update} />
+                          <input
+                              type="text" 
+                              name="name"
+                              value={formData.name}
+                              disabled={!update} 
+                              onChange={handleChange}
+                          />       
                         </div>
                       </li>
                       <li>
                         <div className='li-content'>
                           <a>Cognome: &nbsp;</a>
-                          <input type="text" value={" "+user.family_name} disabled={!update}/>
+                          <input
+                              type="text" 
+                              name="surname"
+                              value={formData.surname}
+                              disabled={!update} 
+                              onChange={handleChange}
+                          />
                         </div>
                       </li>
                     </ul>
@@ -104,25 +146,49 @@ function ProfilePage() {
                       <li>
                         <div className='li-content'>
                           <a>Username: &nbsp;</a>
-                          <input type="text" value={" "+user.nickname} disabled={!update} />
+                          <input
+                              type="text" 
+                              name="nick"
+                              value={formData.nick}
+                              disabled={!update} 
+                              onChange={handleChange}
+                          />
                         </div>
                       </li>
                       <li>
                         <div className='li-content'>
                           <a>Email: &nbsp;</a>
-                          <input type="text" value={" "+user.email} disabled={!update} />
+                          <input
+                              type="text" 
+                              name="email"
+                              value={formData.email}
+                              disabled={!update} 
+                              onChange={handleChange}
+                          /> 
                         </div>
                       </li>
                       <li>
                         <div className='li-content'>
                           <a>Nome: &nbsp;</a>
-                          <input type="text" value={" "+user.given_name} disabled={!update} />
+                          <input
+                              type="text" 
+                              name="name"
+                              value={formData.name}
+                              disabled={!update} 
+                              onChange={handleChange}
+                          />       
                         </div>
                       </li>
                       <li>
                         <div className='li-content'>
                           <a>Cognome: &nbsp;</a>
-                          <input type="text" value={" "+user.family_name} disabled={!update}/>
+                          <input
+                              type="text" 
+                              name="surname"
+                              value={formData.surname}
+                              disabled={!update} 
+                              onChange={handleChange}
+                          />
                         </div>
                       </li>
                     </ul>
@@ -141,7 +207,7 @@ function ProfilePage() {
             </div>
           </div>
         }
-        {view === 'list' && <div style={{ color: '#FFFFFF' }}>Liste FIlm</div>}
+        {view === 'list' && <div style={{ color: '#FFFFFF' }}><MovieSlider type="now_playing" /><MovieSlider /></div>}
         {view === 'genres' && <div style={{ color: '#FFFFFF' }}>Generi Content</div>}
       </div>
     </div>

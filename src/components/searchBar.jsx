@@ -6,7 +6,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
-import '../style/searchBar.css';
+import '../style/searchBar.css'; 
 
 
 const SearchBar = () => {

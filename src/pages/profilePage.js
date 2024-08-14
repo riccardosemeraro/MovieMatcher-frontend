@@ -49,7 +49,7 @@ function ProfilePage() {
         </div>
         
         {
-          view === 'profile' && <div className="profile-card">
+          view === 'profile' && <div  className="profile-card">
             <div className="profile-info">
               {user && (
                 <>    
@@ -118,12 +118,12 @@ function ProfilePage() {
             </div>
           </div>
         }
-        {view === 'list' && <div style={{ color: '#FFFFFF' }}>Liste FIlm</div>}
-        {view === 'genres' && <div style={{ color: '#FFFFFF' }}>Generi Content</div>}
+        {view === 'list' && <div style={{ maxWidth:'75%', color: '#FFFFFF' }}> <MovieSlider type="now_playing" /> <MovieSlider /></div>}
+        {view === 'genres' && <div style={{ maxWidth:'75%', color: '#FFFFFF' }}>Generi Content</div>}
       </div>
     </div>
 
-    <div className="mobile-page">
+    <div className="mobile-page-profile">
       <div className="profile-page">
         <ul className="ul-header">
           <li className={view === 'profile' ? 'selected' : ''}>

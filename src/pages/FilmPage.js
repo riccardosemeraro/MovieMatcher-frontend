@@ -2,11 +2,12 @@ import axios from 'axios';
 import { React, useEffect, useState} from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 
-import Button from '@mui/material/Button';
+import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookmark, faCheck, faTimes, faHeart, faH } from '@fortawesome/free-solid-svg-icons';
 
 import MovieSlider from '../components/MovieSlider';
+import '../style/filmPage.css';
 
 
 
@@ -113,388 +114,6 @@ function FilmPage() {
     return (
         <>
         
-        <style>
-            {`
-
-                /*per desktop */
-                @media (min-width: 1024px){
-
-                    .desktop-page {
-                        display: flex;
-                        flex-direction: column;
-
-                        background-size: cover; /* Assicura che l'immagine di sfondo copra tutto il div */
-                        background-position: center; /* Centra l'immagine di sfondo */
-                        background-repeat: no-repeat; /* Evita che l'immagine di sfondo si ripeta */
-                    }
-
-                    .mobile-page{
-                        display: none;
-                    }
-
-                    .content-wrapper {
-                        display: flex;
-                        flex-direction: column;
-                    }
-
-                    .container {
-                        display: flex;
-                    }
-
-                    .film-image {
-                        width: 360px;
-                        height: auto;
-                        background-color: #f5f5f5;
-                        border-radius: 20px;
-                        padding: 2px;      
-                        margin-bottom: 10px;
-                        margin-top: 10px;
-                        margin-right:20px;
-                        margin-left: 20px;
-
-                        flex: 0 0 auto;
-                    }
-
-                    .film-image img {
-                        width: 100%;
-                        height: 100%;
-                        border-radius: 20px;
-                    }
-
-
-                    .info-film {
-                        display: flex;
-                        flex-direction: column;
-                        align-items: flex-start; /* Posiziona tutti i figli all'inizio del div */
-                        margin-top: 10px;
-                        margin-right: 20px;
-                        margin-left: 20px;
-                        margin-bottom: 10px;
-                    }
-                
-                    h1 {
-                        color: white;
-                        text-align: start;
-                        margin: 0px;
-
-                        font-size: 36px;
-
-                        text-shadow: 
-                            1px 1px 0 #6a0795,  /* Ombra in basso a destra */
-                            -1px 1px 0 #6a0795, /* Ombra in basso a sinistra */
-                            1px -1px 0 #6a0795, /* Ombra in alto a destra */
-                            -1px -1px 0 #6a0795;/* Ombra in alto a sinistra */
-
-                    }
-
-                    p {
-                        color: white;
-                        text-align: center;
-                        margin-top: 0px;
-                        margin-bottom: 0px;
-                        margin-left: 10px;
-                        margin-right: 10px;
-
-                        font-size: 16px;
-                    }
-
-                    .info-container {
-                        display: flex;
-                        flex-direction: row;
-                        width: 100%;
-                        justify-content: flex-start;
-                    }
-
-                    .info {
-                        display: flex;
-                        flex-direction: column;
-                    }
-
-                    .generi{
-                        background-color: #6a0795;
-                        color: white;
-                        border-radius: 20px;
-
-                        padding: 5px;
-                        display: inline-block;
-                        margin-top: 20px;
-                        margin-bottom: 20px;
-                        margin-left: 0px;
-                        margin-right: 0px;
-                    }
-
-                    .data {
-                        background-color: #6a0795;
-                        color: white;
-                        border-radius: 20px;
-
-                        padding: 5px;
-                        display: inline-block;
-                        margin-top: 20px;
-                        margin-bottom: 20px;
-                        margin-left: 0px;
-                        margin-right: 0px;
-                    }
-
-                    .voto {
-                        background-color: #6a0795;
-                        color: white;
-                        border-radius: 20px;
-
-                        padding: 5px;
-                        display: inline-block;
-                        margin-top: 20px;
-                        margin-bottom: 20px;
-                        margin-left: 0px;
-                        margin-right: 0px;
-                    }
-
-                    .bottoni {
-                        
-                        display: flex;
-                        flex-direction: column;
-                    }
-
-                    .custom-button {
-                        background-color: #6a0795;
-
-                        color: white;
-                        text-transform: none;
-                        font-size: 16px;
-                        
-                        display: flex;
-                        text-align: center;
-                        justify-content: center;
-                        
-
-                        margin-left: 80px;
-                        margin-right: 80px;
-                        margin-top: 20px;
-                        margin-bottom: 20px;
-
-                        border-radius: 20px;
-                        padding: 5px;
-
-                        flex: 1;
-                        width: 100%;
-                    }
-
-                    .custom-button p {
-                        margin: 0px;
-                    }
-
-
-                    .icon {
-                        font-size: auto;
-                    }
-
-                    .descrizione {
-                        
-                        background-color: #6a0795;
-                        color: white;
-                        border-radius: 20px;
-
-                        margin-left: 0px;
-                        margin-right: 0px;
-                        margin-bottom: 0px;
-                        margin-top: 10px;
-
-                        padding: 5px;
-                    }
-
-                    .text-descrizione {
-                        color: white;
-                        text-align: justify;
-                        margin: 10px ;
-                        font-size: 18px;
-                    }
-
-                    .no-color-change {
-                        background-color: #6a0795 !important;
-                        color: white !important;
-                    }
-
-                }
-
-                /*per mobile */
-                @media (max-width: 1023px){
-
-                    .mobile-page{
-                        display: block; //no flex perche scompiglia tutto
-                        width: 100vw;
-                        height: auto;
-                        box-sizing: border-box;
-
-                        border-radius: 20px;
-                        margin-left: 10px;
-                        margin-right: 10px;
-                        margin-top: -10px;
-                        border: 2px solid white;
-
-                        
-                        background-size: cover; /* Assicura che l'immagine di sfondo copra tutto il div */
-                        background-position: center; /* Centra l'immagine di sfondo */
-                        background-repeat: no-repeat; /* Evita che l'immagine di sfondo si ripeta */
-
-                        }
-
-                    .desktop-page{
-                        display: none;
-                    }
-
-                    h1 {
-                        color: white;
-                        text-align: center;
-                        margin:10px;
-
-                        text-shadow: 
-                            1px 1px 0 #6a0795,  /* Ombra in basso a destra */
-                            -1px 1px 0 #6a0795, /* Ombra in basso a sinistra */
-                            1px -1px 0 #6a0795, /* Ombra in alto a destra */
-                            -1px -1px 0 #6a0795;/* Ombra in alto a sinistra */
-                    }
-
-                    p {
-                        color: white;
-                        text-align: center;
-                        margin: 0px;
-                        margin-bottom: 0px;
-
-                        font-size: 16px;
-                    }
-
-                    .generi{
-                        background-color: #6a0795;
-                        color: white;
-                        border-radius: 20px;
-
-                        padding: 10px;
-                        display: inline-block;
-                    }
-
-                    .info-film-container{
-                        display: flex;
-                        flex-direction: row;
-                        justify-content: center; //center da mettere su cell, flex-start su desktop (probabile) - al momento è ok per entrambi fit-content finche non si fa la distinzione
-                        align-items: center;                        
-                        margin-left: 10px;
-                        margin-right: 10px;
-
-                    }
-                
-                    .film-image {
-                        flex: 0 0 auto;
-                        width: 200px;
-                        height: auto;
-                        background-color: #f5f5f5;
-                        border-radius: 20px;
-                        padding: 2px;      
-                        margin-bottom: 10px;
-                        margin-right: 5px;
-                        margin-left: 0px;
-                        margin-top: 10px;
-                    }
-
-                    .film-image img {
-                        width: 100%;
-                        height: 100%;
-                        border-radius: 20px;
-                    }
-
-                    .info-film{
-                        color: white;
-
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        margin-bottom: 10px;
-                        margin-left: 5px;
-                        margin-right: 0px;
-                        margin-top: 5px;
-
-                        width: auto;
-                        height: auto;
-                    }
-
-                    .info {
-                        background-color: #6a0795;
-
-                        color: white;
-                        font-size: 16px;
-                        flex-direction: column;
-                        
-                        display: flex;
-                        text-align: center;
-                        justify-content: center;
-                        
-
-                        margin: 5px;
-                        border-radius: 20px;
-                        padding: 5px;
-
-                        flex: 1;
-                        width: 100%;
-                        box-sizing: border-box;
-                    }
-
-                    .custom-button {
-                        background-color: #6a0795;
-
-                        color: white;
-                        text-transform: none;
-                        font-size: 16px;
-                        
-                        display: flex;
-                        text-align: center;
-                        justify-content: center;
-                        
-
-                        margin: 5px;
-                        border-radius: 20px;
-                        padding: 5px;
-
-                        flex: 1;
-                        width: 100%;
-                    }
-
-                    .custom-button p {
-                        margin: 0px;
-                    }
-
-                    .icon {
-                        font-size: auto;
-                    }
-
-                    .descrizione {
-                        margin-bottom: 10px;
-                        background-color: #6a0795;
-                        color: white;
-                        border-radius: 20px;
-
-                        margin-left: 10px;
-                        margin-right: 10px;
-
-                        padding: 5px;
-                    }
-
-                    .text-descrizione {
-                        color: white;
-                        text-align: justify;
-                        margin: 10px ;
-                        font-size: 18px;
-                    }
-
-                    .no-color-change {
-                        background-color: #6a0795 !important;
-                        color: white !important;
-                    }
-
-                }                   
-
-            `}
-
-        </style>
-
         <div className='desktop-page' style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${film.backdrop_path})` }}>
             <div className='content-wrapper'>
                 <div className='container'>
@@ -520,11 +139,11 @@ function FilmPage() {
                                 </div>
                             </div>
                             <div className='bottoni'>
-                                <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_1(!add_remove_1)}> 
+                                <Button variant="primary" className='custom-button' onClick={() => setAdd_remove_1(!add_remove_1)}> 
                                         <p> <FontAwesomeIcon icon={add_remove_1 ? faCheck : faTimes} /> 
                                         &nbsp; {add_remove_1 ? "Aggiungi ai " : "Rimuovi dai "} Film Visti</p>
                                 </Button>
-                                <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_2(!add_remove_2)}> 
+                                <Button variant="primary" className='custom-button' onClick={() => setAdd_remove_2(!add_remove_2)}> 
                                         <p> <FontAwesomeIcon icon={add_remove_2 ? faBookmark : faTimes} /> 
                                         &nbsp; {add_remove_2 ? "Aggiungi ai " : "Rimuovi dai "} Film da Vedere</p>
                                 </Button>
@@ -555,14 +174,14 @@ function FilmPage() {
                 </div>
                 <div className='info-film'>
                     <div className='info'>
-                        <p >{italianReleaseDate || film.release_date} </p>
+                        <p>Uscita: <br/>{italianReleaseDate || film.release_date} </p>
                         <p>Voto: {voto}/10</p>
                     </div>
-                    <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_1(!add_remove_1)}> 
+                    <Button variant="contained" className='custom-button' onClick={() => setAdd_remove_1(!add_remove_1)}> 
                         <p> <FontAwesomeIcon icon={add_remove_1 ? faCheck : faTimes} /> 
-                        &nbsp; {add_remove_1 ? "Aggiungi ai " : "Rimuovi dai "} <br/>Film visti</p>
+                        &nbsp; {add_remove_1 ? "Aggiungi ai " : "Rimuovi dai "} <br/> Film visti</p>
                     </Button>
-                    <Button variant="contained" className='custom-button no-color-change' onClick={() => setAdd_remove_2(!add_remove_2)}> 
+                    <Button variant="contained" className='custom-button' onClick={() => setAdd_remove_2(!add_remove_2)}> 
                         <p> <FontAwesomeIcon icon={add_remove_2 ? faBookmark : faTimes} /> 
                         &nbsp; {add_remove_2 ? "Aggiungi ai " : "Rimuovi dai "} <br/>Film da Vedere </p>
                     </Button>

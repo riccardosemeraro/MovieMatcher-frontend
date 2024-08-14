@@ -1,12 +1,13 @@
 /*desktop*/
 @media (min-width: 1024px) {
 
-  .mobile-page {
+  .mobile-page-profile {
     display: none;
   }
 
   .desktop-page {
     display: block;
+    
   }
 
   .profile-page {
@@ -29,7 +30,7 @@
       display: flex;
       flex-direction: column;
 
-      justify-content: space-between;
+      justify-content: start;
 
       overflow-x: auto;
       scroll-snap-type: x mandatory;
@@ -60,6 +61,8 @@
       text-align: center;
       white-space: nowrap;
       padding: 0px 5px;
+
+      margin: 20px;
     }
 
     .ul-header li a{
@@ -213,11 +216,20 @@
     }
   }
 
+
+
+
+
+
+
+
+
 /*mobile*/
 @media (max-width: 1023px) {
 
-  .mobile-page {
+  .mobile-page-profile {
     display: block;
+    border: none;
   }
 
   .desktop-page {

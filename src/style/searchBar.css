@@ -68,6 +68,13 @@
         align-items: center;
     }
 
+    .listGroupItem p{
+        font-size: 15px;
+        text-align: left;
+        margin: 0;
+        margin-right: 10px;
+    }
+
     .filmItem{
         display: flex;
         flex-direction: row;
@@ -160,13 +167,20 @@
 
     .linkItem{
         color: white;
+        text-decoration: none;
     }
 
     .listGroupItem{
         display: flex;
         flex-direction: row;
         align-items: center;
-        font-size: 10px;
+    }
+
+    .listGroupItem p{
+        font-size: 15px;
+        text-align: left;
+        margin: 0;
+        margin-right: 10px;
     }
 
     .filmItem{
@@ -180,7 +194,7 @@
         padding: 1px;
         border-radius: 10px;
 
-        flex-shrink: 0;
+        flex-shrink: 0; /* Impedisce all'immagine di ridimensionarsi */
     }
 
     .filmItem img{

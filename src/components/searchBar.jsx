@@ -71,7 +71,7 @@ const SearchBar = () => {
                     <div className='filmItem' key={film.id}>
                         <img src={"https://image.tmdb.org/t/p/w780" + film.poster_path} alt={film.title}/> 
                     </div>
-                    {film.title} ({film.release_date ? film.release_date.split('-')[0] : 'N/A'})
+                    <p>{film.title} ({film.release_date ? film.release_date.split('-')[0] : 'N/A'})</p>
                 </ListGroup.Item>
               </Link>
             ))}

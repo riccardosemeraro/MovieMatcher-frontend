@@ -544,8 +544,8 @@ function FilmPage() {
             <h1>{film.title}</h1>
             <div className='generi'>
             {
-                            film.genres &&
-                            <p>{film.genres.map(genre => genre.name).sort().join(', ')}</p>
+                film.genres &&
+                <p>{film.genres.map(genre => genre.name).sort().join(', ')}</p>
             }
             </div>
             <div className='info-film-container' >

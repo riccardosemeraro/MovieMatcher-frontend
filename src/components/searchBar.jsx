@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Form, FormControl, ListGroup } from 'react-bootstrap';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const SearchBar = () => {
 
@@ -11,18 +11,19 @@ const SearchBar = () => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
 
-  const navigate = useNavigate();
+  const location = useLocation(); //accedo all'url
+  const navigate = useNavigate(); //per cambiare l'url
 
   const handleSearch = async (e) => {
     const query = e.target.value;
     setQuery(query);
     
-    navigate('/');
+    navigate(location.pathname); //se la search bar è vuota, riporto l'url alla pagina attiva
 
     if (query.length > 0) {
       try {
 
-        navigate('/?search='+query);
+        navigate(location.pathname + '?search='+query); //cambia l'url con la query
 
         const response = axios.get('https://api.themoviedb.org/3/search/movie?query='+query+'&include_adult=false&language=it-IT&page=1', options)
           .then (response => {

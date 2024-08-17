@@ -207,8 +207,13 @@ function ProfilePage() {
             </div>
           </div>
         }
-        {view === 'list' && <div style={{ color: '#FFFFFF' }}><MovieSlider type="now_playing" /><MovieSlider /></div>}
-        {view === 'genres' && <div style={{ color: '#FFFFFF' }}>Generi Content</div>}
+        {
+          view === 'list' && <div style={{ color: '#FFFFFF' }}>
+            <MovieSlider type="now_playing" />
+            <MovieSlider />
+          </div>
+        }
+        {view === 'genres' && <div style={{ color: '#FFFFFF' }}>Generi Content</div>} 
       </div>
     </div>
     </>

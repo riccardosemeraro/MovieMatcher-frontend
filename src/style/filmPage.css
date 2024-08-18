@@ -195,22 +195,6 @@
         margin: 10px ;
         font-size: 18px;
     }
-
-
-    .testoCaricamento {
-        color: white;
-        text-align: center;
-        margin: 10px;
-        font-size: 30px;
-    }
-
-    .loading-gif {
-        display: block;
-        margin: 0 auto;
-        justify-content: center; 
-        height: 100px;
-    }
-
 }
 
 
@@ -419,20 +403,4 @@
         margin: 10px ;
         font-size: 18px;
     }
-
-   
-    .testoCaricamento {
-        color: white;
-        text-align: center;
-        margin: 10px;
-        font-size: 30px;
-    }
-
-    .loading-gif {
-        display: block;
-        margin: 0 auto;
-        justify-content: center; 
-        height: 100px;
-    }
-
 }                   

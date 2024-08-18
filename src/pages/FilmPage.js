@@ -1,16 +1,15 @@
 import axios from 'axios';
 import React, { useEffect, useState} from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBookmark, faCheck, faTimes, faHeart, faH } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import MovieSlider from '../components/MovieSlider';
 import '../style/filmPage.css';
 
-import gif from '../images/gif.gif';
-
+import LoadingGif from '../components/loadingGif';
 
 
 function FilmPage() {
@@ -124,10 +123,9 @@ function FilmPage() {
         (loading) ? 
                 <div>
                     <>
-                    <img src={gif} className="loading-gif"/> 
-                    <h1 className='testoCaricamento'>Caricamento...</h1>
+                        <LoadingGif />
                     </>    
-                </div> :
+                </div> : 
             <>
                 <div className='desktop-page' style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${film.backdrop_path})` }}>
                     <div className='content-wrapper'>

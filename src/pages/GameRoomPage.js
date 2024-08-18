@@ -1,5 +1,4 @@
 import React from 'react';
-import ActionButtons from '../components/actionButton';
 import Button from 'react-bootstrap/Button';
 import Popup from '../components/Popup';
 import { useState, useEffect } from 'react';
@@ -32,20 +31,23 @@ function GameRoomPage() {
   return (
     <div className="game-room">
       <Button variant="primary" className='game-button' onClick={()=> setButtonPopup(true)}> 
-        <p>Crea Partita</p>
+        <h2 className='titolo-bottone'>Crea Partita</h2>
       </Button>
+
+      {/*
       <Popup trigger={buttonPopup} setTrigger={setButtonPopup}> 
-        <h1> Crea Partita </h1>
-        <h3> This is my button triggered popup </h3>
+        <h1 className='tipo-match'> Crea Partita </h1>
+        <h3 className='altro'> This is my button triggered popup </h3>
       </Popup>
+      */}
 
 
 
       <Button variant="primary" className='game-button' onClick={()=>('')}> 
-        <p>Partecipa a Partita</p>
+        <h2 className='titolo-bottone'>Partecipa a Partita</h2>
       </Button>
       <Button variant="primary" className='game-button' onClick={()=>('')}> 
-        <p>Match History</p>
+        <h2 className='titolo-bottone'>Match History</h2>
       </Button>
     </div>
   );

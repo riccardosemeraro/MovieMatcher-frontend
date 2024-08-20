@@ -54,6 +54,8 @@ function App() {
 
   useEffect(() => { //funzione per controllare se l'utente è registrato 
 
+    console.log('AUTENTICATO: ' + isAuthenticated);
+
     if(isAuthenticated && server)
       {
         console.log('Utente autenticato da Auth0');
@@ -79,7 +81,7 @@ function App() {
         setLogin(false);
       }
     
-  }, [server, location]); //ogni volta che cambia, viene chiamato lo UseEffect
+  }, [server, location, user]); //ogni volta che cambia, viene chiamato lo UseEffect
 
   return (
 

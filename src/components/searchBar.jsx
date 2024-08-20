@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Form, FormControl, ListGroup, InputGroup } from 'react-bootstrap';
+import { Form, FormControl, ListGroup } from 'react-bootstrap';
 import axios from 'axios';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
@@ -25,10 +25,17 @@ const SearchBar = () => {
 
   const fetchResults = async (query) => { //funzione per fare la richiesta API a TMDB
     try {
-      const response = axios.get('https://api.themoviedb.org/3/search/movie?query='+query+'&include_adult=false&language=it-IT&page=1', options)
+      const response = axios.get('https://moviematcher-backend.onrender.com/tmdb/search?query=' + query) //axios.get('https://api.themoviedb.org/3/search/movie?query='+query+'&include_adult=false&language=it-IT&page=1', options)
         .then (response => {
-          setResults(response.data.results);})
-        .catch(err => console.error(err));
+          console.log(response);
+          setResults(response.data.movies);
+        })
+        .catch(err => {
+          console.log(err);
+          if (err.response.status === 404) {
+            setResults([]);
+          }
+        });
 
     } catch (error) {
       console.error('Errore nella richiesta API a TMDB:', error);
@@ -59,7 +66,7 @@ const SearchBar = () => {
 
     setQuery(query);
     
-    if (query.length == 0) navigate(location.pathname); //se la search bar è vuota, riporto l'url alla pagina attiva
+    if (query.length === 0) navigate(location.pathname); //se la search bar è vuota, riporto l'url alla pagina attiva
 
     if (query) {
       try {

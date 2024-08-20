@@ -12,13 +12,13 @@ import '../style/filmPage.css';
 import LoadingGif from '../components/loadingGif';
 
 
+
+
 function FilmPage() {
 
     const { idName } = useParams(); //per predenre i parametri dall'url con i :nomeParametro
 
     const [film, setFilm] = useState([]);
-    const [data, setData] = useState([]);
-    const [italianReleaseDate, setItalianReleaseDate] = useState('');
 
     const [loading, setLoading] = useState(true);
     
@@ -37,57 +37,26 @@ function FilmPage() {
     console.log(idName);
     console.log("ID del film: " + id);
    
-    const chiaveAPI = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlYjAxNjQzNjI0ZGY2OTY5NDMwNTRjMzJkNGY3NmI3ZSIsIm5iZiI6MTcyMzExNTUzMS4zNzI1OTgsInN1YiI6IjY2YjRhNTcyZGUzODU5OGY2YTZkMDBmMCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.QjgGj9sr5Euk1A8LEyl4riJw0YthkeujM1mT0rpoiX0";
-    const options = { method: 'GET', headers: { accept: 'application/json', Authorization: 'Bearer ' + chiaveAPI } };
-
     useEffect(() => {
         //richiesta TMDB per le info del film e le date di uscita
-        const fetchFilmData = async () => {
-            try {
 
-                setLoading(true);
-
-                const [filmResponse, releaseDatesResponse] = await Promise.all([
-                    axios.get('https://api.themoviedb.org/3/movie/' + id + '?language=it-IT', options),
-                    axios.get('https://api.themoviedb.org/3/movie/' + id + '/release_dates', options)
-                    ]);
-    
-                setFilm(filmResponse.data);
-                console.log(filmResponse.data);
-    
-                setData(releaseDatesResponse.data.results);
-                console.log(releaseDatesResponse.data.results);
-
-            } catch (err) {
-                console.error(err);
-            }finally {
-                setTimeout(() => setLoading(false), 3005); //time_max: 3200ms per la durata della gif
-            }
-        };
-    
-        fetchFilmData();
+        axios.get('https://moviematcher-backend.onrender.com/tmdb/filmPage/' + id)
+            .then(response => {
+                //in response.data.id c'è l'id del film richiesto
+                console.log("Informazioni ricevute sul film richiesto: ", response.data);
+                setFilm(response.data.movie);
+            })
+            .catch(err => {
+                console.error('Errore nella richiesta del film:', err);
+            })
+            .finally(() => {
+                setLoading(false);
+                //setTimeout(() => setLoading(false), 3005); //time_max: 3200ms per la durata della gif
+            });
 
         window.scrollTo(0, 0); //per far tornare la pagina in alto quando si carica
 
     }, [id]);
-
-    
-
-    const voto = Math.floor(film.vote_average * 100)/100;
-
-    //voglio accedere alla data italiana di uscita del film
-    let italianDate = "";
-    useEffect(() => {
-        if (data.length > 0) {
-            italianDate = data.find(release => release.iso_3166_1 === 'IT');
-            if (italianDate && italianDate.release_dates.length > 0) {
-                italianDate = italianDate.release_dates[0].release_date.slice(0, 10); // Prendi solo la parte della data
-                italianDate = italianDate.split('-').reverse().join('/'); // Formatta la data in gg/mm/aaaa
-                console.log('Data di uscita in Italia:', italianReleaseDate);
-                setItalianReleaseDate(italianDate);
-            }
-        }
-    }, [data]);
 
     /*
     {
@@ -145,10 +114,10 @@ function FilmPage() {
                                             }
                                         </div>
                                         <div className='data'>
-                                            <p>Data di uscita: {italianReleaseDate || film.release_date }</p>
+                                            <p>Data di uscita: {film.release_date }</p>
                                         </div>
                                         <div className='voto'>
-                                            <p>Voto: {voto}/10</p>
+                                            <p>Voto: {film.vote}/10</p>
                                         </div>
                                     </div>
                                     <div className='bottoni'>
@@ -187,8 +156,8 @@ function FilmPage() {
                         </div>
                         <div className='info-film'>
                             <div className='info'>
-                                <p>Uscita: <br/>{italianReleaseDate || film.release_date} </p>
-                                <p>Voto: {voto}/10</p>
+                                <p>Uscita: <br/>{film.release_date} </p>
+                                <p>Voto: {film.vote}/10</p>
                             </div>
                             <Button variant="contained" className='custom-button' onClick={() => setAdd_remove_1(!add_remove_1)}> 
                                 <p> <FontAwesomeIcon icon={add_remove_1 ? faCheck : faTimes} /> 

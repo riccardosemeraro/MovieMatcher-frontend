@@ -1,10 +1,7 @@
-import logo from './logo.svg';
 import './App.css';
-import { Auth0Provider } from '@auth0/auth0-react';
-import AuthenticationButton from './components/authentication-button';
 
 
-import { Navigate, BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Navigate, BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import HomePage from './pages/homePage';
 import ProfilePage from './pages/profilePage';
 import GameRoomPage from './pages/GameRoomPage';
@@ -12,43 +9,113 @@ import AuthenticationGuard from './authenticationGard'; //importo il componente 
 import Header from './components/header';
 import Footer from './components/footer';
 import FilmPage from './pages/FilmPage';
+import { useContext, useEffect, useState } from 'react';
+import axios from 'axios';
+import { useAuth0 } from '@auth0/auth0-react';
 
+
+
+import { ServerStateContext } from './contexts/serverStateContextProvider';
+import { ServerStateContextProvider } from './contexts/serverStateContextProvider'; //bisogna importare i provider dei contesti
 
 
 function App() {
 
-  return (
-    <div className="App">
+  const location = useLocation(); //per prendere la locazione della pagina
 
-      <Router>
+  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
 
-        <Header />
+  const { value: server, setValue: setServer } = useContext(ServerStateContext); //stato del server
+  const [login, setLogin] = useState(false); //stato del login
 
-        <div className='content'>
-          <Routes>
-            {/* quando leggi la wildcard reindirizzami alla root*/}
-            <Route path="/*" element={<Navigate to="/" />} />
-            <Route path="/" element={<HomePage />} />
-            <Route path="/profile" element={<AuthenticationGuard component={ProfilePage} />} />
-            <Route path="/gameRoom" element={<AuthenticationGuard component={GameRoomPage} />} />
-            <Route path="/film/:idName" element={<FilmPage />} />
+  useEffect(() => { //funzione per controllare se il server è raggiungibile //DA CONTROLLARE
 
-            {/* Aggiungi altre route qui */}
-          </Routes>
-        </div>
+    const serverCheck = () => { //funzione per controllare se il server è raggiungibile
 
-        <Footer />
+      console.log('Controllo del server');
+      axios.get('https://moviematcher-backend.onrender.com/') //http://localhost:9000/
+        .then((response) => {
+          console.log('Risposta dal Backend Check:', response);
+          console.log('Server raggiungibile');
+          setServer(true);
+        })
+        .catch((error) => {
+          console.error('Errore alla get:', error);
+          console.log('Server non raggiungibile');
+          setServer(false);
+          setTimeout(serverCheck, 5000); // da cambiare perchè sta da cronometrare la fase di accesione del backend
+        });
+    };
+      
+    serverCheck(); //controllo se il server è raggiungibile
 
-      </Router>
-
-      {/*<AuthenticationButton />*/}
+  }, [location]); //ogni volta che viene renderizzato, viene chiamato lo UseEffect
 
 
+  useEffect(() => { //funzione per controllare se l'utente è registrato 
+
+    if(isAuthenticated && server)
+      {
+        console.log('Utente autenticato da Auth0');
+        getAccessTokenSilently()
+          .then( (token) => {
+            console.log("Invio della POST per la verifica dell'utente");
+            axios.post('https://moviematcher-backend.onrender.com/user/verify', { body:JSON.stringify(user)}, {headers: {Authorization: 'Bearer '+token} })
+              .then((response) => {
+                console.log("Successo, l'utente è registrato:", response);
+                setLogin(true);
+              })
+              .catch((error) => {
+                console.error('Errore nella verifica del login al backend:', error);
+                setLogin(false);
+              });
+  
+          })
+          .catch(err => {
+            console.error('Errore nella richiesta del token:', err);
+          });
+      } else {
+        console.log('Nessun Utente autenticato da Auth0');
+        setLogin(false);
+      }
     
-      {/*<AuthenticationButton />
-      <Profile />*/}
+  }, [server, location]); //ogni volta che cambia, viene chiamato lo UseEffect
 
-    </div>
+  return (
+
+    <>
+    
+    <ServerStateContextProvider>
+      {console.log('Server nel contesto:', server)}
+
+      <div className="App">
+
+        {/*<Router> l'ho spostato dentro index.js per acquisire la location e far eseguire lo useState solo quando cambia l'url*/}
+
+          <Header />
+
+          <div className='content'>
+            <Routes>
+              {/* quando leggi la wildcard reindirizzami alla root*/}
+              <Route path="/*" element={<Navigate to="/" />} />
+              <Route path="/" element={<HomePage />} />
+              <Route path="/profile" element={<AuthenticationGuard component={ProfilePage} />} />
+              <Route path="/gameRoom" element={<AuthenticationGuard component={GameRoomPage} />} />
+              <Route path="/film/:idName" element={<FilmPage />} />
+
+              {/* Aggiungi altre route qui */}
+            </Routes>
+          </div>
+
+          <Footer />
+
+        {/*<Router> l'ho spostato dentro index.js per acquisire la location e far eseguire lo useState solo quando cambia l'url*/}
+
+      </div>
+
+    </ServerStateContextProvider>
+
+    </>
   );
 }
 

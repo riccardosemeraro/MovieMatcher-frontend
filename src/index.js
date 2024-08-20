@@ -5,6 +5,11 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Auth0Provider } from '@auth0/auth0-react';
 
+import { BrowserRouter as Router } from 'react-router-dom';
+
+import { ServerStateContextProvider } from './contexts/serverStateContextProvider';
+
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -15,7 +20,11 @@ root.render(
     useRefreshTokens={true} //si mantiene l'accesso al refresh della pagina (dato che safari blocca i cookie di terze parti)
     cacheLocation='localstorage'> {/*cambia la destinazione dei cookie e salva i dati nel local storage*/}
 
-      <App />
+    <Router>
+      <ServerStateContextProvider>
+        <App />
+      </ServerStateContextProvider>
+    </Router>
 
     </Auth0Provider>
   </React.StrictMode>

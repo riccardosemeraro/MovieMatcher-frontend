@@ -6,13 +6,11 @@ import { Link } from 'react-router-dom';
 
 
 
+
 function MovieSlider({type, id}) {
 
   const [films, setFilms] = useState([]);
   const [title, setTitle] = useState('');
-
-
-  const chiaveAPI = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlYjAxNjQzNjI0ZGY2OTY5NDMwNTRjMzJkNGY3NmI3ZSIsIm5iZiI6MTcyMzExNTUzMS4zNzI1OTgsInN1YiI6IjY2YjRhNTcyZGUzODU5OGY2YTZkMDBmMCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.QjgGj9sr5Euk1A8LEyl4riJw0YthkeujM1mT0rpoiX0";
 
   useEffect(() => {
 
@@ -37,54 +35,32 @@ function MovieSlider({type, id}) {
       'https://image.tmdb.org/t/p/w780' + film.poster_path
       */
 
-    const options = { method: 'GET', headers: { accept: 'application/json', Authorization: 'Bearer ' + chiaveAPI } };
-
     /*
     Popular: 'https://api.themoviedb.org/3/movie/popular?language=it-IT&page=1'
     Top Rated: 'https://api.themoviedb.org/3/movie/top_rated?language=it-IT&page=1'
     Now Playing: 'https://api.themoviedb.org/3/movie/now_playing?language=it-IT&page=1'
     */
 
-    let url = '';
-    switch (type) {
-      case 'popular':
-        url = 'https://api.themoviedb.org/3/movie/popular?language=it-IT&page=1';
-        setTitle('Film popolari');
-        break;
-      case 'top_rated':
-        url = 'https://api.themoviedb.org/3/movie/top_rated?language=it-IT&page=1';
-        setTitle('Film più votati');
-        break;
-      case 'now_playing':
-        url = 'https://api.themoviedb.org/3/movie/now_playing?language=it-IT&page=1';
-        setTitle('Film della settimana');
-        break;
-      case 'similar':
-        url = 'https://api.themoviedb.org/3/movie/'+ id +'/recommendations?language=it-IT&page=1';
-        setTitle('Film simili');
-        break;
-      case 'recommendation':
-        url = 'recommendation system costruito lato backend';
-        setTitle('Consigliati per te');
-        break;
-      default:
-        url = 'https://api.themoviedb.org/3/movie/now_playing?language=it-IT&page=1';
-        setTitle('Film della settimana');
-        break;
-    }
+    let addedQuery = 'type=' + type + (id ? ('&id=' + id) : '') + (type === 'recommendation' ? ('&user=' + JSON.parse(localStorage.getItem('user')).sub ) : '');
 
-    console.log(type);
-    console.log(url);
+    //console.log(type);
+    //console.log(url);
 
     setFilms([]); //riporta tutto lo slider a sinistra al cambio pagina
 
 
-     axios.get(url, options)
+     //axios.get(url, options)
+     axios.get('https://moviematcher-backend.onrender.com/tmdb/movieSlider?'+addedQuery)
       .then (response => {
-        setFilms(response.data.results);
+        console.log(response);
+        setFilms(response.data.movies);
+        setTitle(response.data.title);
         //console.log(response.data.results[0]);
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        setTitle(err.response.data.title);
+      });
 
   }, [id, type]);
 

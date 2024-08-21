@@ -6,7 +6,8 @@ const ServerStateContext = createContext();
 //creo il provider
 const ServerStateContextProvider = ({ children }) => {
 
-  const [value, setValue] = useState(false); //vedere di implementare un localstorage, cookie o sessionstorage per salvare lo stato del server in caso di refresh della pagina
+  const [value, setValue] = useState(false); 
+  //vedere di implementare un localstorage, cookie o sessionstorage per salvare lo stato del server in caso di refresh della pagina
 
   return (
     <ServerStateContext.Provider value={{ value, setValue}}>

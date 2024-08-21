@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState, useContext} from 'react';
 import { useParams } from 'react-router-dom';
 
 import Button from 'react-bootstrap/Button';
@@ -11,10 +11,12 @@ import '../style/filmPage.css';
 
 import LoadingGif from '../components/loadingGif';
 
+import { ServerStateContext } from '../contexts/serverStateContextProvider';
 
 
+function FilmPage({token, userSub}) {
 
-function FilmPage() {
+    const { value: server, setValue: setServer } = useContext(ServerStateContext); //stato del server
 
     const { idName } = useParams(); //per predenre i parametri dall'url con i :nomeParametro
 
@@ -22,8 +24,8 @@ function FilmPage() {
 
     const [loading, setLoading] = useState(true);
     
-    const [add_remove_1, setAdd_remove_1] = useState(true);
-    const [add_remove_2, setAdd_remove_2] = useState(true);
+    const [addRemoveVisti, setaddRemoveVisti] = useState(true);
+    const [addRemoveVedere, setaddRemoveVedere] = useState(true);
 
     /* per prendere le cose dalle query dall'url
     const location = useLocation();
@@ -38,6 +40,7 @@ function FilmPage() {
     console.log("ID del film: " + id);
    
     useEffect(() => {
+        setLoading(true);
         //richiesta TMDB per le info del film e le date di uscita
 
         axios.get('https://moviematcher-backend.onrender.com/tmdb/filmPage/' + id)
@@ -45,6 +48,41 @@ function FilmPage() {
                 //in response.data.id c'è l'id del film richiesto
                 console.log("Informazioni ricevute sul film richiesto: ", response.data);
                 setFilm(response.data.movie);
+
+                const handleFilmCheckList = async (idFilm, lista) => {
+                    if (token !== '' && userSub !== ''){
+
+                        const corpo = {
+                            userSub: userSub,
+                            movieId: idFilm,
+                            list: lista
+                        };
+
+                        try{
+                            const response = await axios.post('https://moviematcher-backend.onrender.com/user/filmCheckList', { body: corpo}, {headers: {Authorization: 'Bearer '+token} });
+                            console.log("Richiesta avvenuta con successo:", response);
+                            return response.data.value;
+                        }
+                        catch(err){
+                            console.error('Errore nella verifica del film nella lista:', err);
+                            return true;
+                        }
+                    } else {
+                        return true;
+                    }
+                };
+
+                const checkFilmLists = async () => {
+                    const visti = await handleFilmCheckList(id, 'visti');
+                    setaddRemoveVisti(visti);
+
+                    const vedere = await handleFilmCheckList(id, 'vedere');
+                    setaddRemoveVedere(vedere);
+                };
+
+                checkFilmLists();
+
+                
             })
             .catch(err => {
                 console.error('Errore nella richiesta del film:', err);
@@ -56,40 +94,10 @@ function FilmPage() {
 
         window.scrollTo(0, 0); //per far tornare la pagina in alto quando si carica
 
-    }, [id]);
-
-    /*
-    {
-        "backdrop_path": "/lgkPzcOSnTvjeMnuFzozRO5HHw1.jpg",
-        "genres": [
-            {
-                "id": 16,
-                "name": "Animazione"
-            },
-            {
-                "id": 10751,
-                "name": "Famiglia"
-            },
-            {
-                "id": 35,
-                "name": "Commedia"
-            },
-            {
-                "id": 28,
-                "name": "Azione"
-            }
-        ],
-        "id": 519182,
-        "overview": "Gru e Lucy e le loro figlie - Margo, Edith e Agnes - accolgono un nuovo membro nella famiglia, Gru Jr., deciso a far disperare suo padre. Gru affronta un nuovo nemico, Maxime Le Mal e la fidanzata, la femme fatale Valentina, per cui la famiglia sarà costretta alla fuga.",
-        "poster_path": "/898BC1HabQvEphWLhuhXY6ui5SG.jpg",
-        "title": "Cattivissimo me 4",
-        "vote_average": 7.3,    }
-
-        per la data utilizza altra axios.get
-    */
+    }, [id, userSub]);
 
     return (
-        (loading) ? 
+        (!server || loading) ? 
                 <div>
                     <>
                         <LoadingGif />
@@ -121,13 +129,81 @@ function FilmPage() {
                                         </div>
                                     </div>
                                     <div className='bottoni'>
-                                        <Button variant="primary" className='custom-button' onClick={() => setAdd_remove_1(!add_remove_1)}> 
-                                                <p> <FontAwesomeIcon icon={add_remove_1 ? faCheck : faTimes} /> 
-                                                &nbsp; {add_remove_1 ? "Aggiungi ai " : "Rimuovi dai "} Film Visti</p>
+                                        <Button variant="primary" className='custom-button' onClick={() => 
+                                            {
+                                                if (token !== '' && userSub !== ''){
+                                                    //handleAggiuntaRimozione(idUser, id, listDaVolerMoficare, stato) lo stato lo richiamo
+
+                                                    if(addRemoveVisti){
+                                                        axios.post('https://moviematcher-backend.onrender.com/user/addFilm', { body: {userSub: userSub, movieId: id, list: 'visti'}}, { headers: {Authorization: 'Bearer '+token} })
+                                                            .then(response => {
+                                                                console.log("Film aggiunto ai visti:", response);
+                                                                if(response.data.valueState == true){
+                                                                    window.alert("Film già presente in una lista");
+                                                                } else {
+                                                                setaddRemoveVisti(response.data.valueState);
+                                                                }
+                                                            })
+                                                            .catch(err => {
+                                                                console.error('Errore nell\'aggiunta del film ai visti:', err);
+                                                                window.alert("Errore nell'aggiunta del film ai visti");
+                                                            });
+                                                    } else {
+                                                        axios.post('https://moviematcher-backend.onrender.com/user/removeFilm', { body: {userSub: userSub, movieId: id, list: 'visti'}}, { headers: {Authorization: 'Bearer '+token} })
+                                                            .then(response => {
+                                                                console.log("Film rimosso dai visti:", response);
+                                                                setaddRemoveVisti(response.data.valueState);
+                                                            })
+                                                            .catch(err => {
+                                                                console.error('Errore nella rimozione del film ai visti:', err);
+                                                                window.alert("Errore nella rimozione del film ai visti");
+                                                            });
+                                                    }
+                                                } else {
+                                                    window.alert("Devi essere loggato per poter aggiungere o rimuovere un film da una lista"); //da cambiare con un popup personalizzato
+                                                }
+                                                
+                                                }}> 
+                                                <p> <FontAwesomeIcon icon={addRemoveVisti ? faCheck : faTimes} /> 
+                                                &nbsp; {addRemoveVisti ? "Aggiungi ai " : "Rimuovi dai "} Film Visti</p>
                                         </Button>
-                                        <Button variant="primary" className='custom-button' onClick={() => setAdd_remove_2(!add_remove_2)}> 
-                                                <p> <FontAwesomeIcon icon={add_remove_2 ? faBookmark : faTimes} /> 
-                                                &nbsp; {add_remove_2 ? "Aggiungi ai " : "Rimuovi dai "} Film da Vedere</p>
+                                        <Button variant="primary" className='custom-button' onClick={() =>  
+                                            {
+                                                if (token !== '' && userSub !== ''){
+                                                    //handleAggiuntaRimozione(idUser, id, listDaVolerMoficare, stato) lo stato lo richiamo
+
+                                                    if(addRemoveVedere){
+                                                        axios.post('https://moviematcher-backend.onrender.com/user/addFilm', { body: {userSub: userSub, movieId: id, list: 'vedere'}}, { headers: {Authorization: 'Bearer '+token} })
+                                                            .then(response => {
+                                                                console.log("Film aggiunto ai vedere:", response);
+                                                                if(response.data.valueState == true){
+                                                                    window.alert("Film già presente in una lista");
+                                                                } else {
+                                                                setaddRemoveVedere(response.data.valueState);
+                                                                }
+                                                            })
+                                                            .catch(err => {
+                                                                console.error('Errore nell\'aggiunta del film ai vedere:', err);
+                                                                window.alert("Errore nell'aggiunta del film da vedere");
+                                                            });
+                                                    } else {
+                                                        axios.post('https://moviematcher-backend.onrender.com/user/removeFilm', { body: {userSub: userSub, movieId: id, list: 'vedere'}}, { headers: {Authorization: 'Bearer '+token} })
+                                                            .then(response => {
+                                                                console.log("Film rimosso dai vedere:", response);
+                                                                setaddRemoveVedere(response.data.valueState);
+                                                            })
+                                                            .catch(err => {
+                                                                console.error('Errore nella rimozione del film ai vedere:', err);
+                                                                window.alert("Errore nella rimozione del film da vedere");
+                                                            });
+                                                    }
+                                                } else {
+                                                    window.alert("Devi essere loggato per poter aggiungere o rimuovere un film da una lista"); //da cambiare con un popup personalizzato
+                                                }
+                                                
+                                                }}> 
+                                                <p> <FontAwesomeIcon icon={addRemoveVedere ? faBookmark : faTimes} /> 
+                                                &nbsp; {addRemoveVedere ? "Aggiungi ai " : "Rimuovi dai "} Film da Vedere</p>
                                         </Button>
                                     </div>
                                 </div>
@@ -159,13 +235,79 @@ function FilmPage() {
                                 <p>Uscita: <br/>{film.release_date} </p>
                                 <p>Voto: {film.vote}/10</p>
                             </div>
-                            <Button variant="contained" className='custom-button' onClick={() => setAdd_remove_1(!add_remove_1)}> 
-                                <p> <FontAwesomeIcon icon={add_remove_1 ? faCheck : faTimes} /> 
-                                &nbsp; {add_remove_1 ? "Aggiungi ai " : "Rimuovi dai "} <br/> Film visti</p>
+                            <Button variant="contained" className='custom-button' onClick={() =>    
+                                { 
+                                    if (token !== '' && userSub !== ''){
+                                        //handleAggiuntaRimozione(idUser, id, listDaVolerMoficare, stato) lo stato lo richiamo
+
+                                        if(addRemoveVisti){
+                                            axios.post('https://moviematcher-backend.onrender.com/user/addFilm', { body: {userSub: userSub, movieId: id, list: 'visti'}}, { headers: {Authorization: 'Bearer '+token} })
+                                                .then(response => {
+                                                    console.log("Film aggiunto ai visti:", response);
+                                                    if(response.data.valueState == true){
+                                                        window.alert("Film già presente in una lista");
+                                                    } else {
+                                                    setaddRemoveVisti(response.data.valueState);
+                                                    }                                                })
+                                                .catch(err => {
+                                                    console.error('Errore nell\'aggiunta del film ai visti:', err);
+                                                    window.alert("Errore nell'aggiunta del film ai visti");
+                                                });
+                                        } else {
+                                            axios.post('https://moviematcher-backend.onrender.com/user/removeFilm', { body: {userSub: userSub, movieId: id, list: 'visti'}}, { headers: {Authorization: 'Bearer '+token} })
+                                                .then(response => {
+                                                    console.log("Film rimosso dai visti:", response);
+                                                    if(response.data.valueState == true){
+                                                        window.alert("Film già presente in una lista");
+                                                    } else {
+                                                    setaddRemoveVisti(response.data.valueState);
+                                                    }                                                })
+                                                .catch(err => {
+                                                    console.error('Errore nella rimozione del film ai visti:', err);
+                                                    window.alert("Errore nella rimozione del film ai visti");
+                                                });
+                                        }
+                                    } else {
+                                        window.alert("Devi essere loggato per poter aggiungere o rimuovere un film da una lista"); //da cambiare con un popup personalizzato
+                                    }
+                                
+                                    }}> 
+                                <p> <FontAwesomeIcon icon={addRemoveVisti ? faCheck : faTimes} /> 
+                                &nbsp; {addRemoveVisti ? "Aggiungi ai " : "Rimuovi dai "} <br/> Film visti</p>
                             </Button>
-                            <Button variant="contained" className='custom-button' onClick={() => setAdd_remove_2(!add_remove_2)}> 
-                                <p> <FontAwesomeIcon icon={add_remove_2 ? faBookmark : faTimes} /> 
-                                &nbsp; {add_remove_2 ? "Aggiungi ai " : "Rimuovi dai "} <br/>Film da Vedere </p>
+                            <Button variant="contained" className='custom-button' onClick={() =>    
+                                { 
+                                    if (token !== '' && userSub !== ''){
+                                        //handleAggiuntaRimozione(idUser, id, listDaVolerMoficare, stato) lo stato lo richiamo
+
+                                        if(addRemoveVedere){
+                                            axios.post('https://moviematcher-backend.onrender.com/user/addFilm', { body: {userSub: userSub, movieId: id, list: 'vedere'}}, { headers: {Authorization: 'Bearer '+token} })
+                                                .then(response => {
+                                                    console.log("Film aggiunto ai vedere:", response);
+                                                    setaddRemoveVedere(response.data.valueState);
+                                                })
+                                                .catch(err => {
+                                                    console.error('Errore nell\'aggiunta del film ai vedere:', err);
+                                                    window.alert("Errore nell'aggiunta del film da vedere");
+                                                });
+                                        } else {
+                                            axios.post('https://moviematcher-backend.onrender.com/user/removeFilm', { body: {userSub: userSub, movieId: id, list: 'vedere'}}, { headers: {Authorization: 'Bearer '+token} })
+                                                .then(response => {
+                                                    console.log("Film rimosso dai vedere:", response);
+                                                    setaddRemoveVedere(response.data.valueState);
+                                                })
+                                                .catch(err => {
+                                                    console.error('Errore nella rimozione del film ai vedere:', err);
+                                                    window.alert("Errore nella rimozione del film da vedere");
+                                                });
+                                        }
+                                    } else {
+                                        window.alert("Devi essere loggato per poter aggiungere o rimuovere un film da una lista"); //da cambiare con un popup personalizzato
+                                    }
+                                    
+                                    }}> 
+                                <p> <FontAwesomeIcon icon={addRemoveVedere ? faBookmark : faTimes} /> 
+                                &nbsp; {addRemoveVedere ? "Aggiungi ai " : "Rimuovi dai "} <br/>Film da Vedere </p>
                             </Button>
                         </div>            
                     </div>

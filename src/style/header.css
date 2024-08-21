@@ -1,3 +1,9 @@
+.locked {
+  pointer-events: none;
+  opacity: 0.5; /* Opzionale: per dare un feedback visivo che il bottone è disabilitato */
+}
+
+
 
 /*per desktop*/
 @media (min-width: 1024px){

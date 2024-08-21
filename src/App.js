@@ -16,7 +16,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 
 
 import { ServerStateContext } from './contexts/serverStateContextProvider';
-import { ServerStateContextProvider } from './contexts/serverStateContextProvider'; //bisogna importare i provider dei contesti
+import LoadingGif from './components/loadingGif';
 
 
 function App() {
@@ -26,7 +26,8 @@ function App() {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
 
   const { value: server, setValue: setServer } = useContext(ServerStateContext); //stato del server
-  const [login, setLogin] = useState(false); //stato del login
+  const [ authToken, setAuthToken ] = useState('');
+  const [ userSub, setUserSub ] = useState('');
 
   useEffect(() => { //funzione per controllare se il server è raggiungibile //DA CONTROLLARE
 
@@ -65,11 +66,11 @@ function App() {
             axios.post('https://moviematcher-backend.onrender.com/user/verify', { body:JSON.stringify(user)}, {headers: {Authorization: 'Bearer '+token} })
               .then((response) => {
                 console.log("Successo, l'utente è registrato:", response);
-                setLogin(true);
+                setAuthToken(token);
+                setUserSub(user.sub);
               })
               .catch((error) => {
                 console.error('Errore nella verifica del login al backend:', error);
-                setLogin(false);
               });
   
           })
@@ -78,16 +79,14 @@ function App() {
           });
       } else {
         console.log('Nessun Utente autenticato da Auth0');
-        setLogin(false);
       }
     
-  }, [server, location, user]); //ogni volta che cambia, viene chiamato lo UseEffect
+  }, [server]); //ogni volta che cambia, viene chiamato lo UseEffect
 
   return (
 
-    <>
     
-    <ServerStateContextProvider>
+    <>    
       {console.log('Server nel contesto:', server)}
 
       <div className="App">
@@ -103,7 +102,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/profile" element={<AuthenticationGuard component={ProfilePage} />} />
               <Route path="/gameRoom" element={<AuthenticationGuard component={GameRoomPage} />} />
-              <Route path="/film/:idName" element={<FilmPage />} />
+              <Route path="/film/:idName" element={<FilmPage token={authToken} userSub={userSub}/>} />
 
               {/* Aggiungi altre route qui */}
             </Routes>
@@ -114,10 +113,8 @@ function App() {
         {/*<Router> l'ho spostato dentro index.js per acquisire la location e far eseguire lo useState solo quando cambia l'url*/}
 
       </div>
-
-    </ServerStateContextProvider>
-
     </>
+    
   );
 }
 

@@ -7,7 +7,7 @@ import { Auth0Provider } from '@auth0/auth0-react';
 
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import { ServerStateContextProvider } from './contexts/serverStateContextProvider';
+import { ServerStateContextProvider } from './contexts/serverStateContextProvider'; //importo il provider dei contesti server
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -21,7 +21,7 @@ root.render(
     cacheLocation='localstorage'> {/*cambia la destinazione dei cookie e salva i dati nel local storage*/}
 
     <Router>
-      <ServerStateContextProvider>
+      <ServerStateContextProvider> {/*bisogna importare i provider dei contesti*/}
         <App />
       </ServerStateContextProvider>
     </Router>

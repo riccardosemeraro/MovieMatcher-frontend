@@ -1,13 +1,9 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import MovieSlider from '../components/MovieSlider';
 import SearchBar from '../components/searchBar';
 import LoadingGif from '../components/loadingGif';
 
-
 import '../style/homePage.css';
-import axios from 'axios';
-
-import { useAuth0 } from '@auth0/auth0-react';
 
 import { ServerStateContext } from '../contexts/serverStateContextProvider';
 

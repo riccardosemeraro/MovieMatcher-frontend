@@ -138,14 +138,14 @@ function FilmPage({token, userSub}) {
                                                         axios.post('https://moviematcher-backend.onrender.com/user/addFilm', { body: {userSub: userSub, movieId: id, list: 'visti'}}, { headers: {Authorization: 'Bearer '+token} })
                                                             .then(response => {
                                                                 console.log("Film aggiunto ai visti:", response);
-                                                                if(response.data.valueState == true){
+                                                                if(response.data.valueState === true){
                                                                     window.alert("Film già presente in una lista");
                                                                 } else {
                                                                 setaddRemoveVisti(response.data.valueState);
                                                                 }
                                                             })
                                                             .catch(err => {
-                                                                console.error('Errore nell\'aggiunta del film ai visti:', err);
+                                                                console.error("Errore nell'aggiunta del film ai visti:", err);
                                                                 window.alert("Errore nell'aggiunta del film ai visti");
                                                             });
                                                     } else {
@@ -176,7 +176,7 @@ function FilmPage({token, userSub}) {
                                                         axios.post('https://moviematcher-backend.onrender.com/user/addFilm', { body: {userSub: userSub, movieId: id, list: 'vedere'}}, { headers: {Authorization: 'Bearer '+token} })
                                                             .then(response => {
                                                                 console.log("Film aggiunto ai vedere:", response);
-                                                                if(response.data.valueState == true){
+                                                                if(response.data.valueState === true){
                                                                     window.alert("Film già presente in una lista");
                                                                 } else {
                                                                 setaddRemoveVedere(response.data.valueState);
@@ -244,24 +244,21 @@ function FilmPage({token, userSub}) {
                                             axios.post('https://moviematcher-backend.onrender.com/user/addFilm', { body: {userSub: userSub, movieId: id, list: 'visti'}}, { headers: {Authorization: 'Bearer '+token} })
                                                 .then(response => {
                                                     console.log("Film aggiunto ai visti:", response);
-                                                    if(response.data.valueState == true){
+                                                    if(response.data.valueState === true){
                                                         window.alert("Film già presente in una lista");
                                                     } else {
                                                     setaddRemoveVisti(response.data.valueState);
                                                     }                                                })
                                                 .catch(err => {
-                                                    console.error('Errore nell\'aggiunta del film ai visti:', err);
+                                                    console.error("Errore nell'aggiunta del film ai visti:", err);
                                                     window.alert("Errore nell'aggiunta del film ai visti");
                                                 });
                                         } else {
                                             axios.post('https://moviematcher-backend.onrender.com/user/removeFilm', { body: {userSub: userSub, movieId: id, list: 'visti'}}, { headers: {Authorization: 'Bearer '+token} })
                                                 .then(response => {
                                                     console.log("Film rimosso dai visti:", response);
-                                                    if(response.data.valueState == true){
-                                                        window.alert("Film già presente in una lista");
-                                                    } else {
                                                     setaddRemoveVisti(response.data.valueState);
-                                                    }                                                })
+                                                })
                                                 .catch(err => {
                                                     console.error('Errore nella rimozione del film ai visti:', err);
                                                     window.alert("Errore nella rimozione del film ai visti");
@@ -284,8 +281,11 @@ function FilmPage({token, userSub}) {
                                             axios.post('https://moviematcher-backend.onrender.com/user/addFilm', { body: {userSub: userSub, movieId: id, list: 'vedere'}}, { headers: {Authorization: 'Bearer '+token} })
                                                 .then(response => {
                                                     console.log("Film aggiunto ai vedere:", response);
+                                                    if(response.data.valueState === true){
+                                                        window.alert("Film già presente in una lista");
+                                                    } else {
                                                     setaddRemoveVedere(response.data.valueState);
-                                                })
+                                                    }                                                })
                                                 .catch(err => {
                                                     console.error('Errore nell\'aggiunta del film ai vedere:', err);
                                                     window.alert("Errore nell'aggiunta del film da vedere");

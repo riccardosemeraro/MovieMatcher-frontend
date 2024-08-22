@@ -8,7 +8,7 @@ import MovieSlider from '../components/MovieSlider';
 
 function ProfilePage() {
 
-  const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
+  const { user } = useAuth0();
 
   const [view, setView] = useState('profile');
 
@@ -37,13 +37,13 @@ function ProfilePage() {
         <div className="sidebar">
           <ul className="ul-header">
             <li className={view === 'profile' ? 'selected' : ''}>
-              <Link to="#" onClick={() => setView('profile')} style={{ display: 'block', width: '100%' }}>Le mie info</Link>
+              <button to="#" onClick={() => setView('profile')} style={{ display: 'block', width: '100%' }}>Le mie info</button>
             </li>
             <li className={view === 'list' ? 'selected' : ''}>
-              <Link to="#" onClick={() => setView('list')} style={{ display: 'block', width: '100%' }}>Le mie liste</Link>
+              <button to="#" onClick={() => setView('list')} style={{ display: 'block', width: '100%' }}>Le mie liste</button>
             </li>
             <li className={view === 'genres' ? 'selected' : ''}>
-              <Link to="#" onClick={() => setView('genres')} style={{ display: 'block', width: '100%' }}>I miei Generi</Link>
+              <button to="#" onClick={() => setView('genres')} style={{ display: 'block', width: '100%' }}>I miei Generi</button>
             </li>
           </ul>
         </div>
@@ -105,9 +105,9 @@ function ProfilePage() {
                     </ul>
                     <ul className='mini-button'>
                       <li>
-                        <Link to="#" onClick={() => setUpdate(!update)} style={{ display: 'block', width: '100%' }}>
+                        <button to="#" onClick={() => setUpdate(!update)} style={{ display: 'block', width: '100%' }}>
                           {update ? 'Salva modifiche' : 'Modifica'}
-                        </Link>
+                        </button>
                       </li>
                       <li>
                         <LogoutButton/>
@@ -127,13 +127,13 @@ function ProfilePage() {
       <div className="profile-page">
         <ul className="ul-header">
           <li className={view === 'profile' ? 'selected' : ''}>
-            <Link to="#" onClick={() => setView('profile')} style={{ display: 'block', width: '100%' }}>Le mie info</Link>
+            <button to="#" onClick={() => setView('profile')} style={{ display: 'block', width: '100%' }}>Le mie info</button>
           </li>
           <li className={view === 'list' ? 'selected' : ''}>
-            <Link to="#" onClick={() => setView('list')} style={{ display: 'block', width: '100%' }}>Le mie liste</Link>
+            <button to="#" onClick={() => setView('list')} style={{ display: 'block', width: '100%' }}>Le mie liste</button>
           </li>
           <li className={view === 'genres' ? 'selected' : ''}>
-            <Link to="#" onClick={() => setView('genres')} style={{ display: 'block', width: '100%' }}>I miei Generi</Link>
+            <button to="#" onClick={() => setView('genres')} style={{ display: 'block', width: '100%' }}>I miei Generi</button>
           </li>
         </ul>
         
@@ -194,9 +194,9 @@ function ProfilePage() {
                     </ul>
                     <ul className='mini-button'>
                       <li>
-                        <Link to="#" onClick={() => setUpdate(!update)} style={{ display: 'block', width: '100%' }}>
+                        <button to="#" onClick={() => setUpdate(!update)} style={{ display: 'block', width: '100%' }}>
                           {update ? 'Salva modifiche' : 'Modifica'}
-                        </Link>
+                        </button>
                       </li>
                       <li>
                         <LogoutButton/>

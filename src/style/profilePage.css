@@ -65,16 +65,20 @@
       margin: 20px;
     }
 
-    .ul-header li a{
+    .ul-header li button{
       display: block;
       color: #FFFFFF;
       text-decoration: none;
       font-size: 20px;
       padding: 5px 5px;
       font-weight: bold;
+
+      background: none; /* Rimuove lo sfondo predefinito */
+      border: none; /* Rimuove il bordo predefinito */
+      cursor: pointer; /* Cambia il cursore per indicare che è cliccabile */
     }
 
-    .ul-header li.selected a {
+    .ul-header li.selected button {
       color: #FFD200; /* Colore del testo selezionato */
     }
 
@@ -201,11 +205,12 @@
       padding-bottom: 5px;
     }
 
-    .mini-button li a{
+    .mini-button li button{
       display: block;
       color: #FFFFFF;
       text-decoration: none;
       font-size: 16px;
+      font-weight: bold;
       
       margin-top: 0px;
       margin-bottom: 0px;
@@ -213,6 +218,10 @@
       margin-right: 0px;
 
       padding: 5px;
+
+      background: none; /* Rimuove lo sfondo predefinito */
+      border: none; /* Rimuove il bordo predefinito */
+      cursor: pointer; /* Cambia il cursore per indicare che è cliccabile */
     }
   }
 
@@ -279,17 +288,25 @@
       padding: 0px 5px;
     }
 
-    .ul-header li a{
+    .ul-header li button{
       display: block;
       color: #FFFFFF;
       text-decoration: none;
       font-size: 20px;
       padding: 5px 5px;
       font-weight: bold;
+
+      background: none; /* Rimuove lo sfondo predefinito */
+      border: none; /* Rimuove il bordo predefinito */
+      cursor: pointer; /* Cambia il cursore per indicare che è cliccabile */
     }
 
-    .ul-header li.selected a {
+    .ul-header li.selected button {
       color: #FFD200; /* Colore del testo selezionato */
+
+      background: none; /* Rimuove lo sfondo predefinito */
+      border: none; /* Rimuove il bordo predefinito */
+      cursor: pointer; /* Cambia il cursore per indicare che è cliccabile */
     }
 
     .profile-card{
@@ -406,7 +423,7 @@
       padding-bottom: 5px;
     }
 
-    .mini-button li a{
+    .mini-button li button{
       display: block;
       color: #FFFFFF;
 
@@ -420,5 +437,9 @@
       margin-right: 0px;
 
       padding: 5px;
+
+      background: none; /* Rimuove lo sfondo predefinito */
+      border: none; /* Rimuove il bordo predefinito */
+      cursor: pointer; /* Cambia il cursore per indicare che è cliccabile */
     }
   }

@@ -4,10 +4,13 @@ import Popup from '../components/Popup';
 import { useState, useEffect } from 'react';
 import "../style/gameRoom.css";
 
+import { useNavigate } from 'react-router-dom';
 
 function GameRoomPage() {
   const [buttonPopup, setButtonPopup] = useState(false); //
   //const [timedPopup, setTimedPopup] = useState(false);  //
+
+  const navigate = useNavigate();
 
   
   /*
@@ -41,9 +44,7 @@ function GameRoomPage() {
       </Popup>
       */}
 
-
-
-      <Button variant="primary" className='game-button' onClick={()=>('')}> 
+      <Button variant="primary" className='game-button' onClick={()=> navigate('/gameRoom/matchRoom')}> 
         <h2 className='titolo-bottone'>Partecipa a Partita</h2>
       </Button>
       <Button variant="primary" className='game-button' onClick={()=>('')}> 

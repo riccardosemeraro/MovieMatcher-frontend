@@ -5,6 +5,9 @@ import { Navigate, BrowserRouter as Router, Route, Routes, useLocation } from 'r
 import HomePage from './pages/homePage';
 import ProfilePage from './pages/profilePage';
 import GameRoomPage from './pages/GameRoomPage';
+
+import MatchRoomPage from './pages/MatchRoomPage';
+
 import AuthenticationGuard from './authenticationGard'; //importo il componente per la protezione delle rotte
 import Header from './components/header';
 import Footer from './components/footer';
@@ -13,11 +16,7 @@ import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 
-
-
 import { ServerStateContext } from './contexts/serverStateContextProvider';
-import LoadingGif from './components/loadingGif';
-
 
 function App() {
 
@@ -93,7 +92,7 @@ function App() {
 
         {/*<Router> l'ho spostato dentro index.js per acquisire la location e far eseguire lo useState solo quando cambia l'url*/}
 
-          <Header />
+        <Header />
 
           <div className='content'>
             <Routes>
@@ -102,13 +101,17 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/profile" element={<AuthenticationGuard component={ProfilePage} />} />
               <Route path="/gameRoom" element={<AuthenticationGuard component={GameRoomPage} />} />
+
+              {/*route temporanea*/}
+              <Route path="/gameRoom/matchRoom" element={<AuthenticationGuard component={MatchRoomPage} />} /> 
+
               <Route path="/film/:idName" element={<FilmPage token={authToken} userSub={userSub}/>} />
 
               {/* Aggiungi altre route qui */}
             </Routes>
           </div>
 
-          <Footer />
+          {location.pathname !== '/gameRoom/matchRoom' && <Footer />}
 
         {/*<Router> l'ho spostato dentro index.js per acquisire la location e far eseguire lo useState solo quando cambia l'url*/}
 

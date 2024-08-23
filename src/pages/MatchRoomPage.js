@@ -1,6 +1,7 @@
 import "../style/matchRoom.css";
 import { useNavigate } from 'react-router-dom';
 
+import { FaCopy } from 'react-icons/fa'; // Importa l'icona FaCopy
 
 function MatchRoomPage() {
 
@@ -8,17 +9,17 @@ function MatchRoomPage() {
 
     const handleCopy = (event) => {
         // Seleziona il tag <p> immediatamente precedente
-        const previousParagraph = event.target.previousElementSibling;
+        const specificElement = document.querySelector('.codice');
         
-        if (previousParagraph && previousParagraph.tagName === 'P') {
+        if (specificElement) {
           // Crea un elemento di input temporaneo
           const tempInput = document.createElement('input');
-          tempInput.value = previousParagraph.textContent;
+          tempInput.value = specificElement.textContent;
           document.body.appendChild(tempInput);
           tempInput.select();
           document.execCommand('copy');
           document.body.removeChild(tempInput);
-          alert('Testo copiato: ' + tempInput.value);
+          alert('Testo copiato: ' + specificElement.textContent);
         } else {
           alert('Testo non trovato, impossibile copiare');
         }
@@ -63,8 +64,8 @@ function MatchRoomPage() {
             <div className="dati-partita">
                 <div className="dati">
                     <p>Codice:</p>
-                    <p>codice</p>
-                    <button onClick={handleCopy}>📋</button>
+                    <p className="codice">codice</p>
+                    <button onClick={handleCopy}><FaCopy/></button> {/*📋 */}
                 </div>
                 <div className="dati">
                     <p>Link:</p>
@@ -80,6 +81,7 @@ function MatchRoomPage() {
                     <li>Nome2</li>
                     <li>Nome3</li>
                     <li>Nome4</li>
+                    {/* .map dei giocatori in partita */}
                 </ul>
             </div>
             <div className="bottoni">
@@ -100,7 +102,7 @@ function MatchRoomPage() {
                     <div className="dati">
                         <p>Codice:</p>
                         <p>codice</p>
-                        <button onClick={handleCopy}>📋</button>
+                        <button onClick={handleCopy}><FaCopy/></button>
                     </div>
                     <div className="dati">
                         <p>Link:</p>

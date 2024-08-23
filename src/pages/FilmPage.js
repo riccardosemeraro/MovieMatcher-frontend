@@ -89,7 +89,7 @@ function FilmPage({token, userSub}) {
             })
             .finally(() => {
                 setLoading(false);
-                //setTimeout(() => setLoading(false), 3005); //time_max: 3200ms per la durata della gif
+                //setTimeout(() => setLoading(false), 3000); //time_max: 3200ms per la durata della gif
             });
 
         window.scrollTo(0, 0); //per far tornare la pagina in alto quando si carica

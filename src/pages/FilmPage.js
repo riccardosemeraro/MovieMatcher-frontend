@@ -135,7 +135,7 @@ function FilmPage({token, userSub}) {
                                                     //handleAggiuntaRimozione(idUser, id, listDaVolerMoficare, stato) lo stato lo richiamo
 
                                                     if(addRemoveVisti){
-                                                        axios.post('https://moviematcher-backend.onrender.com/user/addFilm', { body: {userSub: userSub, movieId: id, list: 'visti'}}, { headers: {Authorization: 'Bearer '+token} })
+                                                        axios.post('https://moviematcher-backend.onrender.com/user/addFilm', { body: {userSub: userSub, movieId: id, movieTitle: film.title, moviePosterPath: film.poster_path, list: 'visti'}}, { headers: {Authorization: 'Bearer '+token} })
                                                             .then(response => {
                                                                 console.log("Film aggiunto ai visti:", response);
                                                                 if(response.data.valueState === true){
@@ -149,7 +149,7 @@ function FilmPage({token, userSub}) {
                                                                 window.alert("Errore nell'aggiunta del film ai visti");
                                                             });
                                                     } else {
-                                                        axios.post('https://moviematcher-backend.onrender.com/user/removeFilm', { body: {userSub: userSub, movieId: id, list: 'visti'}}, { headers: {Authorization: 'Bearer '+token} })
+                                                        axios.post('https://moviematcher-backend.com/user/removeFilm', { body: {userSub: userSub, movieId: id,  list: 'visti'}}, { headers: {Authorization: 'Bearer '+token} })
                                                             .then(response => {
                                                                 console.log("Film rimosso dai visti:", response);
                                                                 setaddRemoveVisti(response.data.valueState);
@@ -173,7 +173,7 @@ function FilmPage({token, userSub}) {
                                                     //handleAggiuntaRimozione(idUser, id, listDaVolerMoficare, stato) lo stato lo richiamo
 
                                                     if(addRemoveVedere){
-                                                        axios.post('https://moviematcher-backend.onrender.com/user/addFilm', { body: {userSub: userSub, movieId: id, list: 'vedere'}}, { headers: {Authorization: 'Bearer '+token} })
+                                                        axios.post('https://moviematcher-backend.onrender.com/user/addFilm', { body: {userSub: userSub, movieId: id, movieTitle: film.title, moviePosterPath: film.poster_path, list: 'vedere'}}, { headers: {Authorization: 'Bearer '+token} })
                                                             .then(response => {
                                                                 console.log("Film aggiunto ai vedere:", response);
                                                                 if(response.data.valueState === true){
@@ -241,7 +241,7 @@ function FilmPage({token, userSub}) {
                                         //handleAggiuntaRimozione(idUser, id, listDaVolerMoficare, stato) lo stato lo richiamo
 
                                         if(addRemoveVisti){
-                                            axios.post('https://moviematcher-backend.onrender.com/user/addFilm', { body: {userSub: userSub, movieId: id, list: 'visti'}}, { headers: {Authorization: 'Bearer '+token} })
+                                            axios.post('https://moviematcher-backend.onrender.com/user/addFilm', { body: {userSub: userSub, movieId: id, movieTitle: film.title, moviePosterPath: film.poster_path, list: 'visti'}}, { headers: {Authorization: 'Bearer '+token} })
                                                 .then(response => {
                                                     console.log("Film aggiunto ai visti:", response);
                                                     if(response.data.valueState === true){
@@ -254,7 +254,7 @@ function FilmPage({token, userSub}) {
                                                     window.alert("Errore nell'aggiunta del film ai visti");
                                                 });
                                         } else {
-                                            axios.post('https://moviematcher-backend.onrender.com/user/removeFilm', { body: {userSub: userSub, movieId: id, list: 'visti'}}, { headers: {Authorization: 'Bearer '+token} })
+                                            axios.post('https://moviematcher-backend.com/user/removeFilm', { body: {userSub: userSub, movieId: id, list: 'visti'}}, { headers: {Authorization: 'Bearer '+token} })
                                                 .then(response => {
                                                     console.log("Film rimosso dai visti:", response);
                                                     setaddRemoveVisti(response.data.valueState);
@@ -278,7 +278,7 @@ function FilmPage({token, userSub}) {
                                         //handleAggiuntaRimozione(idUser, id, listDaVolerMoficare, stato) lo stato lo richiamo
 
                                         if(addRemoveVedere){
-                                            axios.post('https://moviematcher-backend.onrender.com/user/addFilm', { body: {userSub: userSub, movieId: id, list: 'vedere'}}, { headers: {Authorization: 'Bearer '+token} })
+                                            axios.post('https://moviematcher-backend.onrender.com/user/addFilm', { body: {userSub: userSub, movieId: id, movieTitle: film.title, moviePosterPath: film.poster_path, list: 'vedere'}}, { headers: {Authorization: 'Bearer '+token} })
                                                 .then(response => {
                                                     console.log("Film aggiunto ai vedere:", response);
                                                     if(response.data.valueState === true){

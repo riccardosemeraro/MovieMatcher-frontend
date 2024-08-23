@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 
 
-function MovieSlider({type, id}) {
+function MovieSlider({type, id, token}) {
 
   const [films, setFilms] = useState([]);
   const [title, setTitle] = useState('');
@@ -41,7 +41,7 @@ function MovieSlider({type, id}) {
     Now Playing: 'https://api.themoviedb.org/3/movie/now_playing?language=it-IT&page=1'
     */
 
-    let addedQuery = 'type=' + type + (id ? ('&id=' + id) : '') + (type === 'recommendation' ? ('&user=' + JSON.parse(localStorage.getItem('user')).sub ) : '');
+    let addedQuery = 'type=' + type + (id ? ('&id=' + id) : '') + (type === 'recommendation' ? ('&userNickename=' + JSON.parse(localStorage.getItem('user')).nickname ) : '');
 
     //console.log(type);
     //console.log(url);
@@ -49,18 +49,46 @@ function MovieSlider({type, id}) {
     setFilms([]); //riporta tutto lo slider a sinistra al cambio pagina
 
 
-     //axios.get(url, options)
-     axios.get('https://moviematcher-backend.onrender.com/tmdb/movieSlider?'+addedQuery)
-      .then (response => {
-        console.log(response);
-        setFilms(response.data.movies);
-        setTitle(response.data.title);
-        //console.log(response.data.results[0]);
-      })
-      .catch(err => {
-        console.error(err);
-        setTitle(err.response.data.title);
-      });
+    if (type === 'visti') {
+      axios.post('https://moviematcher-backend.onrender.com/user/getMyList', { body: {userNickname: JSON.parse(localStorage.getItem('user')).nickname }}, { headers: {Authorization: 'Bearer '+token} })
+        .then (response => {
+          console.log('Risposta dal backend: ', response);
+          setFilms(response.data.movies);
+          setTitle(response.data.title);
+        })
+        .catch(err => {
+          console.error(err);
+          setTitle(err.response.data.title);
+        });
+      
+    } else if (type === 'vedere') {
+      axios.post('https://moviematcher-backend.onrender.com/user/getWatchList', { body: {userNickname: JSON.parse(localStorage.getItem('user')).nickname }}, { headers: {Authorization: 'Bearer '+token} })
+        .then (response => {
+          console.log('Risposta dal backend: ', response);
+          setFilms(response.data.movies);
+          setTitle(response.data.title);
+        })
+        .catch(err => {
+          console.error(err);
+          setTitle(err.response.data.title);
+        });
+
+    } else {
+
+      //axios.get(url, options)
+      axios.get('https://moviematcher-backend.onrender.com/tmdb/movieSlider?'+addedQuery)
+        .then (response => {
+          console.log(response);
+          setFilms(response.data.movies);
+          setTitle(response.data.title);
+          //console.log(response.data.results[0]);
+        })
+        .catch(err => {
+          console.error(err);
+          setTitle(err.response.data.title);
+        });
+
+    }
 
   }, [id, type]);
 

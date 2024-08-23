@@ -56,8 +56,12 @@ function App() {
 
     console.log('AUTENTICATO: ' + isAuthenticated);
 
+
     if(isAuthenticated && server)
       {
+
+        localStorage.setItem('user', JSON.stringify(user));
+
         console.log('Utente autenticato da Auth0');
         getAccessTokenSilently()
           .then( (token) => {
@@ -99,7 +103,7 @@ function App() {
               {/* quando leggi la wildcard reindirizzami alla root*/}
               <Route path="/*" element={<Navigate to="/" />} />
               <Route path="/" element={<HomePage />} />
-              <Route path="/profile" element={<AuthenticationGuard component={ProfilePage} />} />
+              <Route path="/profile" element={<AuthenticationGuard component={() => <ProfilePage token={authToken} />} />} />
               <Route path="/gameRoom" element={<AuthenticationGuard component={GameRoomPage} />} />
 
               {/*route temporanea*/}

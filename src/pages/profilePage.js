@@ -1,12 +1,14 @@
-import React, { useState} from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState} from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import '../style/profilePage.css';
 import LogoutButton from '../components/logout-button';
 import { useAuth0 } from '@auth0/auth0-react';
 import MovieSlider from '../components/MovieSlider';
 
-function ProfilePage() {
+function ProfilePage({token}) {
+
+  const navigate = useNavigate();
 
   const { user } = useAuth0();
 
@@ -37,13 +39,13 @@ function ProfilePage() {
         <div className="sidebar">
           <ul className="ul-header">
             <li className={view === 'profile' ? 'selected' : ''}>
-              <button to="#" onClick={() => setView('profile')} style={{ display: 'block', width: '100%' }}>Le mie info</button>
+              <button onClick={() => setView('profile')} style={{ display: 'block', width: '100%' }}>Le mie info</button>
             </li>
             <li className={view === 'list' ? 'selected' : ''}>
-              <button to="#" onClick={() => setView('list')} style={{ display: 'block', width: '100%' }}>Le mie liste</button>
+              <button onClick={() => setView('list')} style={{ display: 'block', width: '100%' }}>Le mie liste</button>
             </li>
             <li className={view === 'genres' ? 'selected' : ''}>
-              <button to="#" onClick={() => setView('genres')} style={{ display: 'block', width: '100%' }}>I miei Generi</button>
+              <button  onClick={() => setView('genres')} style={{ display: 'block', width: '100%' }}>I miei Generi</button>
             </li>
           </ul>
         </div>
@@ -118,7 +120,7 @@ function ProfilePage() {
             </div>
           </div>
         }
-        {view === 'list' && <div style={{ maxWidth:'75%', color: '#FFFFFF' }}> <MovieSlider type="now_playing" /> <MovieSlider /></div>}
+        { view === 'list' && <div style={{ width: 'fit-content', maxWidth:'75%', color: '#FFFFFF' }}> <MovieSlider type="visti" token={token} /> <MovieSlider type='vedere' token={token}/></div> } 
         {view === 'genres' && <div style={{ maxWidth:'75%', color: '#FFFFFF' }}>Generi Content</div>}
       </div>
     </div>

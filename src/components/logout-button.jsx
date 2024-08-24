@@ -5,7 +5,7 @@ const LogoutButton = () => {
   const { logout } = useAuth0();
 
   return (
-    <button style={{ background: 'transparent', border: 'none', fontSize: '16px', fontWeight:'bold', color: '#FFFFFF'}} onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
+    <button style={{ background: 'transparent', border: 'none', fontSize: '16px', fontWeight:'bold', color: '#FFFFFF'}} onClick={() => logout({ logoutParams: { returnTo: window.location.origin } }) && localStorage.removeItem('user') }>
       Log Out
     </button>
   );

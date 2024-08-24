@@ -14,7 +14,7 @@ import LoadingGif from '../components/loadingGif';
 import { ServerStateContext } from '../contexts/serverStateContextProvider';
 
 
-function FilmPage({token, userSub}) {
+function FilmPage({token}) {
 
     const { value: server, setValue: setServer } = useContext(ServerStateContext); //stato del server
 
@@ -50,10 +50,10 @@ function FilmPage({token, userSub}) {
                 setFilm(response.data.movie);
 
                 const handleFilmCheckList = async (idFilm, lista) => {
-                    if (token !== '' && userSub !== ''){
+                    if (token !== '' && JSON.parse(localStorage.getItem('user')).sub !== ''){
 
                         const corpo = {
-                            userSub: userSub,
+                            userSub: JSON.parse(localStorage.getItem('user')).sub,
                             movieId: idFilm,
                             list: lista
                         };
@@ -94,7 +94,7 @@ function FilmPage({token, userSub}) {
 
         window.scrollTo(0, 0); //per far tornare la pagina in alto quando si carica
 
-    }, [id, userSub]);
+    }, [id, JSON.parse(localStorage.getItem('user')).sub]);
 
     return (
         (!server || loading) ? 
@@ -131,11 +131,11 @@ function FilmPage({token, userSub}) {
                                     <div className='bottoni'>
                                         <Button variant="primary" className='custom-button' onClick={() => 
                                             {
-                                                if (token !== '' && userSub !== ''){
+                                                if (token !== '' && JSON.parse(localStorage.getItem('user')).sub !== ''){
                                                     //handleAggiuntaRimozione(idUser, id, listDaVolerMoficare, stato) lo stato lo richiamo
 
                                                     if(addRemoveVisti){
-                                                        axios.post('https://moviematcher-backend.onrender.com/user/addFilm', { body: {userSub: userSub, movieId: id, movieTitle: film.title, moviePosterPath: film.poster_path, list: 'visti'}}, { headers: {Authorization: 'Bearer '+token} })
+                                                        axios.post('https://moviematcher-backend.onrender.com/user/addFilm', { body: {userSub: JSON.parse(localStorage.getItem('user')).sub, movieId: id, movieTitle: film.title, moviePosterPath: film.poster_path, list: 'visti'}}, { headers: {Authorization: 'Bearer '+token} })
                                                             .then(response => {
                                                                 console.log("Film aggiunto ai visti:", response);
                                                                 if(response.data.valueState === true){
@@ -149,7 +149,7 @@ function FilmPage({token, userSub}) {
                                                                 window.alert("Errore nell'aggiunta del film ai visti");
                                                             });
                                                     } else {
-                                                        axios.post('https://moviematcher-backend.onrender.com/user/removeFilm', { body: {userSub: userSub, movieId: id,  list: 'visti'}}, { headers: {Authorization: 'Bearer '+token} })
+                                                        axios.post('https://moviematcher-backend.onrender.com/user/removeFilm', { body: {userSub: JSON.parse(localStorage.getItem('user')).sub, movieId: id,  list: 'visti'}}, { headers: {Authorization: 'Bearer '+token} })
                                                             .then(response => {
                                                                 console.log("Film rimosso dai visti:", response);
                                                                 setaddRemoveVisti(response.data.valueState);
@@ -169,11 +169,11 @@ function FilmPage({token, userSub}) {
                                         </Button>
                                         <Button variant="primary" className='custom-button' onClick={() =>  
                                             {
-                                                if (token !== '' && userSub !== ''){
+                                                if (token !== '' && JSON.parse(localStorage.getItem('user')).sub !== ''){
                                                     //handleAggiuntaRimozione(idUser, id, listDaVolerMoficare, stato) lo stato lo richiamo
 
                                                     if(addRemoveVedere){
-                                                        axios.post('https://moviematcher-backend.onrender.com/user/addFilm', { body: {userSub: userSub, movieId: id, movieTitle: film.title, moviePosterPath: film.poster_path, list: 'vedere'}}, { headers: {Authorization: 'Bearer '+token} })
+                                                        axios.post('https://moviematcher-backend.onrender.com/user/addFilm', { body: {userSub: JSON.parse(localStorage.getItem('user')).sub, movieId: id, movieTitle: film.title, moviePosterPath: film.poster_path, list: 'vedere'}}, { headers: {Authorization: 'Bearer '+token} })
                                                             .then(response => {
                                                                 console.log("Film aggiunto ai vedere:", response);
                                                                 if(response.data.valueState === true){
@@ -187,7 +187,7 @@ function FilmPage({token, userSub}) {
                                                                 window.alert("Errore nell'aggiunta del film da vedere");
                                                             });
                                                     } else {
-                                                        axios.post('https://moviematcher-backend.onrender.com/user/removeFilm', { body: {userSub: userSub, movieId: id, list: 'vedere'}}, { headers: {Authorization: 'Bearer '+token} })
+                                                        axios.post('https://moviematcher-backend.onrender.com/user/removeFilm', { body: {userSub: JSON.parse(localStorage.getItem('user')).sub, movieId: id, list: 'vedere'}}, { headers: {Authorization: 'Bearer '+token} })
                                                             .then(response => {
                                                                 console.log("Film rimosso dai vedere:", response);
                                                                 setaddRemoveVedere(response.data.valueState);
@@ -237,11 +237,11 @@ function FilmPage({token, userSub}) {
                             </div>
                             <Button variant="contained" className='custom-button' onClick={() =>    
                                 { 
-                                    if (token !== '' && userSub !== ''){
+                                    if (token !== '' && JSON.parse(localStorage.getItem('user')).sub !== ''){
                                         //handleAggiuntaRimozione(idUser, id, listDaVolerMoficare, stato) lo stato lo richiamo
 
                                         if(addRemoveVisti){
-                                            axios.post('https://moviematcher-backend.onrender.com/user/addFilm', { body: {userSub: userSub, movieId: id, movieTitle: film.title, moviePosterPath: film.poster_path, list: 'visti'}}, { headers: {Authorization: 'Bearer '+token} })
+                                            axios.post('https://moviematcher-backend.onrender.com/user/addFilm', { body: {userSub: JSON.parse(localStorage.getItem('user')).sub, movieId: id, movieTitle: film.title, moviePosterPath: film.poster_path, list: 'visti'}}, { headers: {Authorization: 'Bearer '+token} })
                                                 .then(response => {
                                                     console.log("Film aggiunto ai visti:", response);
                                                     if(response.data.valueState === true){
@@ -254,7 +254,7 @@ function FilmPage({token, userSub}) {
                                                     window.alert("Errore nell'aggiunta del film ai visti");
                                                 });
                                         } else {
-                                            axios.post('https://moviematcher-backend.onrender.com/user/removeFilm', { body: {userSub: userSub, movieId: id, list: 'visti'}}, { headers: {Authorization: 'Bearer '+token} })
+                                            axios.post('https://moviematcher-backend.onrender.com/user/removeFilm', { body: {userSub: JSON.parse(localStorage.getItem('user')).sub, movieId: id, list: 'visti'}}, { headers: {Authorization: 'Bearer '+token} })
                                                 .then(response => {
                                                     console.log("Film rimosso dai visti:", response);
                                                     setaddRemoveVisti(response.data.valueState);
@@ -274,11 +274,11 @@ function FilmPage({token, userSub}) {
                             </Button>
                             <Button variant="contained" className='custom-button' onClick={() =>    
                                 { 
-                                    if (token !== '' && userSub !== ''){
+                                    if (token !== '' && JSON.parse(localStorage.getItem('user')).sub !== ''){
                                         //handleAggiuntaRimozione(idUser, id, listDaVolerMoficare, stato) lo stato lo richiamo
 
                                         if(addRemoveVedere){
-                                            axios.post('https://moviematcher-backend.onrender.com/user/addFilm', { body: {userSub: userSub, movieId: id, movieTitle: film.title, moviePosterPath: film.poster_path, list: 'vedere'}}, { headers: {Authorization: 'Bearer '+token} })
+                                            axios.post('https://moviematcher-backend.onrender.com/user/addFilm', { body: {userSub: JSON.parse(localStorage.getItem('user')).sub, movieId: id, movieTitle: film.title, moviePosterPath: film.poster_path, list: 'vedere'}}, { headers: {Authorization: 'Bearer '+token} })
                                                 .then(response => {
                                                     console.log("Film aggiunto ai vedere:", response);
                                                     if(response.data.valueState === true){
@@ -291,7 +291,7 @@ function FilmPage({token, userSub}) {
                                                     window.alert("Errore nell'aggiunta del film da vedere");
                                                 });
                                         } else {
-                                            axios.post('https://moviematcher-backend.onrender.com/user/removeFilm', { body: {userSub: userSub, movieId: id, list: 'vedere'}}, { headers: {Authorization: 'Bearer '+token} })
+                                            axios.post('https://moviematcher-backend.onrender.com/user/removeFilm', { body: {userSub: JSON.parse(localStorage.getItem('user')).sub, movieId: id, list: 'vedere'}}, { headers: {Authorization: 'Bearer '+token} })
                                                 .then(response => {
                                                     console.log("Film rimosso dai vedere:", response);
                                                     setaddRemoveVedere(response.data.valueState);

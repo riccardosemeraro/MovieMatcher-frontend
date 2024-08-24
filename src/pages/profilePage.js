@@ -3,26 +3,31 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import '../style/profilePage.css';
 import LogoutButton from '../components/logout-button';
-import { useAuth0 } from '@auth0/auth0-react';
 import MovieSlider from '../components/MovieSlider';
+import axios from 'axios';
 
 function ProfilePage({token}) {
 
   const navigate = useNavigate();
 
-  const { user } = useAuth0();
-
   const [view, setView] = useState('profile');
 
-  const [formData, setFormData] = useState({
+  const [update, setUpdate] = useState(false);
+
+    /*const [formData, setFormData] = useState({
     email: user.email,
     nick: user.nickname,
     name: user.given_name,
     surname: user.family_name
     // Aggiungi altri campi necessari
-  });
+  });*/
 
-  const [update, setUpdate] = useState(false);
+  const [formData, setFormData] = useState({
+    email: '',
+    nick: '',
+    name: '',
+    surname: ''
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,6 +36,61 @@ function ProfilePage({token}) {
       [name]: value,
     }));
   };
+
+  const handleUpdate = () => {
+    
+    /*
+    if(update){
+      console.log('update: ', formData);
+      axios.post('',  { body: {nickname: formData.nick, email: formData.email, nome: formData.name, cognome: formData.surname  }}, { headers: {Authorization: 'Bearer '+token} })
+        .then(response => {
+          if(response.status === 200){
+            console.log('Modifiche effettuate con successo');
+            alert('Modifiche effettuate con successo');
+            setUpdate(!update);
+          }
+          else{
+            console.log('Errore nel salvataggio delle modifiche');
+            alert('Errore nel salvataggio delle modifiche');
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          alert('Errore nel salvataggio delle modifiche');
+        }
+      );
+    }
+    else{
+      setUpdate(!update);
+    } 
+    */
+    setUpdate(!update);
+
+  };
+
+
+  useEffect(() => {
+
+    if (token !== '') {
+      axios.post('https://moviematcher-backend.onrender.com/user/getUserData', { body: {userNickname: JSON.parse(localStorage.getItem('user')).nickname}}, { headers: {Authorization: 'Bearer '+token} })
+      .then (response => {
+        console.log('Risposta dal backend: ', response);
+        setFormData({
+          email: response.data.userData.email,
+          nick: response.data.userData.username,
+          name: response.data.userData.nome,
+          surname: response.data.userData.cognome
+        } );
+        console.log(formData);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+    }
+  }, [token]);
+
+
+
 
   return (
     <>
@@ -52,9 +112,7 @@ function ProfilePage({token}) {
         
         {
           view === 'profile' && <div  className="profile-card">
-            <div className="profile-info">
-              {user && (
-                <>    
+            <div className="profile-info">   
                     <ul className='ul-info'>
                       <li>
                         <div className='li-content'>
@@ -107,7 +165,7 @@ function ProfilePage({token}) {
                     </ul>
                     <ul className='mini-button'>
                       <li>
-                        <button to="#" onClick={() => setUpdate(!update)} style={{ display: 'block', width: '100%' }}>
+                        <button to="#" onClick={() => handleUpdate()} style={{ display: 'block', width: '100%' }}>
                           {update ? 'Salva modifiche' : 'Modifica'}
                         </button>
                       </li>
@@ -115,8 +173,6 @@ function ProfilePage({token}) {
                         <LogoutButton/>
                       </li>
                     </ul>
-                </>
-              )}
             </div>
           </div>
         }
@@ -141,9 +197,7 @@ function ProfilePage({token}) {
         
         {
           view === 'profile' && <div className="profile-card">
-            <div className="profile-info">
-              {user && (
-                <>    
+            <div className="profile-info">  
                     <ul className='ul-info'>
                       <li>
                         <div className='li-content'>
@@ -196,7 +250,7 @@ function ProfilePage({token}) {
                     </ul>
                     <ul className='mini-button'>
                       <li>
-                        <button to="#" onClick={() => setUpdate(!update)} style={{ display: 'block', width: '100%' }}>
+                        <button to="#" onClick={() => handleUpdate()} style={{ display: 'block', width: '100%' }}>
                           {update ? 'Salva modifiche' : 'Modifica'}
                         </button>
                       </li>
@@ -204,8 +258,6 @@ function ProfilePage({token}) {
                         <LogoutButton/>
                       </li>
                     </ul>
-                </>
-              )}
             </div>
           </div>
         }

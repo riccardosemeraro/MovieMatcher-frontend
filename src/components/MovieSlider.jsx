@@ -3,10 +3,6 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-
-
-
-
 function MovieSlider({type, id, token}) {
 
   const [films, setFilms] = useState([]);

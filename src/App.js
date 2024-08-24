@@ -26,7 +26,6 @@ function App() {
 
   const { value: server, setValue: setServer } = useContext(ServerStateContext); //stato del server
   const [ authToken, setAuthToken ] = useState('');
-  const [ userSub, setUserSub ] = useState('');
 
   useEffect(() => { //funzione per controllare se il server è raggiungibile //DA CONTROLLARE
 
@@ -70,7 +69,6 @@ function App() {
               .then((response) => {
                 console.log("Successo, l'utente è registrato:", response);
                 setAuthToken(token);
-                setUserSub(user.sub);
               })
               .catch((error) => {
                 console.error('Errore nella verifica del login al backend:', error);
@@ -109,7 +107,7 @@ function App() {
               {/*route temporanea*/}
               <Route path="/gameRoom/matchRoom" element={<AuthenticationGuard component={MatchRoomPage} />} /> 
 
-              <Route path="/film/:idName" element={<FilmPage token={authToken} userSub={userSub}/>} />
+              <Route path="/film/:idName" element={<FilmPage token={authToken}/>} />
 
               {/* Aggiungi altre route qui */}
             </Routes>

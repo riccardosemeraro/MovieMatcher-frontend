@@ -149,7 +149,7 @@ function FilmPage({token, userSub}) {
                                                                 window.alert("Errore nell'aggiunta del film ai visti");
                                                             });
                                                     } else {
-                                                        axios.post('https://moviematcher-backend.com/user/removeFilm', { body: {userSub: userSub, movieId: id,  list: 'visti'}}, { headers: {Authorization: 'Bearer '+token} })
+                                                        axios.post('https://moviematcher-backend.onrender.com/user/removeFilm', { body: {userSub: userSub, movieId: id,  list: 'visti'}}, { headers: {Authorization: 'Bearer '+token} })
                                                             .then(response => {
                                                                 console.log("Film rimosso dai visti:", response);
                                                                 setaddRemoveVisti(response.data.valueState);
@@ -254,7 +254,7 @@ function FilmPage({token, userSub}) {
                                                     window.alert("Errore nell'aggiunta del film ai visti");
                                                 });
                                         } else {
-                                            axios.post('https://moviematcher-backend.com/user/removeFilm', { body: {userSub: userSub, movieId: id, list: 'visti'}}, { headers: {Authorization: 'Bearer '+token} })
+                                            axios.post('https://moviematcher-backend.onrender.com/user/removeFilm', { body: {userSub: userSub, movieId: id, list: 'visti'}}, { headers: {Authorization: 'Bearer '+token} })
                                                 .then(response => {
                                                     console.log("Film rimosso dai visti:", response);
                                                     setaddRemoveVisti(response.data.valueState);

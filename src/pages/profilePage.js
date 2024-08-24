@@ -211,8 +211,8 @@ function ProfilePage({token}) {
         }
         {
           view === 'list' && <div style={{ color: '#FFFFFF' }}>
-            <MovieSlider type="now_playing" />
-            <MovieSlider />
+            <MovieSlider type="visti" token={token} />
+            <MovieSlider type="vedere" token={token}/>
           </div>
         }
         {view === 'genres' && <div style={{ color: '#FFFFFF' }}>Generi Content</div>} 

@@ -40,7 +40,7 @@ function ProfilePage({token}) {
   const handleUpdate = () => {
     if(update){
       //console.log('update: ', formData);
-      axios.post('http://localhost:9000/user/updateUserData',  { body: {sub: JSON.parse(localStorage.getItem('user')).sub, nickname: formData.nick, nome: formData.name, cognome: formData.surname  }}, { headers: {Authorization: 'Bearer '+token} })
+      axios.post('https://moviematcher-backend.onrender.com/user/updateUserData',  { body: {sub: JSON.parse(localStorage.getItem('user')).sub, nickname: formData.nick, nome: formData.name, cognome: formData.surname  }}, { headers: {Authorization: 'Bearer '+token} })
         .then(response => {
           console.log('Risposta cambio dati: ', response);
           if(response.status === 200){

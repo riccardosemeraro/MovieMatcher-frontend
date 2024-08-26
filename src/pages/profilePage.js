@@ -38,20 +38,19 @@ function ProfilePage({token}) {
   };
 
   const handleUpdate = () => {
-    
-    /*
     if(update){
-      console.log('update: ', formData);
-      axios.post('',  { body: {nickname: formData.nick, email: formData.email, nome: formData.name, cognome: formData.surname  }}, { headers: {Authorization: 'Bearer '+token} })
+      //console.log('update: ', formData);
+      axios.post('http://localhost:9000/user/updateUserData',  { body: {sub: JSON.parse(localStorage.getItem('user')).sub, nickname: formData.nick, nome: formData.name, cognome: formData.surname  }}, { headers: {Authorization: 'Bearer '+token} })
         .then(response => {
+          console.log('Risposta cambio dati: ', response);
           if(response.status === 200){
             console.log('Modifiche effettuate con successo');
             alert('Modifiche effettuate con successo');
             setUpdate(!update);
           }
-          else{
-            console.log('Errore nel salvataggio delle modifiche');
-            alert('Errore nel salvataggio delle modifiche');
+          else if (response.status === 201){
+            console.log('Username già esistente');
+            alert('Username già esistente, scegline un altro!');
           }
         })
         .catch(err => {
@@ -63,9 +62,6 @@ function ProfilePage({token}) {
     else{
       setUpdate(!update);
     } 
-    */
-    setUpdate(!update);
-
   };
 
 
@@ -128,18 +124,6 @@ function ProfilePage({token}) {
                       </li>
                       <li>
                         <div className='li-content'>
-                          <a>Email: &nbsp;</a>
-                          <input
-                              type="text" 
-                              name="email"
-                              value={formData.email}
-                              disabled={!update} 
-                              onChange={handleChange}
-                          /> 
-                        </div>
-                      </li>
-                      <li>
-                        <div className='li-content'>
                           <a>Nome: &nbsp;</a>
                           <input
                               type="text" 
@@ -160,6 +144,18 @@ function ProfilePage({token}) {
                               disabled={!update} 
                               onChange={handleChange}
                           />
+                        </div>
+                      </li>
+                      <li>
+                        <div className='li-content'>
+                          <a>Email: &nbsp;</a>
+                          <input
+                              type="text" 
+                              name="email"
+                              value={formData.email}
+                              disabled={true} 
+                              onChange={handleChange}
+                          /> 
                         </div>
                       </li>
                     </ul>
@@ -213,18 +209,6 @@ function ProfilePage({token}) {
                       </li>
                       <li>
                         <div className='li-content'>
-                          <a>Email: &nbsp;</a>
-                          <input
-                              type="text" 
-                              name="email"
-                              value={formData.email}
-                              disabled={!update} 
-                              onChange={handleChange}
-                          /> 
-                        </div>
-                      </li>
-                      <li>
-                        <div className='li-content'>
                           <a>Nome: &nbsp;</a>
                           <input
                               type="text" 
@@ -245,6 +229,18 @@ function ProfilePage({token}) {
                               disabled={!update} 
                               onChange={handleChange}
                           />
+                        </div>
+                      </li>
+                      <li>
+                        <div className='li-content'>
+                          <a>Email: &nbsp;</a>
+                          <input
+                              type="text" 
+                              name="email"
+                              value={formData.email}
+                              disabled={true} 
+                              onChange={handleChange}
+                          /> 
                         </div>
                       </li>
                     </ul>

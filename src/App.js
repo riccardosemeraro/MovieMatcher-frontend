@@ -59,8 +59,6 @@ function App() {
     if(isAuthenticated && server)
       {
 
-        localStorage.setItem('user', JSON.stringify(user));
-
         console.log('Utente autenticato da Auth0');
         getAccessTokenSilently()
           .then( (token) => {
@@ -69,6 +67,7 @@ function App() {
               .then((response) => {
                 console.log("Successo, l'utente è registrato:", response);
                 setAuthToken(token);
+                localStorage.setItem('user', JSON.stringify(response.data.user));
               })
               .catch((error) => {
                 console.error('Errore nella verifica del login al backend:', error);
@@ -82,7 +81,7 @@ function App() {
         console.log('Nessun Utente autenticato da Auth0');
       }
     
-  }, [server]); //ogni volta che cambia, viene chiamato lo UseEffect
+  }, [server, isAuthenticated]); //ogni volta che cambia, viene chiamato lo UseEffect
 
   return (
 

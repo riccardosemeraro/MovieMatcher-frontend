@@ -38,6 +38,8 @@ function FilmPage({token}) {
 
     console.log(idName);
     console.log("ID del film: " + id);
+
+    let localStorageUser = JSON.parse(localStorage.getItem('user'));
    
     useEffect(() => {
         setLoading(true);
@@ -50,10 +52,10 @@ function FilmPage({token}) {
                 setFilm(response.data.movie);
 
                 const handleFilmCheckList = async (idFilm, lista) => {
-                    if (token !== '' && JSON.parse(localStorage.getItem('user')).sub !== ''){
+                    if (token !== '' && localStorageUser !== null && localStorageUser.sub !== '') {
 
                         const corpo = {
-                            userSub: JSON.parse(localStorage.getItem('user')).sub,
+                            userSub: localStorageUser.sub,
                             movieId: idFilm,
                             list: lista
                         };
@@ -94,7 +96,7 @@ function FilmPage({token}) {
 
         window.scrollTo(0, 0); //per far tornare la pagina in alto quando si carica
 
-    }, [id, JSON.parse(localStorage.getItem('user')).sub]);
+    }, [id, token]);
 
     return (
         (!server || loading) ? 
@@ -131,7 +133,8 @@ function FilmPage({token}) {
                                     <div className='bottoni'>
                                         <Button variant="primary" className='custom-button' onClick={() => 
                                             {
-                                                if (token !== '' && JSON.parse(localStorage.getItem('user')).sub !== ''){
+                                                const localStorageUser = JSON.parse(localStorage.getItem('user'));
+                                                if (token !== '' && localStorageUser !== null && localStorageUser.sub !== ''){
                                                     //handleAggiuntaRimozione(idUser, id, listDaVolerMoficare, stato) lo stato lo richiamo
 
                                                     if(addRemoveVisti){
@@ -169,7 +172,8 @@ function FilmPage({token}) {
                                         </Button>
                                         <Button variant="primary" className='custom-button' onClick={() =>  
                                             {
-                                                if (token !== '' && JSON.parse(localStorage.getItem('user')).sub !== ''){
+                                                const localStorageUser = JSON.parse(localStorage.getItem('user'));
+                                                if (token !== '' && localStorageUser !== null && localStorageUser.sub !== ''){
                                                     //handleAggiuntaRimozione(idUser, id, listDaVolerMoficare, stato) lo stato lo richiamo
 
                                                     if(addRemoveVedere){
@@ -237,7 +241,8 @@ function FilmPage({token}) {
                             </div>
                             <Button variant="contained" className='custom-button' onClick={() =>    
                                 { 
-                                    if (token !== '' && JSON.parse(localStorage.getItem('user')).sub !== ''){
+                                    const localStorageUser = JSON.parse(localStorage.getItem('user'));
+                                    if (token !== '' && localStorageUser !== null && localStorageUser.sub !== ''){
                                         //handleAggiuntaRimozione(idUser, id, listDaVolerMoficare, stato) lo stato lo richiamo
 
                                         if(addRemoveVisti){
@@ -274,7 +279,8 @@ function FilmPage({token}) {
                             </Button>
                             <Button variant="contained" className='custom-button' onClick={() =>    
                                 { 
-                                    if (token !== '' && JSON.parse(localStorage.getItem('user')).sub !== ''){
+                                    const localStorageUser = JSON.parse(localStorage.getItem('user'));
+                                    if (token !== '' && localStorageUser !== null && localStorageUser.sub !== ''){
                                         //handleAggiuntaRimozione(idUser, id, listDaVolerMoficare, stato) lo stato lo richiamo
 
                                         if(addRemoveVedere){

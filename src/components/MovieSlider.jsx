@@ -39,11 +39,7 @@ function MovieSlider({type, id, token}) {
 
     let addedQuery = 'type=' + type + (id ? ('&id=' + id) : '') + (type === 'recommendation' ? ('&userNickename=' + JSON.parse(localStorage.getItem('user')).nickname ) : '');
 
-    //console.log(type);
-    //console.log(url);
-
     setFilms([]); //riporta tutto lo slider a sinistra al cambio pagina
-
 
     if (type === 'visti') {
       axios.post('https://moviematcher-backend.onrender.com/user/getMyList', { body: {userNickname: JSON.parse(localStorage.getItem('user')).nickname }}, { headers: {Authorization: 'Bearer '+token} })

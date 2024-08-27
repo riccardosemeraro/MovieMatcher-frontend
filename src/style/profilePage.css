@@ -147,16 +147,6 @@
       padding: 5px;
     }
 
-    input{
-      border-radius: 20px;
-      padding: 5px;
-
-      text-align: left;
-
-      width: auto;
-      height: auto;
-    }
-
     .li-content{
       display: flex;
       flex-direction: row;
@@ -169,6 +159,18 @@
       text-decoration: none;
       font-size: 16px;
       all: unset;
+    }
+
+    .li-content input{
+      border-radius: 20px;
+      padding: 5px;
+
+      text-align: left;
+
+      width: auto;
+      height: auto;
+      
+      border: none;
     }
 
     .mini-button{
@@ -367,16 +369,6 @@
       padding: 5px;
     }
 
-    input{
-      border-radius: 20px;
-      padding: 5px;
-
-      text-align: left;
-
-      width: auto;
-      height: auto;
-    }
-
     .li-content{
       display: flex;
       flex-direction: row;
@@ -387,6 +379,18 @@
     .li-content a{
       text-decoration: none;
       font-size: 16px;
+    }
+
+    .li-content input{
+      border-radius: 20px;
+      padding: 5px;
+
+      text-align: left;
+
+      width: auto;
+      height: auto;
+
+      border: none;
     }
 
     .mini-button{

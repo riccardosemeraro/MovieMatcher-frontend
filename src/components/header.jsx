@@ -38,7 +38,7 @@ function Header() {
             <li className = {location.pathname === "/" ? 'active' : ''} >  
                 <Link to="/" > <FontAwesomeIcon icon={faHome} className='icon'/> Home</Link> 
               </li>
-            <li  className = {location.pathname === "/gameRoom" ? 'active' : ''} > 
+            <li  className = {location.pathname === "/gameRoom" || location.pathname === "/gameRoom/matchRoom"  ? 'active' : ''} > 
                 <Link to="/gameRoom" > <FontAwesomeIcon icon={faGamepad} className='icon' /> Game Room</Link> 
             </li>
             <li  className = {location.pathname === "/profile" ? 'active' : ''} > 
@@ -60,7 +60,7 @@ function Header() {
               <li  className = {location.pathname === "/" ? 'active' : ''} > 
                 <Link to="/"><FontAwesomeIcon icon={faHome}/></Link> 
               </li>
-              <li  className = {location.pathname === "/gameRoom" ? 'active' : ''} > 
+              <li  className = {location.pathname === "/gameRoom" || location.pathname === "/gameRoom/matchRoom" ? 'active' : ''} > 
                 <Link to="/gameRoom"><FontAwesomeIcon icon={faGamepad}/></Link> 
               </li>
               <li  className = {location.pathname === "/profile" ? 'active' : ''} >

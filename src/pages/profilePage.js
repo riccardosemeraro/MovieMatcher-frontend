@@ -1,14 +1,17 @@
-import React, { useEffect, useState} from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState, useContext} from 'react';
 
 import '../style/profilePage.css';
 import LogoutButton from '../components/logout-button';
 import MovieSlider from '../components/MovieSlider';
 import axios from 'axios';
 
+import LoadingGif from '../components/loadingGif';
+
+import { ServerStateContext } from '../contexts/serverStateContextProvider';
+
 function ProfilePage({token}) {
 
-  const navigate = useNavigate();
+  const { value: server, setValue: setServer } = useContext(ServerStateContext); //stato del server
 
   const [view, setView] = useState('profile');
 
@@ -89,6 +92,10 @@ function ProfilePage({token}) {
 
 
   return (
+    (!server) ?
+    <div>
+        <LoadingGif />  
+    </div> :
     <>
     <div className="desktop-page">
       <div className="profile-page">
@@ -173,7 +180,7 @@ function ProfilePage({token}) {
           </div>
         }
         { view === 'list' && <div style={{ width: 'fit-content', maxWidth:'75%', color: '#FFFFFF' }}> <MovieSlider type="visti" token={token} /> <MovieSlider type='vedere' token={token}/></div> } 
-        {view === 'genres' && <div style={{ maxWidth:'75%', color: '#FFFFFF' }}>Generi Content</div>}
+        {view === 'genres' && <div style={{ maxWidth:'75%', color: '#FFFFFF' }}>I Tuoi Generi</div>}
       </div>
     </div>
 
@@ -263,7 +270,7 @@ function ProfilePage({token}) {
             <MovieSlider type="vedere" token={token}/>
           </div>
         }
-        {view === 'genres' && <div style={{ color: '#FFFFFF' }}>Generi Content</div>} 
+        {view === 'genres' && <div style={{ color: '#FFFFFF' }}>I Tuoi Generi</div>} 
       </div>
     </div>
     </>

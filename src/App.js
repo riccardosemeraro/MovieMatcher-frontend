@@ -6,6 +6,7 @@ import HomePage from './pages/homePage';
 import ProfilePage from './pages/profilePage';
 import GameRoomPage from './pages/GameRoomPage';
 
+import LobbyPage from './pages/LobbyPage';
 import MatchRoomPage from './pages/MatchRoomPage';
 
 import AuthenticationGuard from './authenticationGard'; //importo il componente per la protezione delle rotte
@@ -103,8 +104,10 @@ function App() {
               <Route path="/profile" element={<AuthenticationGuard component={() => <ProfilePage token={authToken} />} />} />
               <Route path="/gameRoom" element={<AuthenticationGuard component={GameRoomPage} />} />
 
-              {/*route temporanea*/}
-              <Route path="/gameRoom/matchRoom" element={<AuthenticationGuard component={MatchRoomPage} />} /> 
+              {/*route temporanee*/}
+              <Route path="/gameRoom/lobby" element={<AuthenticationGuard component={LobbyPage} />} /> 
+              <Route path="/gameRoom/matchRoom" element={<AuthenticationGuard component={MatchRoomPage} />} />
+              {/*route temporanee*/}
 
               <Route path="/film/:idName" element={<FilmPage token={authToken}/>} />
 
@@ -112,7 +115,7 @@ function App() {
             </Routes>
           </div>
 
-          {location.pathname !== '/gameRoom/matchRoom' && <Footer />}
+          {location.pathname !== '/gameRoom/lobby' && location.pathname !== '/gameRoom/matchRoom' && <Footer />}
 
         {/*<Router> l'ho spostato dentro index.js per acquisire la location e far eseguire lo useState solo quando cambia l'url*/}
 

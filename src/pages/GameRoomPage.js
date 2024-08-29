@@ -55,7 +55,7 @@ function GameRoomPage() {
       </Popup>
       */}
 
-      <Button variant="primary" className='game-button' onClick={()=> navigate('/gameRoom/matchRoom')}> 
+      <Button variant="primary" className='game-button' onClick={()=> navigate('/gameRoom/lobby')}> 
         <h2 className='titolo-bottone'>Partecipa a Partita</h2>
       </Button>
       <Button variant="primary" className='game-button' onClick={()=>('')}> 

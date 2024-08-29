@@ -23,9 +23,12 @@ function Header() {
 
   useEffect(() => {
 
-    setLock(!server); // setto il lock in base allo stato del server
+    if (location.pathname === '/gameRoom/matchRoom') {
+      setLock(true);
+    }else setLock(!server); // setto il lock in base allo stato del server
 
   }, [location, server]);
+
 
   return (
     <header className="app-header">
@@ -38,7 +41,7 @@ function Header() {
             <li className = {location.pathname === "/" ? 'active' : ''} >  
                 <Link to="/" > <FontAwesomeIcon icon={faHome} className='icon'/> Home</Link> 
               </li>
-            <li  className = {location.pathname === "/gameRoom" || location.pathname === "/gameRoom/matchRoom"  ? 'active' : ''} > 
+            <li  className = {location.pathname === "/gameRoom" || location.pathname === "/gameRoom/lobby"  ? 'active' : ''} > 
                 <Link to="/gameRoom" > <FontAwesomeIcon icon={faGamepad} className='icon' /> Game Room</Link> 
             </li>
             <li  className = {location.pathname === "/profile" ? 'active' : ''} > 
@@ -54,13 +57,14 @@ function Header() {
           <Link to="/" className="logo">Movie<img src={logo} className="logoImg" alt="logo" />Matcher</Link>    
         </div>
 
+        {location.pathname !== '/gameRoom/matchRoom' && (
         <div className="bottom">
           <nav className="nav-bottom">
             <ul className = {lock ? 'locked' : ''}>
               <li  className = {location.pathname === "/" ? 'active' : ''} > 
                 <Link to="/"><FontAwesomeIcon icon={faHome}/></Link> 
               </li>
-              <li  className = {location.pathname === "/gameRoom" || location.pathname === "/gameRoom/matchRoom" ? 'active' : ''} > 
+              <li  className = {location.pathname === "/gameRoom" || location.pathname === "/gameRoom/lobby" || location.pathname === "/gameRoom/matchRoom" ? 'active' : ''} > 
                 <Link to="/gameRoom"><FontAwesomeIcon icon={faGamepad}/></Link> 
               </li>
               <li  className = {location.pathname === "/profile" ? 'active' : ''} >
@@ -69,6 +73,7 @@ function Header() {
             </ul>
         </nav>
         </div> 
+        )}
       </div>
     </header>
   );

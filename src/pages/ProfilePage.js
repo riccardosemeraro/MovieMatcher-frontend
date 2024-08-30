@@ -9,6 +9,11 @@ import LoadingGif from '../components/loadingGif';
 
 import { ServerStateContext } from '../contexts/serverStateContextProvider';
 
+import GenreSlider from '../components/GenreSlider';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+
 function ProfilePage({token}) {
 
   const { value: server, setValue: setServer } = useContext(ServerStateContext); //stato del server
@@ -180,7 +185,10 @@ function ProfilePage({token}) {
           </div>
         }
         { view === 'list' && <div style={{ width: 'fit-content', maxWidth:'75%', color: '#FFFFFF' }}> <MovieSlider type="visti" token={token} /> <MovieSlider type='vedere' token={token}/></div> } 
-        {view === 'genres' && <div style={{ maxWidth:'75%', color: '#FFFFFF' }}>I Tuoi Generi</div>}
+        {view === 'genres' && <div className='genre-content'>
+          <GenreSlider/>
+          <button className='add-genre'><FontAwesomeIcon icon={faPlus} /></button>
+        </div>}
       </div>
     </div>
 
@@ -253,7 +261,7 @@ function ProfilePage({token}) {
                     </ul>
                     <ul className='mini-button'>
                       <li>
-                        <button to="#" onClick={() => handleUpdate()} style={{ display: 'block', width: '100%' }}>
+                        <button to="#" onClick={() => handleUpdate()}>
                           {update ? 'Salva modifiche' : 'Modifica'}
                         </button>
                       </li>
@@ -270,7 +278,10 @@ function ProfilePage({token}) {
             <MovieSlider type="vedere" token={token}/>
           </div>
         }
-        {view === 'genres' && <div style={{ color: '#FFFFFF' }}>I Tuoi Generi</div>} 
+        {view === 'genres' && <div className='genre-content'>
+            <GenreSlider type="I miei generi"/>
+            <button className='add-genre'><FontAwesomeIcon icon={faPlus} /></button>
+          </div>} 
       </div>
     </div>
     </>

@@ -1,0 +1,53 @@
+.genre-container{
+    width: 90%;
+    margin: 20px;
+    text-align: center;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+
+.genre{
+    display: flex;
+    overflow-x: auto;
+
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+
+    gap: 0px;
+    background-color: #000;
+    border: 2px solid white;
+    
+    padding: 0px;
+    border-radius: 20px;
+
+    /* Nascondo la scrollbar */
+    scrollbar-width: none; /* Per Firefox */
+    -ms-overflow-style: none; /* Per Internet Explorer e Edge */
+}
+
+.genre::-webkit-scrollbar {
+    /* Nascondo la scrollbar */
+    display: none; /* Per Chrome, Safari e Opera */
+  }
+
+.genre p{
+
+    flex: 0 0 auto;
+    padding: 10px;
+
+    background-color: #6a0795;
+    border-radius: 20px;
+
+    margin: 10px;
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    font-size: 18px;
+    color: white;
+
+    
+}

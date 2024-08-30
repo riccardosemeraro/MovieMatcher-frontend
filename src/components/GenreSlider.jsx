@@ -1,5 +1,4 @@
-/*
-import ''; //style
+import '../style/genreSlider.css'; //style
 
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -12,7 +11,7 @@ function GenreSlider({ type, token }) {
 
         setGenre([]);
 
-        if(type === 'myGenre') {
+        if(type === 'I miei generi') {
 
             axios.get('https://moviematcher-backend.onrender.com/user/getMyGenre', { body: {userNickname: JSON.parse(localStorage.getItem('user')).nickname }}, { headers: { Authorization: 'Bearer ' + token } })
                 .then(response => {
@@ -42,10 +41,10 @@ function GenreSlider({ type, token }) {
     return (
         <>
 
-        <div className="sliderContainer">
-            <h2>{title}</h2>
+        <div className="genre-container">
+            {/*<h2>{type}</h2>*/}
 
-            <div className='slider'>
+            <div className='genre'>
 
 
               {
@@ -56,8 +55,7 @@ function GenreSlider({ type, token }) {
                 ))
 
                 : <p> Nessun genere trovato... </p>
-              
-              }
+             }
 
             </div>
 
@@ -72,5 +70,3 @@ function GenreSlider({ type, token }) {
 }
 
 export default GenreSlider;
-
-*/

@@ -2,8 +2,8 @@ import './App.css';
 
 
 import { Navigate, BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
-import HomePage from './pages/homePage';
-import ProfilePage from './pages/profilePage';
+import HomePage from './pages/HomePage';
+import ProfilePage from './pages/ProfilePage';
 import GameRoomPage from './pages/GameRoomPage';
 
 import LobbyPage from './pages/LobbyPage';

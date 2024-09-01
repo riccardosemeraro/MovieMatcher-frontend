@@ -4,6 +4,10 @@ import Popup from '../components/Popup';
 import Dropdown from '../components/Dropdown';
 import { useState, useEffect, useContext } from 'react';
 import "../style/gameRoom.css";
+import { SlGameController } from "react-icons/sl";
+import "../style/slGameController.css";
+import { LuTextCursorInput } from "react-icons/lu";
+import "../style/LuTextCursorInput.css";
 
 import { useNavigate } from 'react-router-dom';
 
@@ -41,8 +45,15 @@ function GameRoomPage() {
         <h2 className='titolo-bottone'>Crea Partita</h2>
       </Button>
       <Popup trigger={buttonPopup} setTrigger={setButtonPopup}> 
-        <h1 className='tipo-match'> Impostazioni Partita </h1>
+        <h1 className='impostazioni-match'> Impostazioni Partita </h1>
+        <br/>
+        <SlGameController className="controller-icon"/>
+        <h2 className='giocacon'> Gioca con </h2>
         <Dropdown> </Dropdown>
+        <LuTextCursorInput className="LuTextCursorInput-icon"/>
+        <h2 className='nome-partita'> Nome partita </h2>
+        <Dropdown> </Dropdown>
+
       </Popup>
       
       

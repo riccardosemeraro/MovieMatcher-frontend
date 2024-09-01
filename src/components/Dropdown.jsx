@@ -21,20 +21,20 @@ import '../style/dropdown.css';
 function Dropdown (){
     const [value, setValue] = useState('')
     const options = [
-        { label: "Film da vedere", value: 1},
-        { label: "Film visti", value: 2},
-        { label: "Generi", value: 3},
+        { label: " Film da vedere", value: 1},
+        { label: " Film visti", value: 2},
+        { label: " Generi", value: 3},
     ]
     function handleSelect(){
-        setValue(EventTarget.value)
+        setValue(EventTarget.value);
     }
 
     return (
-        <div className="cointainerDropdown">
-            <h2> Gioca con </h2>
+        <div className="cointainer-dropdown">
+            
             <select className="from-select" onChange={handleSelect}>
                 {options.map(option => (
-                    <option value={option.value}>{option.label}</option>
+                    <option className='option-dropdown' value={option.value}>{option.label}</option>
                 ))}
             </select>
             

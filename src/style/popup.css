@@ -1,44 +1,360 @@
-div.popup{
-    box-shadow: 0.1px 0.1px 15px #ffffff,
-                -0.1px -0.1px 15px #ffffff;
-}
+/*desktop*/
+@media (min-width: 1024px) {
+    div.popup{
+        /*box-shadow: 0.1px 0.1px 15px #ffffff;*/
+        border: 2px solid white;
+    }
 
-.popup {
-    position: fixed;
+    .popup {
+        position: fixed;
 
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-    max-height: 400px;
-    padding: 10px;
-    width: 100%;
-    max-width: 350px;
-    background-color: #6a0795;
+        max-height: 300px;
+        padding: 10px;
+        width: 100%;
+        max-width: 450px;
+        background-color: #6a0795;
 
-    border-radius: 20px;
+        border-radius: 20px;
 
-}
+    }
 
-.popup-inner {
-    position: absolute;
-    padding: 10px;
-    width: 100%;
-    max-width: 350px;
-    background-color: #6a0795;
+    .popup-inner {
+        position: absolute;
+        padding: 10px;
+        width: 100%;
+        max-width: 450px;
+        background-color: #6a0795;
+        
+        border-radius: 20px;
+    }
+
+    .popup-inner .close-btn {
+        box-shadow: 1px 1px 7px #000000;
+
+        
+        background: linear-gradient(0deg, #6a0795 25%, #ffffff  100%);
+        border-style: solid;
+        border-color: #ffffff;
+        border-radius: 100%;
+        color: white;
+        position: absolute;
+        top: -125px;
+        right: 17px;
+    }
+
+    .impostazioni-match{
+
+        position: absolute;
+        top: -115px;
+        left: 92px;
+        color: white;
+        text-transform: none;
+        font-size: 30px;
+        align-items: center;
+        border: none;
     
-    border-radius: 20px;
+    }
+
+    .giocacon{
+        position: absolute;
+        top: -65px;
+        left: 96px;
+        color: white;
+        text-transform: none;
+        font-size: 25px;
+        border: none;
+    
+    }
+    
+    .nome-partita{
+        position: absolute;
+        top: -15px;
+        left: 96px;
+        color: white;
+        text-transform: none;
+        font-size: 25px;
+        align-items: left;
+        border: none;
+    
+    } 
+
+    .Inserire-nome-partita{
+        position: absolute;
+        top: 17px;
+        right: 17px;
+        color: white;
+        background-color: #6a0795;
+        text-transform: none;
+        font-size: 15px;
+        align-items: center;
+        border-color: white;
+        border-radius: 25px;
+        border: solid;
+        border-width: 1px;
+        width: 155px;
+    }
+
+    .Inserire-nome-partita::placeholder{
+        color:white;
+    }
+
+    .crea-button{
+        position: absolute;
+        top: 83px;
+        left: 186px;
+        color:white;
+        background-color: #6a0795;
+        border-color: white;
+        border-radius: 25px;
+        border: solid;
+        border-width: 2px;
+
+    }
+
+    .titolo-bottone-crea{
+        font-size: 15px;
+        color: white;
+
+    }
+
+    .impostazioni-partecipa{
+
+        position: absolute;
+        top: -115px;
+        left: 105px;
+        color: white;
+        text-transform: none;
+        font-size: 30px;
+        align-items: center;
+        border: none;
+    
+    }
+
+
+    .Inserire-codice-partita{
+        position: absolute;
+        top: -20px;
+        right: 17px;
+        color: white;
+        background-color: #6a0795;
+        text-transform: none;
+        font-size: 20px;
+        align-items: center;
+        border-color: white;
+        border-radius: 25px;
+        border: solid;
+        border-width: 1px;
+        width: 355px;
+        height: 55px;
+    }
+
+    .Inserire-codice-partita::placeholder{
+        color:white;
+    }
+
+    .partecipa-a-partita-button{
+        position: absolute;
+        top: 83px;
+        left: 164px;
+        color:white;
+        background-color: #6a0795;
+        border-color: white;
+        border-radius: 25px;
+        border: solid;
+        border-width: 2px;
+
+    }
+
+    .titolo-button-partecipa{
+        font-size: 15px;
+        color: white;
+
+    }
+
 }
 
-.popup-inner .close-btn {
-    background-color: #6a0795;
-    border-color: #6a0795;
-    border-radius: 50%;
-    color: white;
-    position: absolute;
-    top: -170px;
-    right: 20px;
-}
+/*mobile*/
+@media (max-width: 1023px) {
+    div.popup{
+        /*box-shadow: 0.1px 0.1px 15px #ffffff;*/
+        border: 2px solid white;
+    }
 
+    .popup {
+        position: fixed;
+
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        max-height: 350px;
+        padding: 10px;
+        width: 100%;
+        max-width: 200px;
+        background-color: #6a0795;
+
+        border-radius: 20px;
+
+    }
+
+    .popup-inner {
+        position: absolute;
+        padding: 10px;
+        width: 100%;
+        max-width: 200px;
+        background-color: #6a0795;
+        
+        border-radius: 20px;
+    }
+
+    .popup-inner .close-btn {
+        box-shadow: 1px 1px 7px #000000;
+
+        
+        background: linear-gradient(0deg, #6a0795 25%, #ffffff  100%);
+        border-style: solid;
+        border-color: #ffffff;
+        border-radius: 100%;
+        color: white;
+        position: absolute;
+        top: -155px;
+        right: 10px;
+    }
+
+    .impostazioni-match{
+
+        position: absolute;
+        top: -150px;
+        left: -39px;
+        color: white;
+        text-transform: none;
+        font-size: 18px;
+        align-items: center;
+        border: none;
+        width: 275px;
+    
+    }
+
+
+    .giocacon{
+        position: absolute;
+        top: -100px;
+        right: 55px;
+        color: white;
+        text-transform: none;
+        font-size: 17px;
+        border: none;
+    
+    }
+    
+    .nome-partita{
+        position: absolute;
+        top: -10px;
+        right: 41px;
+        color: white;
+        text-transform: none;
+        font-size: 17px;
+        align-items: left;
+        border: none;
+    
+    } 
+
+    .Inserire-nome-partita{
+        position: absolute;
+        top: 50px;
+        right: 33px;
+        color: white;
+        background-color: #6a0795;
+        text-transform: none;
+        font-size: 15px;
+        align-items: center;
+        border-color: white;
+        border-radius: 25px;
+        border: solid;
+        border-width: 1px;
+        width: 150px;
+    }
+
+    .Inserire-nome-partita::placeholder{
+        color:white;
+    }
+
+    .crea-button{
+        position: absolute;
+        top: 115px;
+        left: 60px;
+        color:white;
+        background-color: #6a0795;
+        border-color: white;
+        border-radius: 25px;
+        border: solid;
+        border-width: 2px;
+
+    }
+
+    .titolo-bottone-crea{
+        font-size: 15px;
+        color: white;
+
+    }
+
+    .impostazioni-partecipa{
+        position: absolute;
+        top: -140px;
+        left: -39px;
+        color: white;
+        text-transform: none;
+        font-size: 18px;
+        align-items: center;
+        border: none;
+        width: 275px;
+    }
+
+
+    .Inserire-codice-partita{
+        position: absolute;
+        top: -48px;
+        right: 17px;
+        color: white;
+        background-color: #6a0795;
+        text-transform: none;
+        font-size: 13px;
+        align-items: center;
+        border-color: white;
+        border-radius: 25px;
+        border: solid;
+        border-width: 1px;
+        width: 125px;
+        height: 45px;
+    }
+
+    .Inserire-codice-partita::placeholder{
+        color:white;
+    }
+
+    .partecipa-a-partita-button{
+        position: absolute;
+        top: 83px;
+        left: 40px;
+        color:white;
+        background-color: #6a0795;
+        border-color: white;
+        border-radius: 25px;
+        border: solid;
+        border-width: 2px;
+
+    }
+
+    .titolo-button-partecipa{
+        font-size: 15px;
+        color: white;
+
+    }
+}
 

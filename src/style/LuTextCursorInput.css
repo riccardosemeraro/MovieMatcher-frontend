@@ -1,7 +1,21 @@
-.LuTextCursorInput-icon{
-    color: white;
-    font-size: 25px;
-    position: absolute;
-    top: -37px;
-    left: 37px;
+/*desktop*/
+@media (min-width: 1024px) {
+    .LuTextCursorInput-icon{
+        color: white;
+        font-size: 25px;
+        position: absolute;
+        top: 15px;
+        left: 50px;
+    }
+}
+
+/*mobile*/
+@media (max-width: 1023px) {
+    .LuTextCursorInput-icon{
+        color: white;
+        font-size: 20px;
+        position: absolute;
+        top: 8px;
+        left: 42px;
+    }
 }

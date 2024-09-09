@@ -14,7 +14,6 @@ function GiocaCon() {
 
 export default GiocaCon;*/
 
-import React from 'react';
 import {useState} from 'react';
 import '../style/dropdown.css';
 

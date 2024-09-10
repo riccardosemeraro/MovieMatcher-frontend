@@ -105,7 +105,7 @@ function App() {
               <Route path="/gameRoom" element={<AuthenticationGuard component={GameRoomPage} />} />
 
               {/*route temporanee*/}
-              <Route path="/gameRoom/lobby" element={<AuthenticationGuard component={LobbyPage} />} /> 
+              <Route path="/gameRoom/lobby" element={<AuthenticationGuard component={() => <LobbyPage token={authToken} />} />} />
               <Route path="/gameRoom/matchRoom" element={<AuthenticationGuard component={MatchRoomPage} />} />
               {/*route temporanee*/}
 

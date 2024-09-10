@@ -51,7 +51,7 @@
 
     }
 
-    .dati button{
+    .dati-button{
 
         background-color: #FFFFFF;
         border-radius: 20px;
@@ -105,7 +105,7 @@
         margin: 10px;
     }
 
-    .bottoni button{
+    .bottoni-button{
         font-size: 15px;
         color: white;
         font-weight: bold;
@@ -144,7 +144,7 @@
         margin: 10px;
     }
 
-    .bottoni button{
+    .bottoni-button{
         font-size: 15px;
         color: white;
         font-weight: bold;
@@ -210,7 +210,7 @@
 
     }
 
-    .dati button{
+    .dati-button{
 
         background-color: #FFFFFF;
         border-radius: 20px;

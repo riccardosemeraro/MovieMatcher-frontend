@@ -40,7 +40,7 @@ function GameRoomPage() {
       <Button variant="primary" className='game-button' onClick={()=> setButtonPopup(true)}> 
         <h2 className='titolo-bottone'>Crea Partita</h2>
       </Button>
-      <Popup trigger={buttonPopup} setTrigger={setButtonPopup} type='Impostazioni-partita' /> 
+      <Popup trigger={buttonPopup} setTrigger={setButtonPopup} type='Crea-partita' /> 
 
       {/*
         <Popup trigger={timePopup} setTrigger={setTimedPopup}> 

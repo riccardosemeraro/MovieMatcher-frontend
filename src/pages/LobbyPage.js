@@ -1,11 +1,14 @@
 import "../style/lobby.css";
 import { useNavigate } from 'react-router-dom';
-
+import { useState } from 'react';
+import Popup from '../components/Popup';
 import { FaCopy } from 'react-icons/fa'; // Importa l'icona FaCopy
 
-function LobbyPage() {
+function LobbyPage({token}) {
 
     const navigate = useNavigate();
+
+    const [buttonPopupImp, setButtonPopupImp] = useState(false); //
 
     const handleCopy = (event) => {
         // Seleziona il tag <p> immediatamente precedente
@@ -65,11 +68,11 @@ function LobbyPage() {
                 <div className="dati">
                     <p>Codice:</p>
                     <p className="codice">codice</p>
-                    <button onClick={handleCopy}><FaCopy/></button> {/*📋 */}
+                    <button className="dati-button" onClick={handleCopy}><FaCopy/></button> {/*📋 */}
                 </div>
                 <div className="dati">
                     <p>Link:</p>
-                    <button onClick={handleShare}>Condividi</button>
+                    <button className="dati-button" onClick={handleShare}>Condividi</button>
                 </div>            </div>
             <div className="giocatori">
                 <h3>Giocatori</h3>
@@ -85,28 +88,32 @@ function LobbyPage() {
                 </ul>
             </div>
             <div className="bottoni">
-                <button onClick={()=> navigate('/gameRoom')}>Esci</button>
-                <button>Impostazioni</button>
-                <button onClick={()=> navigate('/gameRoom/matchRoom')}>Avvia</button>
+                <button className="bottoni-button" onClick={()=> navigate('/gameRoom')}>Esci</button>
+                <button className="bottoni-button" onClick={()=> setButtonPopupImp(true)}>Impostazioni</button>
+                <Popup trigger={buttonPopupImp} setTrigger={setButtonPopupImp} type='Impostazioni-partita' list='visti' token={token}  /> 
+                <button className="bottoni-button" onClick={()=> navigate('/gameRoom/matchRoom')}>Avvia</button>
             </div>
         </div>
 
         <div className="lobby-desktop">
             <div className="bottoni">
-                <button onClick={()=> navigate('/gameRoom')}>Esci</button>
-                <button>Impostazioni</button>
-                <button onClick={()=> navigate('/gameRoom/matchRoom')}>Avvia</button>
+                <button className="bottoni-button" onClick={()=> navigate('/gameRoom')}>Esci</button>
+                <button className="bottoni-button" onClick={()=> setButtonPopupImp(true)}>Impostazioni</button>
+                {
+                    buttonPopupImp && <Popup trigger={buttonPopupImp} setTrigger={setButtonPopupImp} type='Impostazioni-partita' list='visti' token={token} />
+                }
+                <button className="bottoni-button" onClick={()=> navigate('/gameRoom/matchRoom')}>Avvia</button>
             </div>
             <div className="dati-container">
                 <div className="dati-partita">
                     <div className="dati">
                         <p>Codice:</p>
                         <p>codice</p>
-                        <button onClick={handleCopy}><FaCopy/></button>
+                        <button className="dati-button" onClick={handleCopy}><FaCopy/></button>
                     </div>
                     <div className="dati">
                         <p>Link:</p>
-                        <button onClick={handleShare}>Condividi</button>
+                        <button className="dati-button" onClick={handleShare}>Condividi</button>
                     </div>            </div>
                 <div className="giocatori">
                     <h3>Giocatori</h3>

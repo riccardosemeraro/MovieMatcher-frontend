@@ -310,6 +310,32 @@
         padding: 0px;
     }
 
+    .popup-impostazioni{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        
+        padding: 10px;
+
+        height: 100%;
+        max-height: 500px;
+
+        width: 100%;
+        max-width: 450px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        background-color: #6a0795;
+        border-radius: 20px;
+        border: 2px solid white;
+
+        animation: fadeIn 0.4s ease-out;
+        box-shadow: 0 2px 2px rgba(250, 250, 150, 1);
+    }
+
     .contenitore-impostazioni{
         
         overflow: hidden;
@@ -359,7 +385,7 @@
         margin: 10px;
         overflow: hidden;
         height: fit-content;
-        max-height: 150px;
+        max-height: 350px;
         overflow-y: auto;
         display: flex;
         flex-direction: column;
@@ -386,6 +412,8 @@
         text-align: left;
         margin: 0;
         margin-right: 10px;
+
+        user-select: none;
     }
 
     .film-item{
@@ -557,7 +585,7 @@
         margin: 10px 0;
         padding: 10px;
 
-        width: 100%;
+        width: 90%;
     }
 
     .gioca-con h2{
@@ -569,6 +597,8 @@
 
         margin: 0 5px;
         padding: 0px;
+
+        width: 100%;
     }
 
     .gioca-con-icon{
@@ -577,6 +607,8 @@
         color: #ffffff;
 
         margin: 0 5px;
+
+        width: auto;
     }
 
     .nome-partita{
@@ -589,7 +621,7 @@
         margin: 10px 0;
         padding: 10px;
 
-        width: 100%;
+        width: 90%;
     }
 
     /*
@@ -608,6 +640,7 @@
     .nome-partita input{
 
         padding: 5px;
+        width: 100%;
 
         text-align: center;
         text-transform: none;
@@ -631,6 +664,8 @@
         font-size: 20px;
 
         margin: 0 5px;
+
+        width: auto;
     }
 
     .crea-partita{
@@ -752,6 +787,32 @@
         padding: 0px;
     }
 
+    .popup-impostazioni {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        
+        padding: 10px;
+
+        height: 100%;
+        max-height: 500px;
+
+        width: 100%;
+        max-width: 300px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        background-color: #6a0795;
+        border-radius: 20px;
+        border: 2px solid white;
+
+        animation: fadeIn 0.4s ease-out;
+        box-shadow: 0 2px 2px rgba(250, 250, 150, 1);
+    }
+
     .contenitore-impostazioni{
 
         overflow: hidden;
@@ -776,8 +837,8 @@
         align-items: center;
         justify-content: center;
 
-        margin: 0;
-        margin-top: -20px;
+        margin: -20px 0;
+        
         padding: 0;
 
         width: 100%;
@@ -800,7 +861,7 @@
         margin: 10px;
         overflow: hidden;
         height: fit-content;
-        max-height: 240px;
+        max-height: 360px;
         overflow-y: auto;
         display: flex;
         flex-direction: column;
@@ -826,6 +887,9 @@
         text-align: left;
         margin: 0;
         margin-right: 10px;
+        text-align: center;
+
+        user-select: none;
     }
 
     .film-item{
@@ -851,7 +915,7 @@
         align-items: center;
         justify-content: center;
 
-        margin: 10px 0;
+        margin: 20px 0;
         padding: 10px;
 
         width: 100%;

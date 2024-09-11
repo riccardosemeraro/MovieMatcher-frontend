@@ -55,31 +55,30 @@ function Popup (props){
         (props.trigger) ? (
 
         <div className='overlay'>
-
-            <div className="popup">
-                    <button className="close-btn" onClick={() => props.setTrigger(false)}> <FontAwesomeIcon icon={faTimes} /> </button>
-
                     {
                         props.type==="Crea-partita" &&
                         <>
-                        <div className="contenitore-crea">
-                            <div className='titolo-popup'>
-                                <h1> Impostazioni Partita </h1>
+                        <div className="popup">
+                            <button className="close-btn" onClick={() => props.setTrigger(false)}> <FontAwesomeIcon icon={faTimes} /> </button>
+                            <div className="contenitore-crea">
+                                <div className='titolo-popup'>
+                                    <h1> Impostazioni Partita </h1>
+                                </div>
+                                <div className='gioca-con'>
+                                    <FontAwesomeIcon icon={faFilm} className='gioca-con-icon'/>
+                                    <h2> Gioca con </h2>
+                                    <Dropdown/>
+                                </div>
+                                <div className='nome-partita'>
+                                    <FontAwesomeIcon icon={faEdit} className='nome-partita-icon'/>
+                                    <input type="text" placeholder="Inserire Nome Partita" />
+                                </div>
+                                <div className='crea-partita'>
+                                    <Button variant="primary" className='crea-button' onClick={()=> navigate('/gameRoom/lobby')}>
+                                        <h2 className='titolo-bottone-crea'>Crea Partita</h2>
+                                    </Button>
+                                </div>                      
                             </div>
-                            <div className='gioca-con'>
-                                <FontAwesomeIcon icon={faFilm} className='gioca-con-icon'/>
-                                <h2> Gioca con </h2>
-                                <Dropdown/>
-                            </div>
-                            <div className='nome-partita'>
-                                <FontAwesomeIcon icon={faEdit} className='nome-partita-icon'/>
-                                <input type="text" placeholder="Inserire NomePartita-XXXXX" />
-                            </div>
-                            <div className='crea-partita'>
-                                <Button variant="primary" className='crea-button' onClick={()=> navigate('/gameRoom/lobby')}>
-                                    <h2 className='titolo-bottone-crea'>Crea Partita</h2>
-                                </Button>
-                            </div>                      
                         </div>
                             
                         </>
@@ -88,60 +87,64 @@ function Popup (props){
                     {
                         props.type==="Partecipa-a-partita" &&
                         <>
-                        <div className="contenitore-partecipa">
-                            <div className="titolo-popup">
-                                <h1> Inserisci codice </h1>
-                            </div>
-                            <div className='codice-partita'>
-                                <FontAwesomeIcon icon={faTicket} className='codice-partita-icon'/>
-                                <input type="text" placeholder="NomePartita-XXXXX" />
-                            </div>
-                            <div className='partecipa-partita'>
-                                <Button variant="primary" className='partecipa-button' onClick={()=> navigate('/gameRoom/lobby')}> 
-                                    <h2>Partecipa a partita</h2>
-                                </Button>
-                            </div>
-                        </div> 
+                        <div className="popup">
+                            <button className="close-btn" onClick={() => props.setTrigger(false)}> <FontAwesomeIcon icon={faTimes} /> </button>
+                            <div className="contenitore-partecipa">
+                                <div className="titolo-popup">
+                                    <h1> Inserisci codice </h1>
+                                </div>
+                                <div className='codice-partita'>
+                                    <FontAwesomeIcon icon={faTicket} className='codice-partita-icon'/>
+                                    <input type="text" placeholder="NomePartita-XXXXX" />
+                                </div>
+                                <div className='partecipa-partita'>
+                                    <Button variant="primary" className='partecipa-button' onClick={()=> navigate('/gameRoom/lobby')}> 
+                                        <h2>Partecipa a partita</h2>
+                                    </Button>
+                                </div>
+                            </div> 
+                        </div>
                         </>
                     }
 
                     {
                         props.type==="Impostazioni-partita" && 
                         <>
-                        <div className="contenitore-impostazioni">
-                            <div className="titolo-popup">
-                                <h1>Seleziona Film/Generi</h1>
-                            </div>
-                            <div className='lista-elementi'>
-                                <div className='container-elementi'>
-                                    <ListGroup className='lista-film'>
-                                        {films.map((film) => (
-                                            <ListGroup.Item key={film.id} className='lista-film-item'>
-                                                <div className='film-item' key={film.id}>
-                                                    <img src={"https://image.tmdb.org/t/p/w780" + film.poster_path} alt={film.title}/> 
-                                                </div>
-                                                <p>{film.title}</p>
-                                                <input 
-                                                    type="checkbox" 
-                                                    checked={selectedFilms.includes(film.id)} 
-                                                    onChange={() => handleCheckboxChange(film.id)} 
-                                                />
-                                            </ListGroup.Item>
-                                        ))}
-                                    </ListGroup>    
-                                </div>                       
-                            </div>
-                            <div className='invia-impostazioni'>
-                                <Button variant="primary" className='impostazioni-button' onClick={()=> navigate('/gameRoom/lobby')}> 
-                                    <h2>Conferma</h2>
-                                </Button>
-                            </div>
-                        </div> 
+                        <div className="popup-impostazioni">
+                            <button className="close-btn" onClick={() => props.setTrigger(false)}> <FontAwesomeIcon icon={faTimes} /> </button>
+                            <div className="contenitore-impostazioni">
+                                <div className="titolo-popup">
+                                    <h1>Seleziona Film</h1>
+                                </div>
+                                <div className='lista-elementi'>
+                                    <div className='container-elementi'>
+                                        <ListGroup className='lista-film'>
+                                            {films.map((film) => (
+                                                <ListGroup.Item key={film.id} className='lista-film-item'>
+                                                    <div className='film-item' key={film.id} onClick={() => handleCheckboxChange(film.id)}>
+                                                        <img src={"https://image.tmdb.org/t/p/w780" + film.poster_path} alt={film.title} draggable="false"/> 
+                                                    </div>
+                                                    <p onClick={() => handleCheckboxChange(film.id)}>{film.title}</p>
+                                                    <input 
+                                                        type="checkbox" 
+                                                        checked={selectedFilms.includes(film.id)} 
+                                                        onChange={() => handleCheckboxChange(film.id)} 
+                                                    />
+                                                </ListGroup.Item>
+                                            ))}
+                                        </ListGroup>    
+                                    </div>                       
+                                </div>
+                                <div className='invia-impostazioni'>
+                                    <Button variant="primary" className='impostazioni-button' onClick={()=> navigate('/gameRoom/lobby')}> 
+                                        <h2>Conferma</h2>
+                                    </Button>
+                                </div>
+                            </div> 
+                        </div>
                         </>
 
                     }
-
-            </div>
         </div>
         ) : ""
     );

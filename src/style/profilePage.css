@@ -7,6 +7,8 @@
 
   .desktop-page {
     display: block;
+
+    margin-bottom: 150px;
     
   }
 
@@ -232,6 +234,8 @@
       justify-content: center;
       align-items: center;
 
+      margin: 0 360px;
+
     }
 
     .add-genre{
@@ -266,6 +270,8 @@
   .mobile-page-profile {
     display: block;
     border: none;
+
+    margin-bottom: 100px;
   }
 
   .desktop-page {

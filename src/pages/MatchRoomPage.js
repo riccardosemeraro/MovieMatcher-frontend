@@ -1,7 +1,7 @@
 import '../style/matchRoom.css';
 import { useState } from 'react';
-
 import { useNavigate } from 'react-router-dom';
+
 import { useSwipeable } from 'react-swipeable';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -56,17 +56,19 @@ function MatchRoomPage() {
     trackMouse: true
   });
 
+
+
   return (
     <>
     <div className='match-room-desktop'>
       <div className='esci'>
         <button onClick={()=> navigate('/gameRoom')}><FontAwesomeIcon icon={faSignOutAlt}/></button>
       </div>
-      <div className={`film-div ${swipeClass}`} {...handlers}>
-          <img src={vettImg[currentIndex]} alt="Film" /> {/*immagine tmp*/}
-      </div>
+        <div className={`film-div ${swipeClass}`} {...handlers}>
+            <img src={vettImg[currentIndex]} alt="Film" draggable="false" /> {/*immagine tmp*/}
+        </div>
       <div className='titolo-bottoni'>
-        <h3>Il Signore degli Anelli - La compagnia dell'Anello</h3>   
+        <h3>Titolo del film</h3>   
         <div className='like-dislike'>
           <button style={{ backgroundColor: buttonColor.left }}
                   onClick={() => handleSwipe('left')}>
@@ -84,7 +86,7 @@ function MatchRoomPage() {
       <div className='game-container'>
         <div className={`film-div ${swipeClass}`} {...handlers}>
           <img src={vettImg[currentIndex]} alt="Film"/> {/*immagine tmp*/}
-          <h3>Il Signore degli Anelli - La compagnia dell'Anello</h3>
+          <h3>Titolo del film</h3>
         </div>
         <div className='like-dislike'>
           <button style={{ backgroundColor: buttonColor.left }} onClick={() => handleSwipe('left')}>

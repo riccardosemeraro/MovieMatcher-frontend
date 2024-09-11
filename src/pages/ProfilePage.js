@@ -187,7 +187,7 @@ function ProfilePage({token}) {
         { view === 'list' && <div style={{ width: 'fit-content', maxWidth:'75%', color: '#FFFFFF' }}> <MovieSlider type="visti" token={token} /> <MovieSlider type='vedere' token={token}/></div> } 
         {view === 'genres' && <div className='genre-content'>
           <GenreSlider/>
-          <button className='add-genre'><FontAwesomeIcon icon={faPlus} /></button>
+          <button className='add-genre' onClick={()=> alert('In arrivo')}><FontAwesomeIcon icon={faPlus} /></button>
         </div>}
       </div>
     </div>
@@ -280,7 +280,7 @@ function ProfilePage({token}) {
         }
         {view === 'genres' && <div className='genre-content'>
             <GenreSlider type="I miei generi"/>
-            <button className='add-genre'><FontAwesomeIcon icon={faPlus} /></button>
+            <button className='add-genre' onClick={()=> alert('In arrivo')}><FontAwesomeIcon icon={faPlus} /></button>
           </div>} 
       </div>
     </div>

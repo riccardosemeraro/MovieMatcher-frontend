@@ -57,7 +57,7 @@ function GameRoomPage() {
       <Popup trigger={buttonPopup2} setTrigger={setButtonPopup2} type='Partecipa-a-partita' /> 
 
 
-      <Button variant="primary" className='game-button' onClick={()=>('')}> 
+      <Button variant="primary" className='game-button' onClick={()=> alert('In arrivo')}> 
         <h2 className='titolo-bottone'>Match History</h2>
       </Button>
     </div>

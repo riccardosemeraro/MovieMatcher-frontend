@@ -60,6 +60,16 @@
         margin: 10px;
 
         flex-direction: column;
+
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .swipe-left {
+        transform: translateX(-100%) rotate(20deg);
+    }
+        
+    .swipe-right {
+        transform: translateX(100%) rotate(-20deg);
     }
 
     .film-div img{
@@ -141,7 +151,18 @@
         display: flex;
         align-items: center;
         margin: 10px 200px;
+    
+        transition: transform 0.3s ease-in-out;
     }
+
+    .swipe-left {
+        transform: translateX(-100%) rotate(20deg);
+    }
+        
+    .swipe-right {
+        transform: translateX(100%) rotate(-20deg);
+    }
+
 
     .film-div img{
         width: 100%;

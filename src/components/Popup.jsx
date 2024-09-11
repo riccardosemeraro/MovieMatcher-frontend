@@ -15,7 +15,17 @@ function Popup (props){
 
     const [films, setFilms] = useState([]);
     const [title, setTitle] = useState('');
-    const [lunghezza, setLunghezza] = useState(0);
+    const [selectedFilms, setSelectedFilms] = useState([]);
+
+    const handleCheckboxChange = (filmId) => {
+        setSelectedFilms((prevSelectedFilms) => {
+            if (prevSelectedFilms.includes(filmId)) {
+                return prevSelectedFilms.filter(id => id !== filmId);
+            } else {
+                return [...prevSelectedFilms, filmId];
+            }
+        });
+    };
 
     //voglio creare un const di nome token alla quale viene assegnato props.token e che venga assegnato solo una volta e che non sia piu modificabile
     let token = props.token;
@@ -63,8 +73,7 @@ function Popup (props){
                             </div>
                             <div className='nome-partita'>
                                 <FontAwesomeIcon icon={faEdit} className='nome-partita-icon'/>
-                                {/*<h2> Nome partita </h2> */}
-                                <input type="text" placeholder="Inserire nome partita" />
+                                <input type="text" placeholder="Inserire NomePartita-XXXXX" />
                             </div>
                             <div className='crea-partita'>
                                 <Button variant="primary" className='crea-button' onClick={()=> navigate('/gameRoom/lobby')}>
@@ -112,10 +121,20 @@ function Popup (props){
                                                     <img src={"https://image.tmdb.org/t/p/w780" + film.poster_path} alt={film.title}/> 
                                                 </div>
                                                 <p>{film.title}</p>
+                                                <input 
+                                                    type="checkbox" 
+                                                    checked={selectedFilms.includes(film.id)} 
+                                                    onChange={() => handleCheckboxChange(film.id)} 
+                                                />
                                             </ListGroup.Item>
                                         ))}
                                     </ListGroup>    
                                 </div>                       
+                            </div>
+                            <div className='invia-impostazioni'>
+                                <Button variant="primary" className='impostazioni-button' onClick={()=> navigate('/gameRoom/lobby')}> 
+                                    <h2>Conferma</h2>
+                                </Button>
                             </div>
                         </div> 
                         </>

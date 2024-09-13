@@ -8,8 +8,15 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ListGroup } from 'react-bootstrap';
 
+import { io } from 'socket.io-client'; 
 
 function Popup (props){
+
+    let token = props.token;
+
+    const SOCKET_IO_URL = 'https://moviematcher-backend.onrender.com/game'; //'http://localhost:10000/game'; 
+    
+    const [socketPopup, setSocketPopup] =  useState(null);
 
     const navigate = useNavigate();
 
@@ -17,25 +24,13 @@ function Popup (props){
     const [title, setTitle] = useState('');
     const [selectedFilms, setSelectedFilms] = useState([]);
 
-    const handleCheckboxChange = (filmId) => {
-        setSelectedFilms((prevSelectedFilms) => {
-            if (prevSelectedFilms.includes(filmId)) {
-                return prevSelectedFilms.filter(id => id !== filmId);
-            } else {
-                return [...prevSelectedFilms, filmId];
-            }
-        });
-    };
-
-    //voglio creare un const di nome token alla quale viene assegnato props.token e che venga assegnato solo una volta e che non sia piu modificabile
-    let token = props.token;
-
     useEffect(() => {
 
         if (props.trigger) {
             console.log('token ', token);
 
             if(props.list === 'visti' && props.token){
+
                 axios.post('https://moviematcher-backend.onrender.com/user/getMyList', { body: {userNickname: JSON.parse(localStorage.getItem('user')).nickname }}, { headers: {Authorization: 'Bearer '+token} })
                     .then (response => {
                         console.log('Risposta dal backend: ', response.data);
@@ -50,6 +45,97 @@ function Popup (props){
         }
 
     }, [props.trigger, props.list, token]);
+
+    useEffect(() => {
+        // Connessione al server Socket.io
+        const newSocket = io(SOCKET_IO_URL);
+        setSocketPopup(newSocket);
+
+        // Cleanup della connessione quando il componente viene smontato
+        return () => newSocket.disconnect();
+    }, [props.type]);
+
+    const handleCheckboxChange = (film) => {
+        setSelectedFilms((prevSelectedFilms) => {
+            const filmExists = prevSelectedFilms.some(f => f.id === film.id);
+            if (filmExists) {
+                return prevSelectedFilms.filter(f => f.id !== film.id);
+            } else {
+                return [...prevSelectedFilms, film];
+            }
+        });
+
+    };
+
+    const handleCreateGame = () => {
+        if (socketPopup) {
+            socketPopup.emit('creaPartita', {
+                username: JSON.parse(localStorage.getItem('user')).nickname,
+                roomName: document.querySelector('.nome-partita input').value
+              });
+
+            // Rimuovi i listener precedenti per evitare duplicati
+            socketPopup.off('rispostaCreazionePartita');
+
+            //voglio mettermi in ascolto di una risposta dal server e se arriva vado nella lobby
+            socketPopup.on('rispostaCreazionePartita', (data) => {
+                console.log('Risposta dal server: ', data);
+                console.log('Vado nella lobby, dati: roomName: ', data.roomName, '+ roomId: ', data.roomId, '+ socket: ', socketPopup);
+                navigate('/gameRoom/lobby', { state: { roomName: data.roomName, roomId: data.roomId } });
+            });
+        }
+    };
+
+    const handleJoinGame = () => {
+        if (socketPopup) {
+            socketPopup.emit('partecipaPartita', {
+                username: JSON.parse(localStorage.getItem('user')).nickname,
+                roomName: document.querySelector('.codice-partita input').value.split('-')[0],
+                roomId: document.querySelector('.codice-partita input').value.split('-')[1]
+            });
+
+            // Rimuovi i listener precedenti per evitare duplicati
+            socketPopup.off('rispostaPartecipaPartita');
+            socketPopup.off('rispostaPartecipazionePartitaNegata');
+
+            // Metti in ascolto l'evento 'rispostaPartecipaPartita'
+            socketPopup.on('rispostaPartecipaPartita', (data) => {
+                console.log('Risposta dal server: ', data);
+                navigate('/gameRoom/lobby', { state: {roomName: data.roomName, roomId: data.roomId }});
+            });
+
+            // Metti in ascolto l'evento 'rispostaPartecipazionePartitaNegata'
+            socketPopup.on('rispostaPartecipazionePartitaNegata', (data) => {
+                console.log('Partecipazione negata: ', data.message);
+                alert('Partecipazione negata: ' + data.message);
+                
+            });
+        }
+    };
+
+    const handleConfirm = () => {
+        if (socketPopup) {
+            const user = JSON.parse(localStorage.getItem('user'));
+            const roomId = props.roomId;
+            const roomName = props.roomName;
+
+            console.log('roomId: ', props.roomId, 'roomName: ', props.roomName, 'user: ', user.nickname, 'selectedFilms: ', selectedFilms);
+
+            socketPopup.emit('invioListaFilm', {
+                username: user.nickname,
+                roomId: roomId,
+                roomName: roomName,
+                listaFilm: selectedFilms
+            });
+
+            // Metti in ascolto l'evento 'rispostaInvioLista'
+            socketPopup.on('rispostaInvioLista', (data) => {
+                console.log('Risposta dal server: ', data);
+                alert('Dati inviati con successo: ' + data.message);
+                navigate('/gameRoom/lobby', { state: { roomName: roomName, roomId: roomId }});
+            });
+        }
+    };
 
     return (
         (props.trigger) ? (
@@ -74,7 +160,7 @@ function Popup (props){
                                     <input type="text" placeholder="Inserire Nome Partita" />
                                 </div>
                                 <div className='crea-partita'>
-                                    <Button variant="primary" className='crea-button' onClick={()=> navigate('/gameRoom/lobby')}>
+                                    <Button variant="primary" className='crea-button' onClick={handleCreateGame}>
                                         <h2 className='titolo-bottone-crea'>Crea Partita</h2>
                                     </Button>
                                 </div>                      
@@ -98,7 +184,7 @@ function Popup (props){
                                     <input type="text" placeholder="NomePartita-XXXXX" />
                                 </div>
                                 <div className='partecipa-partita'>
-                                    <Button variant="primary" className='partecipa-button' onClick={()=> navigate('/gameRoom/lobby')}> 
+                                    <Button variant="primary" className='partecipa-button' onClick={handleJoinGame}> 
                                         <h2>Partecipa a partita</h2>
                                     </Button>
                                 </div>
@@ -121,14 +207,14 @@ function Popup (props){
                                         <ListGroup className='lista-film'>
                                             {films.map((film) => (
                                                 <ListGroup.Item key={film.id} className='lista-film-item'>
-                                                    <div className='film-item' key={film.id} onClick={() => handleCheckboxChange(film.id)}>
+                                                    <div className='film-item' key={film.id} onClick={() => handleCheckboxChange(film)}>
                                                         <img src={"https://image.tmdb.org/t/p/w780" + film.poster_path} alt={film.title} draggable="false"/> 
                                                     </div>
-                                                    <p onClick={() => handleCheckboxChange(film.id)}>{film.title}</p>
+                                                    <p onClick={() => handleCheckboxChange(film)}>{film.title}</p>
                                                     <input 
                                                         type="checkbox" 
-                                                        checked={selectedFilms.includes(film.id)} 
-                                                        onChange={() => handleCheckboxChange(film.id)} 
+                                                        checked={selectedFilms.includes(film)} 
+                                                        onChange={() => handleCheckboxChange(film)} 
                                                     />
                                                 </ListGroup.Item>
                                             ))}
@@ -136,7 +222,7 @@ function Popup (props){
                                     </div>                       
                                 </div>
                                 <div className='invia-impostazioni'>
-                                    <Button variant="primary" className='impostazioni-button' onClick={()=> navigate('/gameRoom/lobby')}> 
+                                    <Button variant="primary" className='impostazioni-button' onClick={handleConfirm}> 
                                         <h2>Conferma</h2>
                                     </Button>
                                 </div>
@@ -151,3 +237,22 @@ function Popup (props){
 }
 
 export default Popup;
+
+/*
+    const SOCKET_IO_URL = 'http://localhost:9000/game';
+    const [socketPopup, setSocketPopup] = useState(null);
+    const [sendRequest, setSendRequest] = useState('');
+
+    useEffect(() => {
+        if(props.type !== "Impostazioni-partita"){
+            // Connessione al server Socket.io
+            let newSocket = io(SOCKET_IO_URL);
+            setSocketPopup(newSocket);
+            
+            //dopo che ha ottenuto un codice di partita
+            newSocket = io(SOCKET_IO_URL+'/gameRoom/creaPartita'); 
+            setSocketPopup(newSocket);
+            navigate('/gameRoom/lobby', {socket: socketPopup});
+        }
+    }, [sendRequest]); // Eseguito solo al primo render
+*/

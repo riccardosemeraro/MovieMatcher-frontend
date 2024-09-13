@@ -210,6 +210,8 @@
 
         margin: 0px;
         padding: 5px;
+
+        cursor: pointer;
     }
 
     .crea-button h2{
@@ -298,6 +300,8 @@
 
         margin: 0px;
         padding: 5px;
+
+        cursor: pointer;
     }
 
     .partecipa-button h2{
@@ -322,7 +326,7 @@
         max-height: 500px;
 
         width: 100%;
-        max-width: 450px;
+        max-width: 400px;
 
         display: flex;
         justify-content: center;
@@ -453,6 +457,8 @@
 
         margin: 0px;
         padding: 5px;
+
+        cursor: pointer;
     }
 
     .impostazioni-button h2{
@@ -687,6 +693,8 @@
 
         margin: 0px;
         padding: 5px;
+
+        cursor: pointer;
     }
 
     .crea-button h2{
@@ -775,6 +783,8 @@
 
         margin: 0px;
         padding: 5px;
+
+        cursor: pointer;
     }
 
     .partecipa-button h2{
@@ -929,6 +939,8 @@
 
         margin: 0px;
         padding: 5px;
+
+        cursor: pointer;
     }
 
     .impostazioni-button h2{

@@ -1,14 +1,28 @@
 import "../style/lobby.css";
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
 import Popup from '../components/Popup';
-import { FaCopy } from 'react-icons/fa'; // Importa l'icona FaCopy
+import { FaCopy } from 'react-icons/fa'; 
+
+import {io} from 'socket.io-client';
 
 function LobbyPage({token}) {
+
+    const SOCKET_IO_URL = 'https://moviematcher-backend.onrender.com/game'; //'http://localhost:9000/game';
+
+    const [socketLobby, setSocketLobby] = useState(null);
+
+    const location = useLocation();
+    const { roomName, roomId } = location.state || {};
+
+    const socketRef = useRef(null);
 
     const navigate = useNavigate();
 
     const [buttonPopupImp, setButtonPopupImp] = useState(false); //
+
+    //ho bisogno di una console.log con i parametri per capire cosa ricevo e mi serve come entro nella lobby
+    console.log('roomName', roomName, ' + roomId', roomId);
 
     const handleCopy = (event) => {
         // Seleziona il tag <p> immediatamente precedente
@@ -59,7 +73,40 @@ function LobbyPage({token}) {
         alert('La condivisione non è supportata su questo browser.');
     }
     };
-    
+
+    useEffect(() => {
+        // Connessione al server Socket.io solo la prima volta che la pagina viene caricata
+        if (!socketRef.current) {
+            const newSocket = io(SOCKET_IO_URL);
+            socketRef.current = newSocket;
+            setSocketLobby(newSocket);
+
+            // Cleanup della connessione quando il componente viene smontato
+            return () => {
+                if (socketRef.current) {
+                    socketRef.current.disconnect();
+                    socketRef.current = null;
+                }
+            };
+        }
+    }, []);
+
+    useEffect(() => {
+        // Gestisci la disconnessione del socket quando l'utente lascia la pagina
+        const handleBeforeUnload = () => {
+            if (socketRef.current) {
+                socketRef.current.disconnect();
+                socketRef.current = null;
+            }
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, []);
+
     return (
         <>
 
@@ -90,7 +137,9 @@ function LobbyPage({token}) {
             <div className="bottoni">
                 <button className="bottoni-button" onClick={()=> navigate('/gameRoom')}>Esci</button>
                 <button className="bottoni-button" onClick={()=> setButtonPopupImp(true)}>Impostazioni</button>
-                <Popup trigger={buttonPopupImp} setTrigger={setButtonPopupImp} type='Impostazioni-partita' list='visti' token={token}  /> 
+                {
+                    buttonPopupImp && <Popup trigger={buttonPopupImp} setTrigger={setButtonPopupImp} type='Impostazioni-partita' list='visti' token={token} roomName={roomName} roomId={roomId}/> 
+                }
                 <button className="bottoni-button" onClick={()=> navigate('/gameRoom/matchRoom')}>Avvia</button>
             </div>
         </div>
@@ -100,7 +149,7 @@ function LobbyPage({token}) {
                 <button className="bottoni-button" onClick={()=> navigate('/gameRoom')}>Esci</button>
                 <button className="bottoni-button" onClick={()=> setButtonPopupImp(true)}>Impostazioni</button>
                 {
-                    buttonPopupImp && <Popup trigger={buttonPopupImp} setTrigger={setButtonPopupImp} type='Impostazioni-partita' list='visti' token={token} />
+                    buttonPopupImp && <Popup trigger={buttonPopupImp} setTrigger={setButtonPopupImp} type='Impostazioni-partita' list='visti' token={token} roomName={roomName} roomId={roomId}/>
                 }
                 <button className="bottoni-button" onClick={()=> navigate('/gameRoom/matchRoom')}>Avvia</button>
             </div>
@@ -114,7 +163,8 @@ function LobbyPage({token}) {
                     <div className="dati">
                         <p>Link:</p>
                         <button className="dati-button" onClick={handleShare}>Condividi</button>
-                    </div>            </div>
+                    </div>
+                </div>
                 <div className="giocatori">
                     <h3>Giocatori</h3>
                     <ul>

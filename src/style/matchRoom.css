@@ -120,6 +120,29 @@
         border: none;
         cursor: pointer; /* Cambia il cursore per indicare che è cliccabile */
     }
+
+    .end-game{
+    
+        display: grid;
+        grid-template-rows: 0.8fr 0.8fr;  
+        
+        overflow: hidden;
+
+
+
+        margin: 10px;
+        padding: 0px;
+
+    }
+
+    .ruota{
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 50px 0;
+    }
+    
 }
 
 @media (min-width: 1024px) {
@@ -240,5 +263,20 @@
 
         border: none;
         cursor: pointer; /* Cambia il cursore per indicare che è cliccabile */
+    }
+
+    .end-game{
+    
+        display: flex;   
+        flex-direction: row;
+
+        align-items: center;
+        justify-content: space-evenly;
+
+        width: 100%;
+
+        margin: 10px;
+        padding: 0px;
+
     }
 }

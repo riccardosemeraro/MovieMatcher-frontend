@@ -1,8 +1,21 @@
 
 
-.SpinWheel{
-    background-color: #6a0795;
+.spinWheel{
+    background-color: transparent;
     color: white;
-    border-color: white;
-    border: solid;
+
+    align-items: center;
+    justify-content: center;
+
+    display: flex;
+    width: fit-content;
+    height: auto;
+
+    margin: 0;
+
+    position: relative;
+    
+
+    overflow: hidden;
+
 }

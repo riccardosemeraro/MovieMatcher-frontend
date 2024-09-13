@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { useSwipeable } from 'react-swipeable';
 
+import WheelSpinner from '../components/WheelSpinner';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faHeart, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
@@ -21,6 +23,14 @@ function MatchRoomPage() {
                     'https://image.tmdb.org/t/p/w780/9OxcvTJwZDjQTFvY2NxiwnSrQS6.jpg',
                     'https://image.tmdb.org/t/p/w780/qIhsgno1mjbzUbs4H6DaRjhskAR.jpg'
                     ];
+  const vettTitoli = [
+                      'Il Signore degli Anelli',
+                      'titolo2',
+                      'titolo3',
+                      'titolo4',
+                      'titolo5',
+                      'titolo6'
+                    ];
 
   const handleSwipe = (direction) => {
 
@@ -37,13 +47,14 @@ function MatchRoomPage() {
     }
 
     setTimeout(() => {
-      setCurrentIndex((prevIndex) => {
+      /*setCurrentIndex((prevIndex) => {
         const newIndex = prevIndex + 1;
         if (newIndex >= vettImg.length) {
           return 0;
         }
         return newIndex;
-      });
+      });*/
+      setCurrentIndex(currentIndex + 1);
       setSwipeClass('');
       setButtonColor({ left: '', right: '' });
     }, 300);
@@ -60,47 +71,74 @@ function MatchRoomPage() {
 
   return (
     <>
-    <div className='match-room-desktop'>
-      <div className='esci'>
-        <button onClick={()=> navigate('/gameRoom')}><FontAwesomeIcon icon={faSignOutAlt}/></button>
+    { currentIndex < vettImg.length && (
+      <>
+      <div className='match-room-desktop'>
+        <div className='esci'>
+          <button onClick={()=> navigate('/gameRoom')}><FontAwesomeIcon icon={faSignOutAlt}/></button>
+        </div>
+          <div className={`film-div ${swipeClass}`} {...handlers}>
+              <img src={vettImg[currentIndex]} alt="Film" draggable="false" /> {/*immagine tmp*/}
+          </div>
+        <div className='titolo-bottoni'>
+          <h3>Titolo del film</h3>   
+          <div className='like-dislike'>
+            <button style={{ backgroundColor: buttonColor.left }}
+                    onClick={() => handleSwipe('left')}>
+                    <FontAwesomeIcon icon={faTimes}/>
+            </button>
+            <button style={{ backgroundColor: buttonColor.right }}
+                    onClick={() => handleSwipe('right')}>
+                    <FontAwesomeIcon icon={faHeart}/>
+            </button> 
+          </div>
+        </div>      
       </div>
-        <div className={`film-div ${swipeClass}`} {...handlers}>
-            <img src={vettImg[currentIndex]} alt="Film" draggable="false" /> {/*immagine tmp*/}
+      
+      <div className='match-room-mobile'>
+        <div className='game-container'>
+          <div className={`film-div ${swipeClass}`} {...handlers}>
+            <img src={vettImg[currentIndex]} alt="Film"/> {/*immagine tmp*/}
+            <h3>Titolo del film</h3>
+          </div>
+          <div className='like-dislike'>
+            <button style={{ backgroundColor: buttonColor.left }} onClick={() => handleSwipe('left')}>
+                                                                    <FontAwesomeIcon icon={faTimes}/>
+            </button>
+            <button style={{ backgroundColor: buttonColor.right }} onClick={() => handleSwipe('right')}>
+                                                                    <FontAwesomeIcon icon={faHeart}/>
+            </button> 
+          </div>
         </div>
-      <div className='titolo-bottoni'>
-        <h3>Titolo del film</h3>   
-        <div className='like-dislike'>
-          <button style={{ backgroundColor: buttonColor.left }}
-                  onClick={() => handleSwipe('left')}>
-                  <FontAwesomeIcon icon={faTimes}/>
-          </button>
-          <button style={{ backgroundColor: buttonColor.right }}
-                  onClick={() => handleSwipe('right')}>
-                  <FontAwesomeIcon icon={faHeart}/>
-          </button> 
-        </div>
-      </div>      
-    </div>
-    
-    <div className='match-room-mobile'>
-      <div className='game-container'>
-        <div className={`film-div ${swipeClass}`} {...handlers}>
-          <img src={vettImg[currentIndex]} alt="Film"/> {/*immagine tmp*/}
-          <h3>Titolo del film</h3>
-        </div>
-        <div className='like-dislike'>
-          <button style={{ backgroundColor: buttonColor.left }} onClick={() => handleSwipe('left')}>
-                                                                  <FontAwesomeIcon icon={faTimes}/>
-          </button>
-          <button style={{ backgroundColor: buttonColor.right }} onClick={() => handleSwipe('right')}>
-                                                                  <FontAwesomeIcon icon={faHeart}/>
-          </button> 
+        <div className='esci'>
+          <button onClick={()=> navigate('/gameRoom')}><FontAwesomeIcon icon={faSignOutAlt}/></button>
         </div>
       </div>
-      <div className='esci'>
-        <button onClick={()=> navigate('/gameRoom')}><FontAwesomeIcon icon={faSignOutAlt}/></button>
+      </>
+    )}
+    { currentIndex >= vettImg.length && (
+      <>
+      <div className='match-room-desktop'>
+        <div className='end-game'>
+          <WheelSpinner lista={vettTitoli} vincitore={0}/>        
+          <div className='esci'>
+            <button onClick={()=> navigate('/gameRoom')}><FontAwesomeIcon icon={faSignOutAlt}/></button>
+          </div>
+        </div>
       </div>
-    </div>
+      <div className='match-room-mobile'>
+        <div className='end-game'>
+          <div className='ruota'>
+            <WheelSpinner lista={vettTitoli} vincitore={0}/>  
+          </div>      
+          <div className='esci'>
+            <button onClick={()=> navigate('/gameRoom')}><FontAwesomeIcon icon={faSignOutAlt}/></button>
+          </div>
+        </div>
+      </div>
+      
+      </>
+    )}
     </>
   );
 }

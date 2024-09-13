@@ -40,8 +40,9 @@ function GameRoomPage() {
       <Button variant="primary" className='game-button' onClick={()=> setButtonPopup(true)}> 
         <h2 className='titolo-bottone'>Crea Partita</h2>
       </Button>
-      <Popup trigger={buttonPopup} setTrigger={setButtonPopup} type='Crea-partita' /> 
-
+      {
+        buttonPopup && <Popup trigger={buttonPopup} setTrigger={setButtonPopup} type='Crea-partita' /> 
+      }
       {/*
         <Popup trigger={timePopup} setTrigger={setTimedPopup}> 
         <h1> My Timed Popup </h1>
@@ -54,9 +55,9 @@ function GameRoomPage() {
       <Button variant="primary" className='game-button' onClick={()=> setButtonPopup2(true)}> 
         <h2 className='titolo-bottone'>Partecipa a Partita</h2>
       </Button>
-      <Popup trigger={buttonPopup2} setTrigger={setButtonPopup2} type='Partecipa-a-partita' /> 
-
-
+      {
+        buttonPopup2 && <Popup trigger={buttonPopup2} setTrigger={setButtonPopup2} type='Partecipa-a-partita' /> 
+      }
       <Button variant="primary" className='game-button' onClick={()=> alert('In arrivo')}> 
         <h2 className='titolo-bottone'>Match History</h2>
       </Button>

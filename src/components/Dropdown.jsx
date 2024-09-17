@@ -17,34 +17,36 @@ export default GiocaCon;*/
 import {useState} from 'react';
 import '../style/dropdown.css';
 
-function Dropdown (){
+function Dropdown ({onChange}){
     
-    const [value, setValue] = useState('')
+  const [value, setValue] = useState('')
 
-    const options = [
-        { label: " Film da vedere", value: 1},
-        { label: " Film visti", value: 2},
-        { label: " Generi", value: 3},
-    ]
+  const options = [
+      { label: " Film da vedere", value: 1},
+      { label: " Film visti", value: 2},
+      { label: " Generi", value: 3},
+  ]
 
-    function handleSelect(){
-        setValue(EventTarget.value);
-    }
-
-    return (
-      <>
-      <div className='from-select-container'>
-        <select className="from-select" onChange={handleSelect}>
-            {options.map(option => (
-                <option className='option-dropdown' value={option.value}>{option.label}</option>
-                
-            ))}
-        </select>
-        
-        <div className='from-select-arrow'></div>
-      </div>
-      </>
-    )
+  function handleSelect(event) {
+    const selectedValue = event.target.value;
+    setValue(selectedValue);
+    onChange(selectedValue);
+  }
+  
+  return (
+    <>
+    <div className='from-select-container'>
+      <select className="from-select" onChange={handleSelect} value={value}>
+          {options.map(option => (
+              <option key={option.value} className='option-dropdown' value={option.value}>{option.label}</option>
+              
+          ))}
+      </select>
+      
+      <div className='from-select-arrow'></div>
+    </div>
+    </>
+  )
 }
 
 export default Dropdown;

@@ -8,12 +8,12 @@ import {io} from 'socket.io-client';
 
 function LobbyPage({token}) {
 
-    const SOCKET_IO_URL = 'https://moviematcher-backend.onrender.com/game'; //'http://localhost:9000/game';
+    const SOCKET_IO_URL = 'http://localhost:10000/game'; //'https://moviematcher-backend.onrender.com/game'; 
 
     const [socketLobby, setSocketLobby] = useState(null);
 
     const location = useLocation();
-    const { roomName, roomId } = location.state || {};
+    const { roomName, roomId, typeMatch } = location.state || {}; //al momento li passo cosi, poi staranno nel contesto
 
     const socketRef = useRef(null);
 
@@ -21,58 +21,102 @@ function LobbyPage({token}) {
 
     const [buttonPopupImp, setButtonPopupImp] = useState(false); //
 
+    const [roomData, setRoomData] = useState({});
+    const [partecipanti, setPartecipanti] = useState({});
+
     //ho bisogno di una console.log con i parametri per capire cosa ricevo e mi serve come entro nella lobby
     console.log('roomName', roomName, ' + roomId', roomId);
+    console.log('type of roomName', typeof(roomName), ' + type of roomId', typeof(roomId));
 
     const handleCopy = (event) => {
         // Seleziona il tag <p> immediatamente precedente
-        const specificElement = document.querySelector('.codice');
+        const copia = roomName +'-'+ roomId;
         
-        if (specificElement) {
-          // Crea un elemento di input temporaneo
-          const tempInput = document.createElement('input');
-          tempInput.value = specificElement.textContent;
-          document.body.appendChild(tempInput);
-          tempInput.select();
-          document.execCommand('copy');
-          document.body.removeChild(tempInput);
-          alert('Testo copiato: ' + specificElement.textContent);
+        if (copia) {
+
+          navigator.clipboard.writeText(copia)
+            .then(() => {
+                alert('Testo copiato: ' + copia);
+            })
+            .catch(err => {
+                alert('Errore durante la copia del testo, riprova.');
+            });
         } else {
           alert('Testo non trovato, impossibile copiare');
         }
-
-        /*  alternativa
-        const previousParagraph = event.target.previousElementSibling;
-        if (previousParagraph && previousParagraph.tagName === 'P') {
-            try {
-                await navigator.clipboard.writeText(previousParagraph.textContent);
-                alert('Testo copiato: ' + previousParagraph.textContent);
-            } catch (error) {
-                console.error('Errore nella copia del testo:', error);
-            }
-            } else {
-            alert('Nessun paragrafo precedente trovato.');
-            }
-        };
-        */
     };
 
     const handleShare = async () => {
-    if (navigator.share) {
-        try {
-        await navigator.share({
-            title: 'Condividi questo link',
-            text: 'Ecco il link per la stanza di gioco:',
-            url: window.location.href, // Condivide l'URL corrente - da cambiare con il link della stanza di gioco
-        });
-        console.log('Link condiviso con successo');
-        } catch (error) {
-        console.error('Errore nella condivisione del link:', error);
+        if (navigator.share) {
+            try {
+            await navigator.share({
+                title: 'Condividi questo link',
+                text: 'Ecco il link per la stanza di gioco:',
+                url: window.location.href, // Condivide l'URL corrente - da cambiare con il link della stanza di gioco
+            });
+            console.log('Link condiviso con successo');
+            } catch (error) {
+            console.error('Errore nella condivisione del link:', error);
+            }
+        } else {
+            alert('La condivisione non è supportata su questo browser.');
         }
-    } else {
-        alert('La condivisione non è supportata su questo browser.');
-    }
     };
+
+    const handleGetDataRoom = () => {
+        if(socketLobby){
+
+            console.log('Richiesta dati partita in corso');
+
+            socketLobby.emit('getRoom', { username: JSON.parse(localStorage.getItem('user')).nickname, roomId });
+
+            console.log('Richiesta dati partita fatta');
+
+            // Rimuovi i listener precedenti per evitare duplicati
+            socketLobby.off('rispostaGetRoom');
+
+            socketLobby.on('rispostaGetRoom', (data) => {
+                console.log('Risposta dal server, dati ', data);
+                setRoomData(data.variabiliRoom);
+                console.log('RoomData: ', roomData, ' + type of roomData: ', typeof(roomData));
+                console.log('Lista partecipanti type: ', typeof(roomData.listaPartecipanti));
+                setPartecipanti(roomData.listaPartecipanti);
+                console.log('Partecipanti: ', partecipanti);
+            });
+        }
+    }
+
+    const handleCeckPlayer = () => {
+        if (socketLobby) {
+            socketLobby.emit('statoPartecipantiPronto', { roomId });
+
+            // Rimuovi i listener precedenti per evitare duplicati
+            socketLobby.off('rispostaStatoPartecipantiPronto');
+            
+            socketLobby.on('rispostaStatoPartecipantiPronto', (data) => {
+                if (data.risposta) {
+                    // Se tutti i partecipanti sono pronti, invia la richiesta per avviare la partita
+                    handleStartGame();
+                } else {
+                    alert('Non tutti i partecipanti sono pronti.');
+                }
+            });
+        }
+    };
+
+    const handleStartGame = () => {
+        socketLobby.emit('avviaPartita', { username: JSON.parse(localStorage.getItem('user')).nickname, roomId });
+
+        // Rimuovi i listener precedenti per evitare duplicati
+        socketLobby.off('rispostaAvviaPartita');
+
+        socketLobby.on('rispostaAvviaPartita', (data) => {
+            console.log('Risposta dal server: ', data);
+            navigate('/gameRoom/matchRoom', { state: { roomName: data.risposta.roomName, roomId: data.risposta.roomId } }) ;
+        });
+    }
+
+    /*useEffect potenzialmente da unire, divise per distinguere lo scopo di ogni useEffect*/
 
     useEffect(() => {
         // Connessione al server Socket.io solo la prima volta che la pagina viene caricata
@@ -90,6 +134,10 @@ function LobbyPage({token}) {
             };
         }
     }, []);
+
+    useEffect(() => {
+        handleGetDataRoom();
+    }, [socketLobby]);
 
     useEffect(() => {
         // Gestisci la disconnessione del socket quando l'utente lascia la pagina
@@ -113,14 +161,19 @@ function LobbyPage({token}) {
         <div className="lobby-mobile">
             <div className="dati-partita">
                 <div className="dati">
-                    <p>Codice:</p>
-                    <p className="codice">codice</p>
-                    <button className="dati-button" onClick={handleCopy}><FaCopy/></button> {/*📋 */}
+                <p>Codice:</p>
+                <p>{roomName}-{roomId}</p>
+                <button className="dati-button" onClick={handleCopy}><FaCopy/></button> {/*📋 */}
                 </div>
                 <div className="dati">
                     <p>Link:</p>
                     <button className="dati-button" onClick={handleShare}>Condividi</button>
-                </div>            </div>
+                </div>
+                <div className="dati">
+                    <p>Modalità:</p>
+                    { typeMatch === '1' ? <p>Film da Vedere</p> : typeMatch === '2' ? <p>Film Visti</p> : typeMatch === '3' ? <p>Generi</p> : <p>Non disponibile</p> }
+                </div>
+            </div>
             <div className="giocatori">
                 <h3>Giocatori</h3>
                 <ul>
@@ -136,33 +189,37 @@ function LobbyPage({token}) {
             </div>
             <div className="bottoni">
                 <button className="bottoni-button" onClick={()=> navigate('/gameRoom')}>Esci</button>
-                <button className="bottoni-button" onClick={()=> setButtonPopupImp(true)}>Impostazioni</button>
+                <button className="bottoni-button" onClick={()=> setButtonPopupImp(true)}>Film</button>
                 {
-                    buttonPopupImp && <Popup trigger={buttonPopupImp} setTrigger={setButtonPopupImp} type='Impostazioni-partita' list='visti' token={token} roomName={roomName} roomId={roomId}/> 
+                    buttonPopupImp && <Popup trigger={buttonPopupImp} setTrigger={setButtonPopupImp} type='Impostazioni-partita' list={typeMatch} token={token} roomName={roomName} roomId={roomId}/> 
                 }
-                <button className="bottoni-button" onClick={()=> navigate('/gameRoom/matchRoom')}>Avvia</button>
+                <button className="bottoni-button" onClick={handleCeckPlayer}>Avvia</button>
             </div>
         </div>
 
         <div className="lobby-desktop">
             <div className="bottoni">
                 <button className="bottoni-button" onClick={()=> navigate('/gameRoom')}>Esci</button>
-                <button className="bottoni-button" onClick={()=> setButtonPopupImp(true)}>Impostazioni</button>
+                <button className="bottoni-button" onClick={()=> setButtonPopupImp(true)}>Film</button>
                 {
-                    buttonPopupImp && <Popup trigger={buttonPopupImp} setTrigger={setButtonPopupImp} type='Impostazioni-partita' list='visti' token={token} roomName={roomName} roomId={roomId}/>
+                    buttonPopupImp && <Popup trigger={buttonPopupImp} setTrigger={setButtonPopupImp} type='Impostazioni-partita' list={typeMatch} token={token} roomName={roomName} roomId={roomId}/>
                 }
-                <button className="bottoni-button" onClick={()=> navigate('/gameRoom/matchRoom')}>Avvia</button>
+                <button className="bottoni-button" onClick={handleCeckPlayer}>Avvia</button>
             </div>
             <div className="dati-container">
                 <div className="dati-partita">
                     <div className="dati">
                         <p>Codice:</p>
-                        <p>codice</p>
+                        <p>{roomName}-{roomId}</p>
                         <button className="dati-button" onClick={handleCopy}><FaCopy/></button>
                     </div>
                     <div className="dati">
                         <p>Link:</p>
                         <button className="dati-button" onClick={handleShare}>Condividi</button>
+                    </div>
+                    <div className="dati">
+                        <p>Modalità:</p>
+                        { typeMatch === '1' ? <p>Film da Vedere</p> : typeMatch === '2' ? <p>Film Visti</p> : typeMatch === '3' ? <p>Generi</p> : <p>Non disponibile</p> }
                     </div>
                 </div>
                 <div className="giocatori">

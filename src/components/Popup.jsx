@@ -14,8 +14,8 @@ function Popup (props){
 
     let token = props.token;
 
-    const SOCKET_IO_URL = 'https://moviematcher-backend.onrender.com/game'; //'http://localhost:10000/game'; 
-    
+    const SOCKET_IO_URL = 'http://localhost:10000/game'; //'https://moviematcher-backend.onrender.com/game'; 
+
     const [socketPopup, setSocketPopup] =  useState(null);
 
     const navigate = useNavigate();
@@ -23,13 +23,28 @@ function Popup (props){
     const [films, setFilms] = useState([]);
     const [title, setTitle] = useState('');
     const [selectedFilms, setSelectedFilms] = useState([]);
+    const [dropdownValue, setDropdownValue] = useState('1');
 
     useEffect(() => {
 
         if (props.trigger) {
             console.log('token ', token);
+            console.log('props.list ', props.list, 'list type: ', typeof(props.list));
 
-            if(props.list === 'visti' && props.token){
+            if(props.list === '1' && props.token){
+                axios.post('https://moviematcher-backend.onrender.com/user/getWatchList', { body: {userNickname: JSON.parse(localStorage.getItem('user')).nickname }}, { headers: {Authorization: 'Bearer '+token} })
+                    .then (response => {
+                        console.log('Risposta dal backend: ', response.data);
+                        setFilms(response.data.movies);
+                        setTitle(response.data.title);
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        setTitle(err.response.data.title);
+                    });
+            
+            }
+            else if(props.list === '2' && props.token){
 
                 axios.post('https://moviematcher-backend.onrender.com/user/getMyList', { body: {userNickname: JSON.parse(localStorage.getItem('user')).nickname }}, { headers: {Authorization: 'Bearer '+token} })
                     .then (response => {
@@ -42,9 +57,28 @@ function Popup (props){
                         setTitle(err.response.data.title);
                     });
             }
+            else if(props.list === '3' && props.token){
+
+                const roomId = props.roomId;
+                const roomName = props.roomName;
+                alert('Non ancora disponibile');
+                navigate('/gameRoom/lobby', { state: { roomName: roomName, roomId: roomId, typeMatch: props.list}});
+
+                /*axios.post('https://moviematcher-backend.onrender.com/user/getAllGenres', { body: {userNickname: JSON.parse(localStorage.getItem('user')).nickname }}, { headers: {Authorization: 'Bearer '+token} })
+                    .then (response => {
+                        console.log('Risposta dal backend: ', response.data);
+                        setFilms(response.data.movies);
+                        setTitle(response.data.title);
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        setTitle(err.response.data.title);
+                    });
+                */
+            }
         }
 
-    }, [props.trigger, props.list, token]);
+    }, [props.trigger, props.list, token, props.roomId, props.roomName]);
 
     useEffect(() => {
         // Connessione al server Socket.io
@@ -67,6 +101,13 @@ function Popup (props){
 
     };
 
+    //
+    const handleDropdownChange = (value) => {
+        console.log("Dropdown value changed:", value);
+        setDropdownValue(value);
+    };
+    //
+
     const handleCreateGame = () => {
         if (socketPopup) {
             socketPopup.emit('creaPartita', {
@@ -81,7 +122,8 @@ function Popup (props){
             socketPopup.on('rispostaCreazionePartita', (data) => {
                 console.log('Risposta dal server: ', data);
                 console.log('Vado nella lobby, dati: roomName: ', data.roomName, '+ roomId: ', data.roomId, '+ socket: ', socketPopup);
-                navigate('/gameRoom/lobby', { state: { roomName: data.roomName, roomId: data.roomId } });
+                console.log('valore dropdown: ', dropdownValue);
+                navigate('/gameRoom/lobby', { state: { roomName: data.roomName, roomId: data.roomId, typeMatch: dropdownValue } });
             });
         }
     };
@@ -113,7 +155,7 @@ function Popup (props){
         }
     };
 
-    const handleConfirm = () => {
+    const handleConfirm = () => { // Invia la lista dei film selezionati al server
         if (socketPopup) {
             const user = JSON.parse(localStorage.getItem('user'));
             const roomId = props.roomId;
@@ -128,11 +170,14 @@ function Popup (props){
                 listaFilm: selectedFilms
             });
 
+            // Rimuovi i listener precedenti per evitare duplicati
+            socketPopup.off('rispostaInvioLista');
+
             // Metti in ascolto l'evento 'rispostaInvioLista'
             socketPopup.on('rispostaInvioLista', (data) => {
                 console.log('Risposta dal server: ', data);
                 alert('Dati inviati con successo: ' + data.message);
-                navigate('/gameRoom/lobby', { state: { roomName: roomName, roomId: roomId }});
+                navigate('/gameRoom/lobby', { state: { roomName: roomName, roomId: roomId , typeMatch: props.list}});
             });
         }
     };
@@ -153,7 +198,7 @@ function Popup (props){
                                 <div className='gioca-con'>
                                     <FontAwesomeIcon icon={faFilm} className='gioca-con-icon'/>
                                     <h2> Gioca con </h2>
-                                    <Dropdown/>
+                                    <Dropdown onChange={handleDropdownChange}/>
                                 </div>
                                 <div className='nome-partita'>
                                     <FontAwesomeIcon icon={faEdit} className='nome-partita-icon'/>

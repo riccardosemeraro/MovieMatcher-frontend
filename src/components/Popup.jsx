@@ -14,7 +14,7 @@ function Popup (props){
 
     let token = props.token;
 
-    const SOCKET_IO_URL = 'http://localhost:10000/game'; //'https://moviematcher-backend.onrender.com/game'; 
+    const SOCKET_IO_URL = 'https://moviematcher-backend.onrender.com/game'; //'http://localhost:10000/game';  
 
     const [socketPopup, setSocketPopup] =  useState(null);
 
@@ -177,7 +177,7 @@ function Popup (props){
             socketPopup.on('rispostaInvioLista', (data) => {
                 console.log('Risposta dal server: ', data);
                 alert('Dati inviati con successo: ' + data.message);
-                navigate('/gameRoom/lobby', { state: { roomName: roomName, roomId: roomId , typeMatch: props.list}});
+                props.setTrigger(false);
             });
         }
     };

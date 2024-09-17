@@ -8,7 +8,7 @@ import {io} from 'socket.io-client';
 
 function LobbyPage({token}) {
 
-    const SOCKET_IO_URL = 'http://localhost:10000/game'; //'https://moviematcher-backend.onrender.com/game'; 
+    const SOCKET_IO_URL = 'https://moviematcher-backend.onrender.com/game'; //'http://localhost:10000/game';  
 
     const [socketLobby, setSocketLobby] = useState(null);
 
@@ -79,7 +79,7 @@ function LobbyPage({token}) {
                 console.log('Risposta dal server, dati ', data);
                 setRoomData(data.variabiliRoom);
                 console.log('RoomData: ', roomData, ' + type of roomData: ', typeof(roomData));
-                console.log('Lista partecipanti type: ', typeof(roomData.listaPartecipanti));
+                console.log('Lista partecipanti type: ', typeof(data.variabiliRoom.listaPartecipanti));
                 setPartecipanti(roomData.listaPartecipanti);
                 console.log('Partecipanti: ', partecipanti);
             });
@@ -177,13 +177,9 @@ function LobbyPage({token}) {
             <div className="giocatori">
                 <h3>Giocatori</h3>
                 <ul>
-                    <li>Nome1</li>
-                    <li>Nome2</li>
-                    <li>Nome3</li>
-                    <li>Nome4</li>
-                    <li>Nome2</li>
-                    <li>Nome3</li>
-                    <li>Nome4</li>
+                    {
+
+                    }
                     {/* .map dei giocatori in partita */}
                 </ul>
             </div>
@@ -225,13 +221,20 @@ function LobbyPage({token}) {
                 <div className="giocatori">
                     <h3>Giocatori</h3>
                     <ul>
-                        <li>Nome1</li>
-                        <li>Nome2</li>
-                        <li>Nome3</li>
-                        <li>Nome4</li>
-                        <li>Nome2</li>
-                        <li>Nome3</li>
-                        <li>Nome4</li>
+                        {
+                            console.log('partecipante',partecipanti) && partecipanti ?
+                            /*
+                            partecipanti.map((partecipante) => (
+                                <li key={partecipante}>{partecipante.username}</li>
+                            ))
+                            */
+
+
+                            Object.keys(partecipanti).map((key) => (
+                                <li key={key}>{partecipanti[key]}</li>
+                            ))
+                            : <p>Non ci sono giocatori in partita</p>
+                        }
                     </ul>
                 </div>
             </div>

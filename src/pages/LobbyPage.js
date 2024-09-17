@@ -1,12 +1,16 @@
 import "../style/lobby.css";
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import Popup from '../components/Popup';
 import { FaCopy } from 'react-icons/fa'; 
 
 import {io} from 'socket.io-client';
 
+import { ActiveGameContext } from '../contexts/activeGameContextProvider';
+
 function LobbyPage({token}) {
+
+    const { value: activeGame, setValue: setActiveGame } = useContext(ActiveGameContext); //stato del server
 
     const SOCKET_IO_URL = 'https://moviematcher-backend.onrender.com/game'; //'http://localhost:10000/game';  
 

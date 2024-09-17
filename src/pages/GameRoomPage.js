@@ -11,11 +11,14 @@ import LoadingGif from '../components/loadingGif';
 
 import { ServerStateContext } from '../contexts/serverStateContextProvider';
 
+
 function GameRoomPage() {
   const [buttonPopup, setButtonPopup] = useState(false); //
   const [buttonPopup2, setButtonPopup2] = useState(false);
   //const [timedPopup, setTimedPopup] = useState(false);  //
   const { value: server, setValue: setServer } = useContext(ServerStateContext); //stato del server
+
+  
 
   const navigate = useNavigate();
 

@@ -4,19 +4,25 @@ import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faFilm, faEdit, faTicket } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { ListGroup } from 'react-bootstrap';
+
+import { ActiveGameContext } from '../contexts/activeGameContextProvider';
 
 import { io } from 'socket.io-client'; 
 
 function Popup (props){
 
+    const { value: activeGame, setValue: setActiveGame } = useContext(ActiveGameContext); //stato del server
+
     let token = props.token;
 
     const SOCKET_IO_URL = 'https://moviematcher-backend.onrender.com/game'; //'http://localhost:10000/game';  
 
-    const [socketPopup, setSocketPopup] =  useState(null);
+    
+    const newSocket = io(SOCKET_IO_URL);
+    const [socketPopup, setSocketPopup] =  useState(newSocket);
 
     const navigate = useNavigate();
 
@@ -80,15 +86,6 @@ function Popup (props){
 
     }, [props.trigger, props.list, token, props.roomId, props.roomName]);
 
-    useEffect(() => {
-        // Connessione al server Socket.io
-        const newSocket = io(SOCKET_IO_URL);
-        setSocketPopup(newSocket);
-
-        // Cleanup della connessione quando il componente viene smontato
-        return () => newSocket.disconnect();
-    }, [props.type]);
-
     const handleCheckboxChange = (film) => {
         setSelectedFilms((prevSelectedFilms) => {
             const filmExists = prevSelectedFilms.some(f => f.id === film.id);
@@ -104,7 +101,14 @@ function Popup (props){
     //
     const handleDropdownChange = (value) => {
         console.log("Dropdown value changed:", value);
-        setDropdownValue(value);
+
+        if (value === '1') {
+            setDropdownValue('Film da vedere');
+        } else if (value === '2') {
+            setDropdownValue('Film visti');
+        } else if (value === '3') {
+            setDropdownValue('Generi');
+        }
     };
     //
 
@@ -112,21 +116,24 @@ function Popup (props){
         if (socketPopup) {
             socketPopup.emit('creaPartita', {
                 username: JSON.parse(localStorage.getItem('user')).nickname,
-                roomName: document.querySelector('.nome-partita input').value
+                roomName: document.querySelector('.nome-partita input').value,
+                modalita: dropdownValue
               });
 
             // Rimuovi i listener precedenti per evitare duplicati
-            socketPopup.off('rispostaCreazionePartita');
-
-            //voglio mettermi in ascolto di una risposta dal server e se arriva vado nella lobby
-            socketPopup.on('rispostaCreazionePartita', (data) => {
-                console.log('Risposta dal server: ', data);
-                console.log('Vado nella lobby, dati: roomName: ', data.roomName, '+ roomId: ', data.roomId, '+ socket: ', socketPopup);
-                console.log('valore dropdown: ', dropdownValue);
-                navigate('/gameRoom/lobby', { state: { roomName: data.roomName, roomId: data.roomId, typeMatch: dropdownValue } });
-            });
+            //socketPopup.off('rispostaCreazionePartita');
         }
     };
+
+    //voglio mettermi in ascolto di una risposta dal server e se arriva vado nella lobby
+    socketPopup.on('rispostaCreazionePartita', (data) => {
+        console.log('Risposta dal server: ', data);
+        console.log('Vado nella lobby, dati: roomName: ', data.roomName, '+ roomId: ', data.roomId, '+ socket: ', socketPopup);
+        
+        setActiveGame(data); //modifico il contesto ActiveGameContext
+
+        navigate('/gameRoom/lobby', { state: { roomName: data.roomName, roomId: data.roomId, typeMatch: dropdownValue } });
+    });
 
     const handleJoinGame = () => {
         if (socketPopup) {
@@ -137,23 +144,23 @@ function Popup (props){
             });
 
             // Rimuovi i listener precedenti per evitare duplicati
-            socketPopup.off('rispostaPartecipaPartita');
-            socketPopup.off('rispostaPartecipazionePartitaNegata');
-
-            // Metti in ascolto l'evento 'rispostaPartecipaPartita'
-            socketPopup.on('rispostaPartecipaPartita', (data) => {
-                console.log('Risposta dal server: ', data);
-                navigate('/gameRoom/lobby', { state: {roomName: data.roomName, roomId: data.roomId }});
-            });
-
-            // Metti in ascolto l'evento 'rispostaPartecipazionePartitaNegata'
-            socketPopup.on('rispostaPartecipazionePartitaNegata', (data) => {
-                console.log('Partecipazione negata: ', data.message);
-                alert('Partecipazione negata: ' + data.message);
-                
-            });
+            //socketPopup.off('rispostaPartecipaPartita');
+            //socketPopup.off('rispostaPartecipazionePartitaNegata');
         }
     };
+
+    // Metti in ascolto l'evento 'rispostaPartecipaPartita'
+    socketPopup.on('rispostaPartecipaPartita', (data) => {
+        console.log('Risposta dal server: ', data);
+        navigate('/gameRoom/lobby', { state: {roomName: data.roomName, roomId: data.roomId }});
+    });
+
+    // Metti in ascolto l'evento 'rispostaPartecipazionePartitaNegata'
+    socketPopup.on('rispostaPartecipazionePartitaNegata', (data) => {
+        console.log('Partecipazione negata: ', data.message);
+        alert('Partecipazione negata: ' + data.message);
+        
+    });
 
     const handleConfirm = () => { // Invia la lista dei film selezionati al server
         if (socketPopup) {
@@ -171,16 +178,16 @@ function Popup (props){
             });
 
             // Rimuovi i listener precedenti per evitare duplicati
-            socketPopup.off('rispostaInvioLista');
-
-            // Metti in ascolto l'evento 'rispostaInvioLista'
-            socketPopup.on('rispostaInvioLista', (data) => {
-                console.log('Risposta dal server: ', data);
-                alert('Dati inviati con successo: ' + data.message);
-                props.setTrigger(false);
-            });
+            //socketPopup.off('rispostaInvioLista');
         }
     };
+
+    // Metti in ascolto l'evento 'rispostaInvioLista'
+    socketPopup.on('rispostaInvioLista', (data) => {
+        console.log('Risposta dal server: ', data);
+        alert('Dati inviati con successo: ' + data.message);
+        props.setTrigger(false);
+    });
 
     return (
         (props.trigger) ? (

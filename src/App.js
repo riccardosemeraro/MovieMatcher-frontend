@@ -19,6 +19,8 @@ import { useAuth0 } from '@auth0/auth0-react';
 
 import { ServerStateContext } from './contexts/serverStateContextProvider';
 
+import { ActiveGameContextProvider } from './contexts/activeGameContextProvider'; //importo il provider dei contesti server
+
 function App() {
 
   const location = useLocation(); //per prendere la locazione della pagina
@@ -102,12 +104,20 @@ function App() {
               <Route path="/*" element={<Navigate to="/" />} />
               <Route path="/" element={<HomePage />} />
               <Route path="/profile" element={<AuthenticationGuard component={() => <ProfilePage token={authToken} />} />} />
-              <Route path="/gameRoom" element={<AuthenticationGuard component={GameRoomPage} />} />
+              
 
-              {/*route temporanee*/}
-              <Route path="/gameRoom/lobby" element={<AuthenticationGuard component={() => <LobbyPage token={authToken} />} />} />
-              <Route path="/gameRoom/matchRoom" element={<AuthenticationGuard component={MatchRoomPage} />} />
-              {/*route temporanee*/}
+              <Route path="/gameRoom" element={
+                <ActiveGameContextProvider>
+                  <AuthenticationGuard component={GameRoomPage} />
+                </ActiveGameContextProvider>} />
+              <Route path="/gameRoom/lobby" element={
+                <ActiveGameContextProvider>
+                <AuthenticationGuard component={() => <LobbyPage token={authToken} />} />
+                </ActiveGameContextProvider>} />
+              <Route path="/gameRoom/matchRoom" element={
+                <ActiveGameContextProvider>
+                <AuthenticationGuard component={MatchRoomPage} />
+                </ActiveGameContextProvider>} />
 
               <Route path="/film/:idName" element={<FilmPage token={authToken}/>} />
 

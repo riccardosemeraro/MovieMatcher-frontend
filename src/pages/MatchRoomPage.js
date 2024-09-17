@@ -29,7 +29,8 @@ function MatchRoomPage() {
                       'titolo3',
                       'titolo4',
                       'titolo5',
-                      'titolo6'
+                      'titolo6',
+                      'titolo7'
                     ];
 
   const handleSwipe = (direction) => {

@@ -172,7 +172,7 @@ function LobbyPage({token}) {
                 {
                     buttonPopupImp && <Popup trigger={buttonPopupImp} setTrigger={setButtonPopupImp} type='Impostazioni-partita' list={activeGame.modalita} token={token} roomName={activeGame.roomName} roomId={activeGame.roomId}/> 
                 }
-                <button className="bottoni-button" onClick={handleCeckPlayer}>Avvia</button>
+                <button className={roomData.creatore === activeGame.variabiliRoom.me.username ? "bottoni-button" : "bottoni-button-disabled" }  onClick={handleCeckPlayer} disabled={roomData.creatore !== activeGame.variabiliRoom.me.username}>Avvia</button>
             </div>
         </div>
 
@@ -183,7 +183,7 @@ function LobbyPage({token}) {
                 {
                     buttonPopupImp && <Popup trigger={buttonPopupImp} setTrigger={setButtonPopupImp} type='Impostazioni-partita' list={activeGame.modalita} token={token} roomName={activeGame.roomName} roomId={activeGame.roomId}/>
                 }
-                <button className={roomData.creatore === roomData.me ? "bottoni-button" : "bottoni-button-disabled" }  onClick={handleCeckPlayer}>Avvia</button>
+                <button className={roomData.creatore === activeGame.variabiliRoom.me.username ? "bottoni-button" : "bottoni-button-disabled" }  onClick={handleCeckPlayer} disabled={roomData.creatore !== activeGame.variabiliRoom.me.username}>Avvia</button>
             </div>
             <div className="dati-container">
                 <div className="dati-partita">

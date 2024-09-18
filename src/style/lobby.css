@@ -122,6 +122,25 @@
         cursor: pointer; /* Cambia il cursore per indicare che è cliccabile */
     }
 
+    .bottoni-button-disabled{
+        font-size: 15px;
+        color: white;
+        font-weight: bold;
+
+        margin: 10px;
+        padding: 10px;
+
+        background-color: #6a0795;
+        border-radius: 20px;
+
+        opacity: 0.5;
+
+        flex: 1;
+
+        border: none;
+        cursor: pointer; /* Cambia il cursore per indicare che è cliccabile */
+    }
+
 }
 
 @media(min-width: 1024px){

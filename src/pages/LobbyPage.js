@@ -12,7 +12,7 @@ function LobbyPage({token}) {
 
     const { value: activeGame, setValue: setActiveGame } = useContext(ActiveGameContext); //stato del server
 
-    const SOCKET_IO_URL = 'http://localhost:10000/game'; //'https://moviematcher-backend.onrender.com/game';     
+    const SOCKET_IO_URL = 'https://moviematcher-backend.onrender.com/game'; 'http://localhost:10000/game';
     const newSocket = io(SOCKET_IO_URL);
     const [socketLobby, setSocketLobby] = useState(newSocket);
 

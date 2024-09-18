@@ -12,9 +12,9 @@ function LobbyPage({token}) {
 
     const { value: activeGame, setValue: setActiveGame } = useContext(ActiveGameContext); //stato del server
 
-    const SOCKET_IO_URL = 'https://moviematcher-backend.onrender.com/game'; //'http://localhost:10000/game';    
-    const [socketLobby, setSocketLobby] = useState(null);
-    const socketRef = useRef(null);
+    const SOCKET_IO_URL = 'http://localhost:10000/game'; //'https://moviematcher-backend.onrender.com/game';     
+    const newSocket = io(SOCKET_IO_URL);
+    const [socketLobby, setSocketLobby] = useState(newSocket);
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -22,6 +22,8 @@ function LobbyPage({token}) {
     const [buttonPopupImp, setButtonPopupImp] = useState(false); //
     const [roomData, setRoomData] = useState({});
     const [partecipanti, setPartecipanti] = useState([]);
+
+    //socketLobby.off();
 
     const handleCopy = () => {
         // Seleziona il tag <p> immediatamente precedente
@@ -58,7 +60,7 @@ function LobbyPage({token}) {
         }
     };
 
-    const handleGetDataRoom = () => {
+    const handleGetDataRoom = async () => {
         if(socketLobby){
 
             const user = JSON.parse(localStorage.getItem('user'));
@@ -67,19 +69,7 @@ function LobbyPage({token}) {
             socketLobby.emit('getRoom', { username: user.nickname, roomId: roomId });
 
             // Rimuovi i listener precedenti per evitare duplicati
-            socketLobby.off('rispostaGetRoom');
-
-            socketLobby.on('rispostaGetRoom', (data) => {
-                console.log('Risposta dal server, dati ', data);
-                setActiveGame(data);
-                console.log('Dati attuali: ', activeGame);
-                setRoomData(activeGame.variabiliRoom);
-                console.log('Dati stanza: ', roomData);
-                setPartecipanti(data.variabiliRoom.listaPartecipanti);
-                console.log('Partecipanti: ', partecipanti, 'type: ', typeof(partecipanti));
-                console.log('Valore di listaPartecipanti:', activeGame.variabiliRoom.listaPartecipanti);
-                console.log('È un array?', Array.isArray(activeGame.variabiliRoom.listaPartecipanti));
-            });
+            //socketLobby.off('rispostaGetRoom');            
         }
     }
 
@@ -91,16 +81,7 @@ function LobbyPage({token}) {
             socketLobby.emit('statoPartecipantiPronto', { roomId: roomId });
 
             // Rimuovi i listener precedenti per evitare duplicati
-            socketLobby.off('rispostaStatoPartecipantiPronto');
-
-            socketLobby.on('rispostaStatoPartecipantiPronto', (data) => {
-                if (data.risposta) {
-                    // Se tutti i partecipanti sono pronti, invia la richiesta per avviare la partita
-                    handleStartGame();
-                } else {
-                    alert('Non tutti i partecipanti sono pronti.');
-                }
-            });
+            //socketLobby.off('rispostaStatoPartecipantiPronto');
         }
     };
 
@@ -112,51 +93,49 @@ function LobbyPage({token}) {
         socketLobby.emit('avviaPartita', { username: user.nickname, roomId: roomId });
 
         // Rimuovi i listener precedenti per evitare duplicati
-        socketLobby.off('rispostaAvviaPartita');
+        //socketLobby.off('rispostaAvviaPartita');
+    }
+
+
+    useEffect(() => {
+        handleGetDataRoom();
+
+        socketLobby.off(); //Rimuovi i listener precedenti per evitare duplicati (pulisce il buffer)
+
+        socketLobby.on('rispostaGetRoom', (data) => {
+            setActiveGame(data);
+            console.log('Dati attuali: ', data);
+            setRoomData(data.variabiliRoom);
+            console.log('Dati stanza: ', roomData);
+            setPartecipanti(data.variabiliRoom.listaPartecipanti);
+            console.log('Partecipanti: ', partecipanti, 'type: ', typeof(partecipanti));
+        });
+
+        socketLobby.on('rispostaStatoPartecipantiPronto', (data) => {
+            if (data.risposta) {
+                // Se tutti i partecipanti sono pronti, invia la richiesta per avviare la partita
+                handleStartGame();
+            } else {
+                alert('Non tutti i partecipanti sono pronti.');
+            }
+        });
 
         socketLobby.on('rispostaAvviaPartita', (data) => {
             console.log('Risposta dal server: ', data);
             setActiveGame(data);
             navigate('/gameRoom/matchRoom');
         });
-    }
 
-    /*useEffect potenzialmente da unire, divise per distinguere lo scopo di ogni useEffect*/
-    useEffect(() => {
-        // Connessione al server Socket.io solo la prima volta che la pagina viene caricata
-        if (!socketRef.current) {
-            const newSocket = io(SOCKET_IO_URL);
-            socketRef.current = newSocket;
-            setSocketLobby(newSocket);
+        socketLobby.on('rispostaPartecipaPartita', (data) => {
+            console.log('Risposta dal server: ', data);
+            setActiveGame(data);
+            console.log('Dati attuali: ', data);
+            setRoomData(data.variabiliRoom);
+            console.log('Dati stanza: ', roomData);
+            setPartecipanti(data.variabiliRoom.listaPartecipanti);
+            console.log('Partecipanti: ', partecipanti, 'type: ', typeof(partecipanti));
+        });
 
-            // Cleanup della connessione quando il componente viene smontato
-            return () => {
-                if (socketRef.current) {
-                    socketRef.current.disconnect();
-                    socketRef.current = null;
-                }
-            };
-        }
-    }, []);
-
-    useEffect(() => {
-        // Gestisci la disconnessione del socket quando l'utente lascia la pagina
-        const handleBeforeUnload = () => {
-            if (socketRef.current) {
-                socketRef.current.disconnect();
-                socketRef.current = null;
-            }
-        };
-
-        window.addEventListener('beforeunload', handleBeforeUnload);
-
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-        };
-    }, []);
-
-    useEffect(() => {
-        handleGetDataRoom();
     }, [socketLobby]);
 
     return (
@@ -182,7 +161,8 @@ function LobbyPage({token}) {
                 <h3>Giocatori</h3>
                 <ul>
                     {
-
+                        partecipanti.length > 0 ? partecipanti.map((p) => <li>{p.username}</li>) 
+                        : <li>Non ci sono partecipanti</li>
                     }
                 </ul>
             </div>
@@ -203,7 +183,7 @@ function LobbyPage({token}) {
                 {
                     buttonPopupImp && <Popup trigger={buttonPopupImp} setTrigger={setButtonPopupImp} type='Impostazioni-partita' list={activeGame.modalita} token={token} roomName={activeGame.roomName} roomId={activeGame.roomId}/>
                 }
-                <button className="bottoni-button" onClick={handleCeckPlayer}>Avvia</button>
+                <button className={roomData.creatore === roomData.me ? "bottoni-button" : "bottoni-button-disabled" }  onClick={handleCeckPlayer}>Avvia</button>
             </div>
             <div className="dati-container">
                 <div className="dati-partita">
@@ -223,17 +203,11 @@ function LobbyPage({token}) {
                 </div>
                 <div className="giocatori">
                     <h3>Giocatori</h3>
-                    <ul>    
+                    <ul>
                         {
-                            console.log('Valore di listaPartecipanti nel return:', activeGame.variabiliRoom.listaPartecipanti, 'È un array nel return?', Array.isArray(activeGame.variabiliRoom.listaPartecipanti)) &&
-                             
-                            Array.isArray(activeGame.variabiliRoom.partecipanti) && activeGame.variabiliRoom.partecipanti.length > 0 ? (
-                            activeGame.variabiliRoom.partecipanti.map((partecipante, index) => (
-                                <li key={index}>{partecipante.username}</li>
-                            ))
-                        ) : (
-                            <li>Non ci sono partecipanti</li>
-                        )}
+                            partecipanti.length > 0 ? partecipanti.map((p) => <li>{p.username}</li>) 
+                            : <li>Non ci sono partecipanti</li>
+                        }
                     </ul>
                 </div>
             </div>

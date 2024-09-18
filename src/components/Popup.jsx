@@ -17,8 +17,9 @@ function Popup (props){
 
     let token = props.token;
 
-    const SOCKET_IO_URL = 'https://moviematcher-backend.onrender.com/game'; //'http://localhost:10000/game';      
-    const [socketPopup, setSocketPopup] =  useState(null);
+    const SOCKET_IO_URL = 'http://localhost:10000/game'; //'https://moviematcher-backend.onrender.com/game'; 
+    const newSocket = io(SOCKET_IO_URL);
+    const [socketPopup, setSocketPopup] =  useState(newSocket);
 
     const navigate = useNavigate();
 
@@ -37,14 +38,90 @@ function Popup (props){
         console.log('dropdownValue: ', dropdownValue, 'type of: ', typeof(dropdownValue));
     }
 
+    const handleCheckboxChange = (film) => {
+        setSelectedFilms((prevSelectedFilms) => {
+            const filmExists = prevSelectedFilms.some(f => f.id === film.id);
+            if (filmExists) {
+                return prevSelectedFilms.filter(f => f.id !== film.id);
+            } else {
+                return [...prevSelectedFilms, film];
+            }
+        });
+
+    };
+
+    const handleCreateGame = () => {
+        if (socketPopup) {
+            socketPopup.emit('creaPartita', {
+                username: JSON.parse(localStorage.getItem('user')).nickname,
+                roomName: document.querySelector('.nome-partita input').value,
+                modalita: dropdownValue
+              });
+        }
+    };
+
+    const handleJoinGame = () => {
+        if (socketPopup) {
+
+            console.log("DIOCANE");
+
+            socketPopup.emit('partecipaPartita', {
+                username: JSON.parse(localStorage.getItem('user')).nickname,
+                roomName: document.querySelector('.codice-partita input').value.split('-')[0],
+                roomId: document.querySelector('.codice-partita input').value.split('-')[1]
+            });
+        }
+    };
+
+    const handleConfirm = () => { // Invia la lista dei film selezionati al server
+        if (socketPopup) {
+            const user = JSON.parse(localStorage.getItem('user'));
+            const roomId = activeGame.roomId;
+            const roomName = activeGame.roomName;
+
+            console.log('roomId: ', activeGame.roomId, 'roomName: ', activeGame.roomName, 'user: ', user.nickname, 'selectedFilms: ', selectedFilms);
+
+            socketPopup.emit('invioListaFilm', {
+                username: user.nickname,
+                roomId: roomId,
+                roomName: roomName,
+                listaFilm: selectedFilms
+            });
+        }
+    };
+
     useEffect(() => {
-        const newSocket = io(SOCKET_IO_URL);
-        setSocketPopup(newSocket);
 
-        return () => newSocket.close();
+        socketPopup.off(); //rimuovo tutti i listener precedenti
 
-        }, []); // Eseguito solo al primo render
-    
+        //voglio mettermi in ascolto di una risposta dal server e se arriva vado nella lobby
+        socketPopup.on('rispostaCreazionePartita', (data) => {
+            console.log('Risposta dal server: ', data);        
+            setActiveGame(data); //modifico il contesto ActiveGameContext
+            navigate('/gameRoom/lobby' /*, { state: { roomName: data.roomName, roomId: data.roomId, typeMatch: dropdownValue } }*/);
+        });
+
+        // Metti in ascolto l'evento 'rispostaPartecipaPartita'
+        socketPopup.on('rispostaPartecipaPartita', (data) => {
+            console.log('Risposta dal server: ', data);
+            setActiveGame(data); //modifico il contesto ActiveGameContext
+            navigate('/gameRoom/lobby' /*, { state: {roomName: data.roomName, roomId: data.roomId }}*/);
+        });
+
+        // Metti in ascolto l'evento 'rispostaPartecipazionePartitaNegata'
+        socketPopup.on('rispostaPartecipazionePartitaNegata', (data) => {
+            alert('Partecipazione negata: ' + data.message);     
+        });
+
+        // Metti in ascolto l'evento 'rispostaInvioLista'
+        socketPopup.on('rispostaInvioLista', (data) => {
+            console.log('Risposta dal server: ', data);
+            setActiveGame(data); //modifico il contesto ActiveGameContext
+            alert(data.message);
+            props.setTrigger(false);
+        });
+
+    }, [socketPopup]);
 
     useEffect(() => {
 
@@ -97,92 +174,6 @@ function Popup (props){
         }
 
     }, [props.trigger, token, activeGame.modalita, activeGame.roomId, activeGame.roomName]);
-
-    const handleCheckboxChange = (film) => {
-        setSelectedFilms((prevSelectedFilms) => {
-            const filmExists = prevSelectedFilms.some(f => f.id === film.id);
-            if (filmExists) {
-                return prevSelectedFilms.filter(f => f.id !== film.id);
-            } else {
-                return [...prevSelectedFilms, film];
-            }
-        });
-
-    };
-
-    const handleCreateGame = () => {
-        if (socketPopup) {
-            socketPopup.emit('creaPartita', {
-                username: JSON.parse(localStorage.getItem('user')).nickname,
-                roomName: document.querySelector('.nome-partita input').value,
-                modalita: dropdownValue
-              });
-
-            // Rimuovi i listener precedenti per evitare duplicati
-            socketPopup.off('rispostaCreazionePartita');
-
-            //voglio mettermi in ascolto di una risposta dal server e se arriva vado nella lobby
-            socketPopup.on('rispostaCreazionePartita', (data) => {
-                console.log('Risposta dal server: ', data);        
-                setActiveGame(data); //modifico il contesto ActiveGameContext
-                navigate('/gameRoom/lobby' /*, { state: { roomName: data.roomName, roomId: data.roomId, typeMatch: dropdownValue } }*/);
-            });
-        }
-    };
-
-    const handleJoinGame = () => {
-        if (socketPopup) {
-            socketPopup.emit('partecipaPartita', {
-                username: JSON.parse(localStorage.getItem('user')).nickname,
-                roomName: document.querySelector('.codice-partita input').value.split('-')[0],
-                roomId: document.querySelector('.codice-partita input').value.split('-')[1]
-            });
-
-            // Rimuovi i listener precedenti per evitare duplicati
-            socketPopup.off('rispostaPartecipaPartita');
-            socketPopup.off('rispostaPartecipazionePartitaNegata');
-
-            // Metti in ascolto l'evento 'rispostaPartecipaPartita'
-            socketPopup.on('rispostaPartecipaPartita', (data) => {
-                console.log('Risposta dal server: ', data);
-                setActiveGame(data); //modifico il contesto ActiveGameContext
-                navigate('/gameRoom/lobby' /*, { state: {roomName: data.roomName, roomId: data.roomId }}*/);
-            });
-
-            // Metti in ascolto l'evento 'rispostaPartecipazionePartitaNegata'
-            socketPopup.on('rispostaPartecipazionePartitaNegata', (data) => {
-                alert('Partecipazione negata: ' + data.message);     
-            });
-        }
-    };
-
-    const handleConfirm = () => { // Invia la lista dei film selezionati al server
-        if (socketPopup) {
-            const user = JSON.parse(localStorage.getItem('user'));
-            const roomId = activeGame.roomId;
-            const roomName = activeGame.roomName;
-
-            console.log('roomId: ', activeGame.roomId, 'roomName: ', activeGame.roomName, 'user: ', user.nickname, 'selectedFilms: ', selectedFilms);
-
-            socketPopup.emit('invioListaFilm', {
-                username: user.nickname,
-                roomId: roomId,
-                roomName: roomName,
-                listaFilm: selectedFilms
-            });
-
-            // Rimuovi i listener precedenti per evitare duplicati
-            socketPopup.off('rispostaInvioLista');
-
-            // Metti in ascolto l'evento 'rispostaInvioLista'
-            socketPopup.on('rispostaInvioLista', (data) => {
-                console.log('Risposta dal server: ', data);
-                setActiveGame(data); //modifico il contesto ActiveGameContext
-                alert('Dati inviati con successo: ' + data.message);
-                props.setTrigger(false);
-            });
-        }
-    };
 
     return (
         (props.trigger) ? (

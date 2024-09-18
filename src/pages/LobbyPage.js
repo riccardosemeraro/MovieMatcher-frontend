@@ -1,6 +1,6 @@
 import "../style/lobby.css";
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useState, useEffect, useRef, useContext } from 'react';
+import { useState, useEffect, useRef, useContext, act } from 'react';
 import Popup from '../components/Popup';
 import { FaCopy } from 'react-icons/fa'; 
 
@@ -12,29 +12,20 @@ function LobbyPage({token}) {
 
     const { value: activeGame, setValue: setActiveGame } = useContext(ActiveGameContext); //stato del server
 
-    const SOCKET_IO_URL = 'https://moviematcher-backend.onrender.com/game'; //'http://localhost:10000/game';  
-
+    const SOCKET_IO_URL = 'http://localhost:10000/game'; //'https://moviematcher-backend.onrender.com/game';   
     const [socketLobby, setSocketLobby] = useState(null);
-
-    const location = useLocation();
-    const { roomName, roomId, typeMatch } = location.state || {}; //al momento li passo cosi, poi staranno nel contesto
-
     const socketRef = useRef(null);
 
+    const location = useLocation();
     const navigate = useNavigate();
 
     const [buttonPopupImp, setButtonPopupImp] = useState(false); //
-
     const [roomData, setRoomData] = useState({});
-    const [partecipanti, setPartecipanti] = useState({});
+    const [partecipanti, setPartecipanti] = useState([]);
 
-    //ho bisogno di una console.log con i parametri per capire cosa ricevo e mi serve come entro nella lobby
-    console.log('roomName', roomName, ' + roomId', roomId);
-    console.log('type of roomName', typeof(roomName), ' + type of roomId', typeof(roomId));
-
-    const handleCopy = (event) => {
+    const handleCopy = () => {
         // Seleziona il tag <p> immediatamente precedente
-        const copia = roomName +'-'+ roomId;
+        const copia = roomData.roomName +'-'+ roomData.roomId;
         
         if (copia) {
 
@@ -70,33 +61,38 @@ function LobbyPage({token}) {
     const handleGetDataRoom = () => {
         if(socketLobby){
 
-            console.log('Richiesta dati partita in corso');
+            const user = JSON.parse(localStorage.getItem('user'));
+            const roomId = activeGame.roomId;
 
-            socketLobby.emit('getRoom', { username: JSON.parse(localStorage.getItem('user')).nickname, roomId });
-
-            console.log('Richiesta dati partita fatta');
+            socketLobby.emit('getRoom', { username: user.nickname, roomId: roomId });
 
             // Rimuovi i listener precedenti per evitare duplicati
             socketLobby.off('rispostaGetRoom');
 
             socketLobby.on('rispostaGetRoom', (data) => {
                 console.log('Risposta dal server, dati ', data);
-                setRoomData(data.variabiliRoom);
-                console.log('RoomData: ', roomData, ' + type of roomData: ', typeof(roomData));
-                console.log('Lista partecipanti type: ', typeof(data.variabiliRoom.listaPartecipanti));
-                setPartecipanti(roomData.listaPartecipanti);
-                console.log('Partecipanti: ', partecipanti);
+                setActiveGame(data);
+                console.log('Dati attuali: ', activeGame);
+                setRoomData(activeGame.variabiliRoom);
+                console.log('Dati stanza: ', roomData);
+                setPartecipanti(data.variabiliRoom.listaPartecipanti);
+                console.log('Partecipanti: ', partecipanti, 'type: ', typeof(partecipanti));
+                console.log('Valore di listaPartecipanti:', activeGame.variabiliRoom.listaPartecipanti);
+                console.log('È un array?', Array.isArray(activeGame.variabiliRoom.listaPartecipanti));
             });
         }
     }
 
     const handleCeckPlayer = () => {
         if (socketLobby) {
-            socketLobby.emit('statoPartecipantiPronto', { roomId });
+
+            const roomId = activeGame.roomId;
+
+            socketLobby.emit('statoPartecipantiPronto', { roomId: roomId });
 
             // Rimuovi i listener precedenti per evitare duplicati
             socketLobby.off('rispostaStatoPartecipantiPronto');
-            
+
             socketLobby.on('rispostaStatoPartecipantiPronto', (data) => {
                 if (data.risposta) {
                     // Se tutti i partecipanti sono pronti, invia la richiesta per avviare la partita
@@ -109,19 +105,23 @@ function LobbyPage({token}) {
     };
 
     const handleStartGame = () => {
-        socketLobby.emit('avviaPartita', { username: JSON.parse(localStorage.getItem('user')).nickname, roomId });
+
+        const user = JSON.parse(localStorage.getItem('user'));
+        const roomId = activeGame.roomId;
+
+        socketLobby.emit('avviaPartita', { username: user.nickname, roomId: roomId });
 
         // Rimuovi i listener precedenti per evitare duplicati
         socketLobby.off('rispostaAvviaPartita');
 
         socketLobby.on('rispostaAvviaPartita', (data) => {
             console.log('Risposta dal server: ', data);
-            navigate('/gameRoom/matchRoom', { state: { roomName: data.risposta.roomName, roomId: data.risposta.roomId } }) ;
+            setActiveGame(data);
+            navigate('/gameRoom/matchRoom');
         });
     }
 
     /*useEffect potenzialmente da unire, divise per distinguere lo scopo di ogni useEffect*/
-
     useEffect(() => {
         // Connessione al server Socket.io solo la prima volta che la pagina viene caricata
         if (!socketRef.current) {
@@ -140,10 +140,6 @@ function LobbyPage({token}) {
     }, []);
 
     useEffect(() => {
-        handleGetDataRoom();
-    }, [socketLobby]);
-
-    useEffect(() => {
         // Gestisci la disconnessione del socket quando l'utente lascia la pagina
         const handleBeforeUnload = () => {
             if (socketRef.current) {
@@ -159,6 +155,10 @@ function LobbyPage({token}) {
         };
     }, []);
 
+    useEffect(() => {
+        handleGetDataRoom();
+    }, [socketLobby]);
+
     return (
         <>
 
@@ -166,7 +166,7 @@ function LobbyPage({token}) {
             <div className="dati-partita">
                 <div className="dati">
                 <p>Codice:</p>
-                <p>{roomName}-{roomId}</p>
+                <p>{roomData.roomName}-{roomData.roomId}</p>
                 <button className="dati-button" onClick={handleCopy}><FaCopy/></button> {/*📋 */}
                 </div>
                 <div className="dati">
@@ -175,7 +175,7 @@ function LobbyPage({token}) {
                 </div>
                 <div className="dati">
                     <p>Modalità:</p>
-                    { typeMatch === '1' ? <p>Film da Vedere</p> : typeMatch === '2' ? <p>Film Visti</p> : typeMatch === '3' ? <p>Generi</p> : <p>Non disponibile</p> }
+                    <p>{roomData.impostazioni}</p>
                 </div>
             </div>
             <div className="giocatori">
@@ -184,14 +184,13 @@ function LobbyPage({token}) {
                     {
 
                     }
-                    {/* .map dei giocatori in partita */}
                 </ul>
             </div>
             <div className="bottoni">
                 <button className="bottoni-button" onClick={()=> navigate('/gameRoom')}>Esci</button>
                 <button className="bottoni-button" onClick={()=> setButtonPopupImp(true)}>Film</button>
                 {
-                    buttonPopupImp && <Popup trigger={buttonPopupImp} setTrigger={setButtonPopupImp} type='Impostazioni-partita' list={typeMatch} token={token} roomName={roomName} roomId={roomId}/> 
+                    buttonPopupImp && <Popup trigger={buttonPopupImp} setTrigger={setButtonPopupImp} type='Impostazioni-partita' list={activeGame.modalita} token={token} roomName={activeGame.roomName} roomId={activeGame.roomId}/> 
                 }
                 <button className="bottoni-button" onClick={handleCeckPlayer}>Avvia</button>
             </div>
@@ -202,7 +201,7 @@ function LobbyPage({token}) {
                 <button className="bottoni-button" onClick={()=> navigate('/gameRoom')}>Esci</button>
                 <button className="bottoni-button" onClick={()=> setButtonPopupImp(true)}>Film</button>
                 {
-                    buttonPopupImp && <Popup trigger={buttonPopupImp} setTrigger={setButtonPopupImp} type='Impostazioni-partita' list={typeMatch} token={token} roomName={roomName} roomId={roomId}/>
+                    buttonPopupImp && <Popup trigger={buttonPopupImp} setTrigger={setButtonPopupImp} type='Impostazioni-partita' list={activeGame.modalita} token={token} roomName={activeGame.roomName} roomId={activeGame.roomId}/>
                 }
                 <button className="bottoni-button" onClick={handleCeckPlayer}>Avvia</button>
             </div>
@@ -210,7 +209,7 @@ function LobbyPage({token}) {
                 <div className="dati-partita">
                     <div className="dati">
                         <p>Codice:</p>
-                        <p>{roomName}-{roomId}</p>
+                        <p>{roomData.roomName}-{roomData.roomId}</p>
                         <button className="dati-button" onClick={handleCopy}><FaCopy/></button>
                     </div>
                     <div className="dati">
@@ -219,26 +218,22 @@ function LobbyPage({token}) {
                     </div>
                     <div className="dati">
                         <p>Modalità:</p>
-                        { typeMatch === '1' ? <p>Film da Vedere</p> : typeMatch === '2' ? <p>Film Visti</p> : typeMatch === '3' ? <p>Generi</p> : <p>Non disponibile</p> }
+                        <p>{roomData.impostazioni}</p>
                     </div>
                 </div>
                 <div className="giocatori">
                     <h3>Giocatori</h3>
-                    <ul>
+                    <ul>    
                         {
-                            console.log('partecipante',partecipanti) && partecipanti ?
-                            /*
-                            partecipanti.map((partecipante) => (
-                                <li key={partecipante}>{partecipante.username}</li>
+                            console.log('Valore di listaPartecipanti nel return:', activeGame.variabiliRoom.listaPartecipanti, 'È un array nel return?', Array.isArray(activeGame.variabiliRoom.listaPartecipanti)) &&
+                             
+                            Array.isArray(activeGame.variabiliRoom.partecipanti) && activeGame.variabiliRoom.partecipanti.length > 0 ? (
+                            activeGame.variabiliRoom.partecipanti.map((partecipante, index) => (
+                                <li key={index}>{partecipante.username}</li>
                             ))
-                            */
-
-
-                            Object.keys(partecipanti).map((key) => (
-                                <li key={key}>{partecipanti[key]}</li>
-                            ))
-                            : <p>Non ci sono giocatori in partita</p>
-                        }
+                        ) : (
+                            <li>Non ci sono partecipanti</li>
+                        )}
                     </ul>
                 </div>
             </div>

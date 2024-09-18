@@ -1,10 +1,9 @@
 import '../style/popup.css'
-import Dropdown from '../components/Dropdown';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faFilm, faEdit, faTicket } from '@fortawesome/free-solid-svg-icons';
-import { useContext, useEffect, useState } from 'react';
+import { act, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { ListGroup } from 'react-bootstrap';
 
@@ -18,26 +17,40 @@ function Popup (props){
 
     let token = props.token;
 
-    const SOCKET_IO_URL = 'https://moviematcher-backend.onrender.com/game'; //'http://localhost:10000/game';  
-
-    
-    const newSocket = io(SOCKET_IO_URL);
-    const [socketPopup, setSocketPopup] =  useState(newSocket);
+    const SOCKET_IO_URL = 'http://localhost:10000/game'; //'https://moviematcher-backend.onrender.com/game';      
+    const [socketPopup, setSocketPopup] =  useState(null);
 
     const navigate = useNavigate();
 
     const [films, setFilms] = useState([]);
     const [title, setTitle] = useState('');
     const [selectedFilms, setSelectedFilms] = useState([]);
-    const [dropdownValue, setDropdownValue] = useState('1');
+
+    const [dropdownValue, setDropdownValue] = useState("Film da vedere");
+    const options = [
+        "Film da vedere",
+        "Film visti",
+        "Generi",
+    ]
+    function handleSelect(event) {
+        setDropdownValue(event.target.value);
+        console.log('dropdownValue: ', dropdownValue, 'type of: ', typeof(dropdownValue));
+    }
+
+    useEffect(() => {
+        const newSocket = io(SOCKET_IO_URL);
+        setSocketPopup(newSocket);
+
+        return () => newSocket.close();
+
+        }, []); // Eseguito solo al primo render
+    
 
     useEffect(() => {
 
-        if (props.trigger) {
-            console.log('token ', token);
-            console.log('props.list ', props.list, 'list type: ', typeof(props.list));
-
-            if(props.list === '1' && props.token){
+        if (props.trigger && activeGame) {
+            console.log('Modalità: ', activeGame.variabiliRoom.impostazioni, 'type: ', typeof(activeGame.variabiliRoom.impostazioni));
+            if(activeGame.variabiliRoom.impostazioni === 'Film da vedere' && props.token){
                 axios.post('https://moviematcher-backend.onrender.com/user/getWatchList', { body: {userNickname: JSON.parse(localStorage.getItem('user')).nickname }}, { headers: {Authorization: 'Bearer '+token} })
                     .then (response => {
                         console.log('Risposta dal backend: ', response.data);
@@ -50,7 +63,7 @@ function Popup (props){
                     });
             
             }
-            else if(props.list === '2' && props.token){
+            else if(activeGame.variabiliRoom.impostazioni === 'Film visti' && props.token){
 
                 axios.post('https://moviematcher-backend.onrender.com/user/getMyList', { body: {userNickname: JSON.parse(localStorage.getItem('user')).nickname }}, { headers: {Authorization: 'Bearer '+token} })
                     .then (response => {
@@ -63,7 +76,7 @@ function Popup (props){
                         setTitle(err.response.data.title);
                     });
             }
-            else if(props.list === '3' && props.token){
+            else if(activeGame.variabiliRoom.impostazioni === 'Generi' && props.token){
 
                 const roomId = props.roomId;
                 const roomName = props.roomName;
@@ -73,18 +86,17 @@ function Popup (props){
                 /*axios.post('https://moviematcher-backend.onrender.com/user/getAllGenres', { body: {userNickname: JSON.parse(localStorage.getItem('user')).nickname }}, { headers: {Authorization: 'Bearer '+token} })
                     .then (response => {
                         console.log('Risposta dal backend: ', response.data);
-                        setFilms(response.data.movies);
-                        setTitle(response.data.title);
+                        setGenre(response.data.genres);
                     })
                     .catch(err => {
                         console.error(err);
-                        setTitle(err.response.data.title);
+                        setGenre(err.response.data.genres);
                     });
                 */
             }
         }
 
-    }, [props.trigger, props.list, token, props.roomId, props.roomName]);
+    }, [props.trigger, token, activeGame.modalita, activeGame.roomId, activeGame.roomName]);
 
     const handleCheckboxChange = (film) => {
         setSelectedFilms((prevSelectedFilms) => {
@@ -98,20 +110,6 @@ function Popup (props){
 
     };
 
-    //
-    const handleDropdownChange = (value) => {
-        console.log("Dropdown value changed:", value);
-
-        if (value === '1') {
-            setDropdownValue('Film da vedere');
-        } else if (value === '2') {
-            setDropdownValue('Film visti');
-        } else if (value === '3') {
-            setDropdownValue('Generi');
-        }
-    };
-    //
-
     const handleCreateGame = () => {
         if (socketPopup) {
             socketPopup.emit('creaPartita', {
@@ -121,19 +119,16 @@ function Popup (props){
               });
 
             // Rimuovi i listener precedenti per evitare duplicati
-            //socketPopup.off('rispostaCreazionePartita');
+            socketPopup.off('rispostaCreazionePartita');
+
+            //voglio mettermi in ascolto di una risposta dal server e se arriva vado nella lobby
+            socketPopup.on('rispostaCreazionePartita', (data) => {
+                console.log('Risposta dal server: ', data);        
+                setActiveGame(data); //modifico il contesto ActiveGameContext
+                navigate('/gameRoom/lobby' /*, { state: { roomName: data.roomName, roomId: data.roomId, typeMatch: dropdownValue } }*/);
+            });
         }
     };
-
-    //voglio mettermi in ascolto di una risposta dal server e se arriva vado nella lobby
-    socketPopup.on('rispostaCreazionePartita', (data) => {
-        console.log('Risposta dal server: ', data);
-        console.log('Vado nella lobby, dati: roomName: ', data.roomName, '+ roomId: ', data.roomId, '+ socket: ', socketPopup);
-        
-        setActiveGame(data); //modifico il contesto ActiveGameContext
-
-        navigate('/gameRoom/lobby', { state: { roomName: data.roomName, roomId: data.roomId, typeMatch: dropdownValue } });
-    });
 
     const handleJoinGame = () => {
         if (socketPopup) {
@@ -144,31 +139,30 @@ function Popup (props){
             });
 
             // Rimuovi i listener precedenti per evitare duplicati
-            //socketPopup.off('rispostaPartecipaPartita');
-            //socketPopup.off('rispostaPartecipazionePartitaNegata');
+            socketPopup.off('rispostaPartecipaPartita');
+            socketPopup.off('rispostaPartecipazionePartitaNegata');
+
+            // Metti in ascolto l'evento 'rispostaPartecipaPartita'
+            socketPopup.on('rispostaPartecipaPartita', (data) => {
+                console.log('Risposta dal server: ', data);
+                setActiveGame(data); //modifico il contesto ActiveGameContext
+                navigate('/gameRoom/lobby' /*, { state: {roomName: data.roomName, roomId: data.roomId }}*/);
+            });
+
+            // Metti in ascolto l'evento 'rispostaPartecipazionePartitaNegata'
+            socketPopup.on('rispostaPartecipazionePartitaNegata', (data) => {
+                alert('Partecipazione negata: ' + data.message);     
+            });
         }
     };
-
-    // Metti in ascolto l'evento 'rispostaPartecipaPartita'
-    socketPopup.on('rispostaPartecipaPartita', (data) => {
-        console.log('Risposta dal server: ', data);
-        navigate('/gameRoom/lobby', { state: {roomName: data.roomName, roomId: data.roomId }});
-    });
-
-    // Metti in ascolto l'evento 'rispostaPartecipazionePartitaNegata'
-    socketPopup.on('rispostaPartecipazionePartitaNegata', (data) => {
-        console.log('Partecipazione negata: ', data.message);
-        alert('Partecipazione negata: ' + data.message);
-        
-    });
 
     const handleConfirm = () => { // Invia la lista dei film selezionati al server
         if (socketPopup) {
             const user = JSON.parse(localStorage.getItem('user'));
-            const roomId = props.roomId;
-            const roomName = props.roomName;
+            const roomId = activeGame.roomId;
+            const roomName = activeGame.roomName;
 
-            console.log('roomId: ', props.roomId, 'roomName: ', props.roomName, 'user: ', user.nickname, 'selectedFilms: ', selectedFilms);
+            console.log('roomId: ', activeGame.roomId, 'roomName: ', activeGame.roomName, 'user: ', user.nickname, 'selectedFilms: ', selectedFilms);
 
             socketPopup.emit('invioListaFilm', {
                 username: user.nickname,
@@ -178,16 +172,17 @@ function Popup (props){
             });
 
             // Rimuovi i listener precedenti per evitare duplicati
-            //socketPopup.off('rispostaInvioLista');
+            socketPopup.off('rispostaInvioLista');
+
+            // Metti in ascolto l'evento 'rispostaInvioLista'
+            socketPopup.on('rispostaInvioLista', (data) => {
+                console.log('Risposta dal server: ', data);
+                setActiveGame(data); //modifico il contesto ActiveGameContext
+                alert('Dati inviati con successo: ' + data.message);
+                props.setTrigger(false);
+            });
         }
     };
-
-    // Metti in ascolto l'evento 'rispostaInvioLista'
-    socketPopup.on('rispostaInvioLista', (data) => {
-        console.log('Risposta dal server: ', data);
-        alert('Dati inviati con successo: ' + data.message);
-        props.setTrigger(false);
-    });
 
     return (
         (props.trigger) ? (
@@ -205,7 +200,20 @@ function Popup (props){
                                 <div className='gioca-con'>
                                     <FontAwesomeIcon icon={faFilm} className='gioca-con-icon'/>
                                     <h2> Gioca con </h2>
-                                    <Dropdown onChange={handleDropdownChange}/>
+
+
+                                    <div className='from-select-container'>
+                                        <select className="from-select"  value={dropdownValue} onChange={handleSelect}>
+                                            {options.map(option => (
+                                                <option className='option-dropdown'  key={option} value={option}>
+                                                    {option}
+                                                </option>                
+                                            ))}
+                                        </select> 
+                                        <div className='from-select-arrow'></div>
+                                    </div>
+
+
                                 </div>
                                 <div className='nome-partita'>
                                     <FontAwesomeIcon icon={faEdit} className='nome-partita-icon'/>

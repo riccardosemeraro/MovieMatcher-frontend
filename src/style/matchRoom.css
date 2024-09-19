@@ -17,6 +17,8 @@
         align-items: center;
         justify-content: center;
         margin: -20px 10px;
+        width: auto;
+        height: 100%;
 
     }
 
@@ -121,26 +123,135 @@
         cursor: pointer; /* Cambia il cursore per indicare che è cliccabile */
     }
 
-    .end-game{
-    
-        display: grid;
-        grid-template-rows: 0.8fr 0.8fr;  
-        
-        overflow: hidden;
-
-
-
-        margin: 10px;
-        padding: 0px;
-
-    }
-
     .ruota{
 
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: space-between;
+        flex-direction: column;
+        width: 100%; 
+
         margin: 50px 0;
+    }
+
+    .next{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 100px;
+        width: auto;
+        height: 100%;
+
+    }
+
+    .next button{
+        font-size: 18px;
+        color: white;
+        font-weight: bold;
+
+        padding: 15px;
+
+        background-color: #6a0795;
+        border-radius: 50px;
+
+        justify-content: center;
+
+        display: flex;        
+
+        border: none;
+        cursor: pointer; /* Cambia il cursore per indicare che è cliccabile */
+    }
+
+    .end-game{
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        flex-direction: column;
+        width: 100%;
+        margin: 0;
+    }
+
+    .end-game h3{
+        color: white;
+        font-size: 40px;
+        font-weight: bold;
+        margin: 10px;
+    }
+
+    .lista-classifica{
+        display: flex;
+        list-style-type: none;
+        flex-wrap: wrap;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .lista-classifica li {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        margin: 10px;
+        width: 100%;
+        background-color: #6a0795;
+        border-radius: 20px;
+        flex-direction: column;
+
+        flex: 1 1 200px; /* Gli elementi si espandono per occupare lo spazio disponibile */
+        max-width: 250px;
+    }
+
+    .lista-classifica li img{
+        width: 100%;
+        height: auto;
+        border-radius: 20px;
+    }
+
+    .lista-classifica li h3{
+         /*colore oro*/
+        color: #FFD700;
+        font-size: 30px;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .lista-classifica li p{
+        color: white;
+        font-size: 15px;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .esci-finale{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 20px;
+        width: auto;
+        height: 100%;
+
+    }
+
+    .esci-finale button{
+        font-size: 18px;
+        color: white;
+        font-weight: bold;
+
+        padding: 15px;
+
+        background-color: #6a0795;
+        border-radius: 50px;
+
+        justify-content: center;
+
+        display: flex;        
+
+        border: none;
+        cursor: pointer; /* Cambia il cursore per indicare che è cliccabile */
     }
     
 }
@@ -278,5 +389,141 @@
         margin: 10px;
         padding: 0px;
 
+    }
+
+    .ruota{
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        flex-direction: row;
+        width: 100%;
+        margin: 50px;
+    }
+
+    .next{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin: 60px;
+
+    }
+
+    .next button{
+        font-size: 18px;
+        color: white;
+        font-weight: bold;
+
+        padding: 20px;
+
+        background-color: #6a0795;
+        border-radius: 50px;
+
+        justify-content: center;
+
+        display: flex;        
+
+        border: none;
+        cursor: pointer; /* Cambia il cursore per indicare che è cliccabile */
+    }
+
+    .end-game{
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        flex-direction: column;
+        width: 100%;
+        margin: 0;
+    }
+
+    .classifica{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        flex-direction: column;
+        width: 100%;
+        margin: 10px;
+    }
+
+    .classifica h3{
+        color: white;
+        font-size: 50px;
+        font-weight: bold;
+        margin: 10px;
+    }
+
+    .lista-classifica{
+        display: flex;
+        list-style-type: none;
+        flex-wrap: wrap;
+        margin: 0;
+        padding: 0px;
+        overflow: hidden;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .lista-classifica li {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        margin: 10px;
+        width: 100%;
+        background-color: #6a0795;
+        border-radius: 20px;
+        flex-direction: column;
+
+        flex: 1 1 200px; /* Gli elementi si espandono per occupare lo spazio disponibile */
+        max-width: 200px;
+    }
+
+    .lista-classifica li img{
+        width: 100%;
+        height: auto;
+        border-radius: 20px;
+    }
+
+    .lista-classifica li h3{
+         /*colore oro*/
+        color: #FFD700;
+        font-size: 30px;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .lista-classifica li p{
+        color: white;
+        font-size: 15px;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .esci-finale{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin: 40px;
+
+    }
+
+    .esci-finale button{
+        font-size: 18px;
+        color: white;
+        font-weight: bold;
+
+        padding: 20px;
+
+        background-color: #6a0795;
+        border-radius: 50px;
+
+        justify-content: center;
+
+        display: flex;        
+
+        border: none;
+        cursor: pointer; /* Cambia il cursore per indicare che è cliccabile */
     }
 }

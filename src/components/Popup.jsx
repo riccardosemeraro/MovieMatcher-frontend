@@ -126,7 +126,6 @@ function Popup (props){
     useEffect(() => {
 
         if (props.trigger && activeGame) {
-            console.log('Modalità: ', activeGame.variabiliRoom.impostazioni, 'type: ', typeof(activeGame.variabiliRoom.impostazioni));
             if(activeGame.variabiliRoom.impostazioni === 'Film da vedere' && props.token){
                 axios.post('https://moviematcher-backend.onrender.com/user/getWatchList', { body: {userNickname: JSON.parse(localStorage.getItem('user')).nickname }}, { headers: {Authorization: 'Bearer '+token} })
                     .then (response => {

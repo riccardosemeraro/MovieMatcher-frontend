@@ -6,7 +6,7 @@ function LoadingGif() {
   return (
     <div className='loading-screen'>
       <img src={gif} className="loading-gif" alt='Attendere'/>
-      <h1 className='testo-caricamento'>Caricamento...</h1> 
+      <h1 className='testo-caricamento'>Attendi...</h1> 
     </div>
   );
 }

@@ -25,11 +25,25 @@
   .logo {
     font-size: 24px;
     font-weight: bold;
-    color: #FFFFFF;
+    color: #FFD200;
     text-decoration: none;
     text-align: center;
     display: inline-flex;
     align-items: center;
+    cursor: pointer;
+  }
+
+  .logo-disabled {
+    font-size: 24px;
+    font-weight: bold;
+    color: #FFD200;
+    text-decoration: none;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+
+    pointer-events: none;
+    cursor: default;
   }
 
   .logoImg {
@@ -155,11 +169,25 @@
   .logo {
     font-size: 24px;
     font-weight: bold;
-    color: #FFFFFF;
+    color: #FFD200;
     text-decoration: none;
     text-align: center;
     display: inline-flex;
     align-items: center;
+    cursor: pointer;
+  }
+
+  .logo-disabled {
+    font-size: 24px;
+    font-weight: bold;
+    color: #FFD200;
+    text-decoration: none;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+
+    pointer-events: none;
+    cursor: default;
   }
 
   .logoImg {

@@ -7,7 +7,7 @@ import WheelSpinner from '../components/WheelSpinner';
 import LoadingGif from '../components/loadingGif';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faHeart, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faHeart, faSignOutAlt, faChartBar } from '@fortawesome/free-solid-svg-icons';
 
 import {io} from 'socket.io-client';
 
@@ -17,7 +17,7 @@ function MatchRoomPage() {
 
   const { value: activeGame, setValue: setActiveGame } = useContext(ActiveGameContext); //stato del server
 
-  const SOCKET_IO_URL = 'http://localhost:10000/game'; //'https://moviematcher-backend.onrender.com/game'; 
+  const SOCKET_IO_URL = 'https://moviematcher-backend.onrender.com/game'; //'http://localhost:10000/game';  
   const newSocket = io(SOCKET_IO_URL);
   const [socketMatch, setSocketMatch] = useState(newSocket);
 
@@ -70,12 +70,13 @@ function MatchRoomPage() {
       if(currentIndex === vettTitoli.length -1 && socketMatch) {
         console.log('Punteggi finali:', scores);
 
-        const user = JSON.parse(localStorage.getItem('user'));
+        const user = activeGame.variabiliRoom.me;
         const roomId = activeGame.roomId;
 
-        console.log('roomId:', roomId);
+        console.log('roomId:', roomId, 'user:', user.username);
+        console.log('Punteggi al momento dell\'invio:', newScores);
 
-        socketMatch.emit('inviaPunteggi', { username: user.username, roomId: roomId, punteggi: scores });
+        socketMatch.emit('inviaPunteggi', { username: user.username, roomId: roomId, punteggi: newScores });
         setView('wait');
       }
     }, 300);
@@ -91,18 +92,18 @@ function MatchRoomPage() {
   useEffect(() => {
     socketMatch.on('rispostaInviaPunteggi', (data) => {
       setActiveGame(data);
-      console.log('Dati attuali: ', data);
+      console.log('risposta: InviaPunteggi', 'Dati attuali: ', data);
     });
 
     socketMatch.on('rispostaInviaRuota', (data) => {
       setActiveGame(data);
-      console.log('Dati attuali: ', data);
+      console.log('risposta: InvioRuota' ,'Dati attuali: ', data);
       setView('wheel');
     });
 
     socketMatch.on('rispostaInviaClassificaVincitore', (data) => {
       setActiveGame(data);
-      console.log('Dati attuali: ', data);
+      console.log('risposta: InviaClassificaVincitore', 'Dati attuali: ', data);
       setView('end');
     });
   
@@ -127,7 +128,7 @@ function MatchRoomPage() {
             }
           </div>
         <div className='titolo-bottoni'>
-          <h3>Titolo del film</h3>   
+          <h3>{vettTitoli[currentIndex].film.title}</h3>   
           <div className='like-dislike'>
             <button style={{ backgroundColor: buttonColor.left }}
                     onClick={() => handleSwipe('left')}>
@@ -152,7 +153,7 @@ function MatchRoomPage() {
                 <img src={'https://image.tmdb.org/t/p/w780'+vettTitoli[currentIndex].film.poster_path} alt="Film" draggable="false" />
               : <h3>Attendi</h3>
             }
-            <h3>Titolo del film</h3>
+            <h3>{vettTitoli[currentIndex].film.title}</h3>
           </div>
           <div className='like-dislike'>
             <button style={{ backgroundColor: buttonColor.left }} onClick={() => handleSwipe('left')}>
@@ -174,11 +175,9 @@ function MatchRoomPage() {
         <>
         <div className='match-room-desktop'>
           <LoadingGif />
-          <h3>Attendi che tutti abbiano votato</h3>
         </div>
         <div className='match-room-mobile'>
           <LoadingGif />
-          <h3>Attendi che tutti abbiano votato</h3>
         </div>
         </>
       )
@@ -186,22 +185,20 @@ function MatchRoomPage() {
     { view === 'wheel' && (
       <>
       <div className='match-room-desktop'>
-        <div className='end-game'>
+        <div className='ruota'>
           <WheelSpinner lista={activeGame.parimeritoClassifica} vincitore={activeGame.vincitore}/>        
-          <div className='esci'>
-            <button onClick={()=> navigate('/gameRoom')}><FontAwesomeIcon icon={faSignOutAlt}/></button>
+          <div className='next'>
+            <button onClick={()=> setView('end')}><FontAwesomeIcon icon={faChartBar}/>&nbsp; Classifica</button>
           </div>
         </div>
       </div>
       <div className='match-room-mobile'>
-        <div className='end-game'>
-          <div className='ruota'>
-            <WheelSpinner lista={activeGame.parimeritoClassifica} vincitore={activeGame.vincitore}/>  
-          </div>      
-          <div className='esci'>
-            <button onClick={()=> navigate('/gameRoom')}><FontAwesomeIcon icon={faSignOutAlt}/></button>
+        <div className='ruota'>
+          <WheelSpinner lista={activeGame.parimeritoClassifica} vincitore={activeGame.vincitore}/>  
+          <div className='next'>
+            <button onClick={()=> setView('end')}><FontAwesomeIcon icon={faChartBar}/>&nbsp; Classifica</button>
           </div>
-        </div>
+        </div>      
       </div>
       </>
     )}
@@ -211,12 +208,16 @@ function MatchRoomPage() {
         <div className='match-room-desktop'>
           <div className='end-game'>
             <h3>Classifica finale</h3>
-            <ul>
+            <ul className='lista-classifica'>
               {
-                activeGame.risposta.classifica.map((p) => <li>{p.film.title}</li>)
+                activeGame.risposta.classifica.map((p) => <li>
+                                                            <img src={'https://image.tmdb.org/t/p/w780'+p.film.poster_path} alt={p.film.title} />
+                                                            <h3>{activeGame.risposta.classifica.findIndex((film) => film.film.id === p.film.id) + 1}° </h3>
+                                                            <p>punti: {p.punteggio}</p>
+                                                          </li>)
               }
             </ul>
-            <div className='esci'>
+            <div className='esci-finale'>
               <button onClick={()=> navigate('/gameRoom')}><FontAwesomeIcon icon={faSignOutAlt}/></button>
             </div>
           </div>
@@ -224,12 +225,18 @@ function MatchRoomPage() {
         <div className='match-room-mobile'>
           <div className='end-game'>
             <h3>Classifica finale</h3>
-            <ul>
+            <ul className='lista-classifica'>
               {
-                activeGame.classificaVincitore.map((p) => <li>{p.username} - {p.punteggio}</li>)
+                activeGame.risposta.classifica.map((p) => <li>
+                                                            
+                                                            <img src={'https://image.tmdb.org/t/p/w780'+p.film.poster_path} alt={p.film.title} />
+                                                            <h3>{activeGame.risposta.classifica.findIndex((film) => film.film.id === p.film.id) + 1}° </h3>
+                                                            
+                                                            <p>punti: {p.punteggio}</p>
+                                                          </li>)
               }
             </ul>
-            <div className='esci'>
+            <div className='esci-finale'>
               <button onClick={()=> navigate('/gameRoom')}><FontAwesomeIcon icon={faSignOutAlt}/></button>
             </div>
           </div>

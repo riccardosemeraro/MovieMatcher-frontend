@@ -36,7 +36,7 @@ function Header() {
       <div className="desktop-header">
         <div className="top">
 
-          <Link to="/" >Movie<img src={logo} className="logoImg" alt="logo" />Matcher</Link>
+          <Link to="/" className={lock ? "logo-disabled" : "logo"}>Movie<img src={logo} className="logoImg" alt="logo" />Matcher</Link>
           <ul className = {lock ? 'locked' : ''}>
             <li className = {location.pathname === "/" ? 'active' : ''} >  
                 <Link to="/" > <FontAwesomeIcon icon={faHome} className='icon'/> Home</Link> 
@@ -54,7 +54,7 @@ function Header() {
 
       <div className="mobile-header">
         <div className="top">
-          <Link to="/" className="logo">Movie<img src={logo} className="logoImg" alt="logo" />Matcher</Link>    
+          <Link to="/" className={lock ? "logo-disabled" : "logo"}>Movie<img src={logo} className="logoImg" alt="logo" />Matcher</Link>    
         </div>
 
         {location.pathname !== '/gameRoom/matchRoom' && (

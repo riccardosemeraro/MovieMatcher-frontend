@@ -10,6 +10,7 @@ const WheelSpinner = ({lista, vincitore}) =>  {
   const [prizeNumber, setPrizeNumber] = useState(vincitore); // Imposta l'indice del vincitore
   const [list, setList] = useState(lista);
 
+  console.log('lista: ', list);
 
   const backgroundColors = ['#6a0795', '#FFD200', '#61dafb', '#ff4458'];
 
@@ -33,16 +34,6 @@ const WheelSpinner = ({lista, vincitore}) =>  {
   };
 
   useEffect(() => {
-    console.log('lista: ', list);
-    console.log('type of lista: ', typeof list);
-    console.log('vincitore: ', vincitore);
-    console.log('type of vincitore: ', typeof vincitore);
-
-    //voglio una lista.map con una console di ogni elemento
-    list.map((element) => {
-      console.log(element);
-    });
-
     setTimeout(() => {
       setMustSpin(true); //fa iniziare a girare la ruota
     }, 2000);
@@ -51,17 +42,12 @@ const WheelSpinner = ({lista, vincitore}) =>  {
   
   return (
     <>
-
-    {
-      console.log(prizeNumber)
-    }
-
     <div className='spinWheel'>
       <Wheel
         mustStartSpinning={mustSpin}
         prizeNumber={prizeNumber}
         data={list.map((element) => ({
-          option: element
+          option: element.film.title,
           
         }))}
         onStopSpinning={() => setMustSpin(false)} 

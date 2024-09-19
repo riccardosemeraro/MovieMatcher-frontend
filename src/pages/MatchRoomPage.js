@@ -70,13 +70,14 @@ function MatchRoomPage() {
       if(currentIndex === vettTitoli.length -1 && socketMatch) {
         console.log('Punteggi finali:', scores);
 
+        console.log('user:', JSON.parse(localStorage.getItem('user')));
         const user = JSON.parse(localStorage.getItem('user'));
         const roomId = activeGame.roomId;
 
-        console.log('roomId:', roomId, 'user:', user.username);
+        console.log('roomId:', roomId, 'user:', user.nickname);
         console.log('Punteggi al momento dell\'invio:', newScores);
 
-        socketMatch.emit('inviaPunteggi', { username: user.username, roomId: roomId, punteggi: newScores });
+        socketMatch.emit('inviaPunteggi', { username: user.nickname, roomId: roomId, punteggi: newScores });
         setView('wait');
       }
     }, 300);

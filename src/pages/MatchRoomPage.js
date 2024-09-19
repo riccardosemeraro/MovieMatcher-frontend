@@ -17,7 +17,7 @@ function MatchRoomPage() {
 
   const { value: activeGame, setValue: setActiveGame } = useContext(ActiveGameContext); //stato del server
 
-  const SOCKET_IO_URL = 'https://moviematcher-backend.onrender.com/game'; //'http://localhost:10000/game';  
+  const SOCKET_IO_URL = 'http://localhost:10000/game'; //'https://moviematcher-backend.onrender.com/game';   
   const newSocket = io(SOCKET_IO_URL);
   const [socketMatch, setSocketMatch] = useState(newSocket);
 

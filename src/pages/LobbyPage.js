@@ -161,7 +161,7 @@ function LobbyPage({token}) {
                 <ul>
                     {
                         partecipanti.length > 0 ? partecipanti.map((p) => <li>{p.username}</li>) 
-                        : <li>Non ci sono partecipanti</li>
+                        : <li> </li>
                     }
                 </ul>
             </div>
@@ -205,7 +205,7 @@ function LobbyPage({token}) {
                     <ul>
                         {
                             partecipanti.length > 0 ? partecipanti.map((p) => <li>{p.username}</li>) 
-                            : <li>Non ci sono partecipanti</li>
+                            : <li> </li>
                         }
                     </ul>
                 </div>

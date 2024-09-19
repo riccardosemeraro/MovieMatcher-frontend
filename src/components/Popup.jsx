@@ -126,7 +126,7 @@ function Popup (props){
     useEffect(() => {
 
         if (props.trigger && activeGame) {
-            if(activeGame.variabiliRoom.impostazioni === 'Film da vedere' && props.token){
+            if(props.token && activeGame.variabiliRoom.impostazioni === 'Film da vedere'){
                 axios.post('https://moviematcher-backend.onrender.com/user/getWatchList', { body: {userNickname: JSON.parse(localStorage.getItem('user')).nickname }}, { headers: {Authorization: 'Bearer '+token} })
                     .then (response => {
                         console.log('Risposta dal backend: ', response.data);
@@ -139,7 +139,7 @@ function Popup (props){
                     });
             
             }
-            else if(activeGame.variabiliRoom.impostazioni === 'Film visti' && props.token){
+            else if(props.token && activeGame.variabiliRoom.impostazioni === 'Film visti'){
 
                 axios.post('https://moviematcher-backend.onrender.com/user/getMyList', { body: {userNickname: JSON.parse(localStorage.getItem('user')).nickname }}, { headers: {Authorization: 'Bearer '+token} })
                     .then (response => {

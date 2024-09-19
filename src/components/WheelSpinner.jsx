@@ -7,10 +7,23 @@ import '../style/spinner.css';
 
 const WheelSpinner = ({lista, vincitore}) =>  {
   const [mustSpin, setMustSpin] = useState(false);
-  const [prizeNumber, setPrizeNumber] = useState(vincitore); // Imposta l'indice del vincitore
-  const [list, setList] = useState(lista);
+  const [prizeNumber, setPrizeNumber] = useState(0); // Imposta l'indice del vincitore
+  //const [list, setList] = useState(lista);
 
-  console.log('lista: ', list);
+  const vett = lista.map((element) => ({
+    option: element.film.title
+    
+  }));
+
+  console.log('vincitore: ', vincitore);
+
+  const posVincitore = vett.findIndex((element) => element.option === vincitore.film.title);
+
+  console.log('posVincitore: ', posVincitore, 'type',  typeof posVincitore);
+
+  console.log('vett: ', vett);
+
+  //console.log('lista: ', list);
 
   const backgroundColors = ['#6a0795', '#FFD200', '#61dafb', '#ff4458'];
 
@@ -34,9 +47,9 @@ const WheelSpinner = ({lista, vincitore}) =>  {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      setMustSpin(true); //fa iniziare a girare la ruota
-    }, 2000);
+    
+    if(vett.length > 0) setMustSpin(true); //fa iniziare a girare la ruota
+    
   }, []);
 
   
@@ -45,13 +58,10 @@ const WheelSpinner = ({lista, vincitore}) =>  {
     <div className='spinWheel'>
       <Wheel
         mustStartSpinning={mustSpin}
-        prizeNumber={prizeNumber}
-        data={list.map((element) => ({
-          option: element.film.title,
-          
-        }))}
+        prizeNumber={posVincitore}
+        data={vett}
         onStopSpinning={() => setMustSpin(false)} 
-        backgroundColors={getColorsWithOffset(list.length, backgroundColors)}
+        backgroundColors={getColorsWithOffset(lista.length, backgroundColors)}
         textColors={['#ffffff']}
         fontSize={25}
 

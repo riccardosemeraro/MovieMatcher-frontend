@@ -1,9 +1,10 @@
 import '../style/matchRoom.css';
-import { useState, useContext, useEffect, act } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
 
 import WheelSpinner from '../components/WheelSpinner';
+import LoadingGif from '../components/loadingGif';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faHeart, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
@@ -26,9 +27,19 @@ function MatchRoomPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [swipeClass, setSwipeClass] = useState('');
   const [buttonColor, setButtonColor] = useState({ left: '', right: '' });
+  const [view, setView] = useState('game'); // game, wait, wheel, end
 
-  const vettTitoli = activeGame.variabiliRoom.listaFilm;
+  const vettTitoli = activeGame.variabiliRoom ? activeGame.variabiliRoom.listaFilm : [];
   const [scores, setScores] = useState(Array(vettTitoli.length).fill(0)); // Inizializza i punteggi a 0
+
+  const vett=[
+    'titolo1',
+    'titolo2',
+    'titolo3',
+    'titolo4',
+    'titolo5',
+    'titolo6'
+  ]
 
   const handleSwipe = (direction) => {
 
@@ -55,6 +66,18 @@ function MatchRoomPage() {
       console.log('Index:', currentIndex);
       setSwipeClass('');
       setButtonColor({ left: '', right: '' });
+
+      if(currentIndex === vettTitoli.length -1 && socketMatch) {
+        console.log('Punteggi finali:', scores);
+
+        const user = JSON.parse(localStorage.getItem('user'));
+        const roomId = activeGame.roomId;
+
+        console.log('roomId:', roomId);
+
+        socketMatch.emit('inviaPunteggi', { username: user.username, roomId: roomId, punteggi: scores });
+        setView('wait');
+      }
     }, 300);
   };
 
@@ -65,9 +88,29 @@ function MatchRoomPage() {
     trackMouse: true
   });
 
+  useEffect(() => {
+    socketMatch.on('rispostaInviaPunteggi', (data) => {
+      setActiveGame(data);
+      console.log('Dati attuali: ', data);
+    });
+
+    socketMatch.on('rispostaInviaRuota', (data) => {
+      setActiveGame(data);
+      console.log('Dati attuali: ', data);
+      setView('wheel');
+    });
+
+    socketMatch.on('rispostaInviaClassificaVincitore', (data) => {
+      setActiveGame(data);
+      console.log('Dati attuali: ', data);
+      setView('end');
+    });
+  
+  }, [socketMatch]);
+
   return (
     <>
-    { currentIndex < vettTitoli.length && (
+    { view === 'game' && (
       <>
       <div className='match-room-desktop'>
         <div className='esci'>
@@ -102,10 +145,13 @@ function MatchRoomPage() {
         <div className='game-container'>
           <div className={`film-div ${swipeClass}`} {...handlers}>
             {
-              vettTitoli.map((movie) => {
-                <img src={movie.film.poster_path} alt="Film" draggable="false" />
-              }
-            )}
+              console.log('currentIndex', currentIndex, 'vett', vettTitoli, 'vett[i]', vettTitoli[currentIndex])
+            }
+            {
+              vettTitoli.length > 0 ?
+                <img src={'https://image.tmdb.org/t/p/w780'+vettTitoli[currentIndex].film.poster_path} alt="Film" draggable="false" />
+              : <h3>Attendi</h3>
+            }
             <h3>Titolo del film</h3>
           </div>
           <div className='like-dislike'>
@@ -123,16 +169,25 @@ function MatchRoomPage() {
       </div>
       </>
     )}
-    { currentIndex >= vettTitoli.length && (
+    {
+      view === 'wait' && (
+        <>
+        <div className='match-room-desktop'>
+          <LoadingGif />
+          <h3>Attendi che tutti abbiano votato</h3>
+        </div>
+        <div className='match-room-mobile'>
+          <LoadingGif />
+          <h3>Attendi che tutti abbiano votato</h3>
+        </div>
+        </>
+      )
+    }
+    { view === 'wheel' && (
       <>
-      {
-        console.log('Punteggi finali:', scores)
-        //invio punteggi al server
-
-      }
       <div className='match-room-desktop'>
         <div className='end-game'>
-          <WheelSpinner lista={vettTitoli} vincitore={0}/>        
+          <WheelSpinner lista={activeGame.parimeritoClassifica} vincitore={activeGame.vincitore}/>        
           <div className='esci'>
             <button onClick={()=> navigate('/gameRoom')}><FontAwesomeIcon icon={faSignOutAlt}/></button>
           </div>
@@ -141,16 +196,47 @@ function MatchRoomPage() {
       <div className='match-room-mobile'>
         <div className='end-game'>
           <div className='ruota'>
-            <WheelSpinner lista={vettTitoli} vincitore={0}/>  
+            <WheelSpinner lista={activeGame.parimeritoClassifica} vincitore={activeGame.vincitore}/>  
           </div>      
           <div className='esci'>
             <button onClick={()=> navigate('/gameRoom')}><FontAwesomeIcon icon={faSignOutAlt}/></button>
           </div>
         </div>
       </div>
-      
       </>
     )}
+    {
+      view === 'end' && (
+        <>
+        <div className='match-room-desktop'>
+          <div className='end-game'>
+            <h3>Classifica finale</h3>
+            <ul>
+              {
+                activeGame.risposta.classifica.map((p) => <li>{p.film.title}</li>)
+              }
+            </ul>
+            <div className='esci'>
+              <button onClick={()=> navigate('/gameRoom')}><FontAwesomeIcon icon={faSignOutAlt}/></button>
+            </div>
+          </div>
+        </div>
+        <div className='match-room-mobile'>
+          <div className='end-game'>
+            <h3>Classifica finale</h3>
+            <ul>
+              {
+                activeGame.classificaVincitore.map((p) => <li>{p.username} - {p.punteggio}</li>)
+              }
+            </ul>
+            <div className='esci'>
+              <button onClick={()=> navigate('/gameRoom')}><FontAwesomeIcon icon={faSignOutAlt}/></button>
+            </div>
+          </div>
+        </div>
+        </>
+      )
+    }
     </>
   );
 }

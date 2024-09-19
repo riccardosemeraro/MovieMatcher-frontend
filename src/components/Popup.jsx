@@ -17,7 +17,7 @@ function Popup (props){
 
     let token = props.token;
 
-    const SOCKET_IO_URL = 'http://localhost:10000/game'; //'https://moviematcher-backend.onrender.com/game';
+    const SOCKET_IO_URL = 'https://moviematcher-backend.onrender.com/game'; //'http://localhost:10000/game';
     const newSocket = io(SOCKET_IO_URL);
     const [socketPopup, setSocketPopup] =  useState(newSocket);
 

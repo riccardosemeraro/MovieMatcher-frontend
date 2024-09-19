@@ -70,7 +70,7 @@ function MatchRoomPage() {
       if(currentIndex === vettTitoli.length -1 && socketMatch) {
         console.log('Punteggi finali:', scores);
 
-        const user = activeGame.variabiliRoom.me;
+        const user = JSON.parse(localStorage.getItem('user'));
         const roomId = activeGame.roomId;
 
         console.log('roomId:', roomId, 'user:', user.username);

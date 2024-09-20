@@ -1,7 +1,7 @@
 import './App.css';
 
 
-import { Navigate, BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, BrowserRouter as Router, Route, Routes, useLocation} from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import ProfilePage from './pages/ProfilePage';
 import GameRoomPage from './pages/GameRoomPage';
@@ -12,6 +12,7 @@ import MatchRoomPage from './pages/MatchRoomPage';
 import AuthenticationGuard from './authenticationGard'; //importo il componente per la protezione delle rotte
 import Header from './components/header';
 import Footer from './components/footer';
+import Popup from './components/Popup';
 import FilmPage from './pages/FilmPage';
 import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
@@ -106,20 +107,15 @@ function App() {
               <Route path="/profile" element={<AuthenticationGuard component={() => <ProfilePage token={authToken} />} />} />
               
 
-              <Route path="/gameRoom" element={
-                <ActiveGameContextProvider>
-                  <AuthenticationGuard component={GameRoomPage} />
-                </ActiveGameContextProvider>} />
-              <Route path="/gameRoom/lobby" element={
-                <ActiveGameContextProvider>
-                <AuthenticationGuard component={() => <LobbyPage token={authToken} />} />
-                </ActiveGameContextProvider>} />
-              <Route path="/gameRoom/matchRoom" element={
-                <ActiveGameContextProvider>
-                <AuthenticationGuard component={MatchRoomPage} />
-                </ActiveGameContextProvider>} />
+              <Route path="/gameRoom" element={<ActiveGameContextProvider><AuthenticationGuard component={GameRoomPage} /></ActiveGameContextProvider>} />
+              <Route path="/gameRoom/lobby" element={<ActiveGameContextProvider><AuthenticationGuard component={() => <LobbyPage token={authToken} />} /></ActiveGameContextProvider>} />
+              <Route path="/gameRoom/matchRoom" element={<ActiveGameContextProvider><AuthenticationGuard component={MatchRoomPage} /></ActiveGameContextProvider>} />
+
+              {/*<Route path="/gameRoom-invite" element={<ActiveGameContextProvider><AuthenticationGuard component={GameRoomInvite}/></ActiveGameContextProvider>}/>*/}
+              <Route path="/gameRoom-invite" element={<ActiveGameContextProvider><AuthenticationGuard component={() => <GameRoomPage invite={true} />} /></ActiveGameContextProvider>} />
 
               <Route path="/film/:idName" element={<FilmPage token={authToken}/>} />
+              
 
               {/* Aggiungi altre route qui */}
             </Routes>

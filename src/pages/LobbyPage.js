@@ -47,7 +47,7 @@ function LobbyPage({token}) {
             await navigator.share({
                 title: 'Condividi questo link',
                 text: 'Ecco il link per la stanza di gioco:',
-                url: window.location.href, // Condivide l'URL corrente - da cambiare con il link della stanza di gioco
+                url: 'https://moviematcher.onrender.com/gameRoom-invite?roomName=' + roomData.roomName + '&roomId=' + roomData.roomId
             });
             console.log('Link condiviso con successo');
             } catch (error) {

@@ -1,6 +1,6 @@
 import '../style/popup.css'
 import Button from 'react-bootstrap/Button';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faFilm, faEdit, faTicket } from '@fortawesome/free-solid-svg-icons';
 import { act, useContext, useEffect, useState } from 'react';
@@ -22,10 +22,13 @@ function Popup (props){
     const [socketPopup, setSocketPopup] =  useState(newSocket);
 
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
 
     const [films, setFilms] = useState([]);
     const [title, setTitle] = useState('');
     const [selectedFilms, setSelectedFilms] = useState([]);
+
+    const [inviteCode, setInviteCode] = useState();
 
     const [dropdownValue, setDropdownValue] = useState("Film da vedere");
     const options = [
@@ -174,6 +177,18 @@ function Popup (props){
 
     }, [props.trigger, token, activeGame.modalita, activeGame.roomId, activeGame.roomName]);
 
+    useEffect(() => {
+
+        const roomName = searchParams.get('roomName');
+        const roomId = searchParams.get('roomId');
+        const nomePartita = roomName+'-'+roomId;
+
+        // Se il parametro esiste, imposta il valore del campo input
+        if (nomePartita) {
+          setInviteCode(nomePartita);
+        }
+      }, []);
+
     return (
         (props.trigger) ? (
 
@@ -231,7 +246,7 @@ function Popup (props){
                                 </div>
                                 <div className='codice-partita'>
                                     <FontAwesomeIcon icon={faTicket} className='codice-partita-icon'/>
-                                    <input type="text" placeholder="NomePartita-XXXXX" />
+                                    <input type="text" placeholder="NomePartita-XXXXX" value={inviteCode} onChange={(e) => setInviteCode(e.target.value)}/>
                                 </div>
                                 <div className='partecipa-partita'>
                                     <Button variant="primary" className='partecipa-button' onClick={handleJoinGame}> 

@@ -11,10 +11,10 @@ import LoadingGif from '../components/loadingGif';
 
 import { ServerStateContext } from '../contexts/serverStateContextProvider';
 
-function GameRoomPage() {
+function GameRoomPage({invite}) {
 
   const [buttonPopup, setButtonPopup] = useState(false);
-  const [buttonPopup2, setButtonPopup2] = useState(false);
+  const [buttonPopup2, setButtonPopup2] = useState(invite ? invite : false);
 
   const { value: server, setValue: setServer } = useContext(ServerStateContext); //stato del server
 

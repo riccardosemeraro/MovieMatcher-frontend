@@ -41,7 +41,7 @@ function Header() {
             <li className = {location.pathname === "/" ? 'active' : ''} >  
                 <Link to="/" > <FontAwesomeIcon icon={faHome} className='icon'/> Home</Link> 
               </li>
-            <li  className = {location.pathname === "/gameRoom" || location.pathname === "/gameRoom/lobby"  ? 'active' : ''} > 
+            <li  className = {location.pathname === "/gameRoom" || location.pathname === "/gameRoom/lobby" || location.pathname === "/gameRoom-invite"  ? 'active' : ''} > 
                 <Link to="/gameRoom" > <FontAwesomeIcon icon={faGamepad} className='icon' /> Game Room</Link> 
             </li>
             <li  className = {location.pathname === "/profile" ? 'active' : ''} > 

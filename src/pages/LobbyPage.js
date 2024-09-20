@@ -167,7 +167,7 @@ function LobbyPage({token}) {
             </div>
             <div className="bottoni">
                 <button className="bottoni-button" onClick={()=> navigate('/gameRoom')}>Esci</button>
-                <button className="bottoni-button" onClick={()=> setButtonPopupImp(true)}>Film</button>
+                <button className="bottoni-button" onClick={()=> setButtonPopupImp(true)}>{roomData.impostazioni === 'Generi' ? 'Generi' : 'Film'}</button>
                 {
                     buttonPopupImp && <Popup trigger={buttonPopupImp} setTrigger={setButtonPopupImp} type='Impostazioni-partita' list={activeGame.modalita} token={token} roomName={activeGame.roomName} roomId={activeGame.roomId}/> 
                 }
@@ -178,7 +178,7 @@ function LobbyPage({token}) {
         <div className="lobby-desktop">
             <div className="bottoni">
                 <button className="bottoni-button" onClick={()=> navigate('/gameRoom')}>Esci</button>
-                <button className="bottoni-button" onClick={()=> setButtonPopupImp(true)}>Film</button>
+                <button className="bottoni-button" onClick={()=> setButtonPopupImp(true)}>{roomData.impostazioni === 'Generi' ? 'Generi' : 'Film'}</button>
                 {
                     buttonPopupImp && <Popup trigger={buttonPopupImp} setTrigger={setButtonPopupImp} type='Impostazioni-partita' list={activeGame.modalita} token={token} roomName={activeGame.roomName} roomId={activeGame.roomId}/>
                 }

@@ -27,6 +27,7 @@ function Popup (props){
     const [films, setFilms] = useState([]);
     const [title, setTitle] = useState('');
     const [selectedFilms, setSelectedFilms] = useState([]);
+    const [genre, setGenre] = useState();
 
     const [inviteCode, setInviteCode] = useState();
 
@@ -129,7 +130,7 @@ function Popup (props){
     useEffect(() => {
 
         if (props.trigger && activeGame) {
-            if(props.token && activeGame.variabiliRoom.impostazioni === 'Film da vedere'){
+            if(props.token && activeGame.variabiliRoom.impostazioni && activeGame.variabiliRoom.impostazioni === 'Film da vedere'){
                 axios.post('https://moviematcher-backend.onrender.com/user/getWatchList', { body: {userNickname: JSON.parse(localStorage.getItem('user')).nickname }}, { headers: {Authorization: 'Bearer '+token} })
                     .then (response => {
                         console.log('Risposta dal backend: ', response.data);
@@ -142,7 +143,7 @@ function Popup (props){
                     });
             
             }
-            else if(props.token && activeGame.variabiliRoom.impostazioni === 'Film visti'){
+            else if(props.token && activeGame.variabiliRoom.impostazioni && activeGame.variabiliRoom.impostazioni === 'Film visti'){
 
                 axios.post('https://moviematcher-backend.onrender.com/user/getMyList', { body: {userNickname: JSON.parse(localStorage.getItem('user')).nickname }}, { headers: {Authorization: 'Bearer '+token} })
                     .then (response => {
@@ -155,12 +156,11 @@ function Popup (props){
                         setTitle(err.response.data.title);
                     });
             }
-            else if(activeGame.variabiliRoom.impostazioni === 'Generi' && props.token){
+            else if(props.token && activeGame.variabiliRoom.impostazioni && activeGame.variabiliRoom.impostazioni === 'Generi'){
 
                 const roomId = props.roomId;
                 const roomName = props.roomName;
-                alert('Non ancora disponibile');
-                navigate('/gameRoom/lobby', { state: { roomName: roomName, roomId: roomId, typeMatch: props.list}});
+                setGenre('Generi non ancora disponibili');
 
                 /*axios.post('https://moviematcher-backend.onrender.com/user/getAllGenres', { body: {userNickname: JSON.parse(localStorage.getItem('user')).nickname }}, { headers: {Authorization: 'Bearer '+token} })
                     .then (response => {
@@ -200,7 +200,7 @@ function Popup (props){
                             <button className="close-btn" onClick={() => props.setTrigger(false)}> <FontAwesomeIcon icon={faTimes} /> </button>
                             <div className="contenitore-crea">
                                 <div className='titolo-popup'>
-                                    <h1> Impostazioni Partita </h1>
+                                    <h1>Impostazioni Partita</h1>
                                 </div>
                                 <div className='gioca-con'>
                                     <FontAwesomeIcon icon={faFilm} className='gioca-con-icon'/>
@@ -234,7 +234,6 @@ function Popup (props){
                             
                         </>
                     }
-
                     {
                         props.type==="Partecipa-a-partita" &&
                         <>
@@ -242,11 +241,11 @@ function Popup (props){
                             <button className="close-btn" onClick={() => props.setTrigger(false)}> <FontAwesomeIcon icon={faTimes} /> </button>
                             <div className="contenitore-partecipa">
                                 <div className="titolo-popup">
-                                    <h1> Inserisci codice </h1>
+                                    <h1>Inserisci codice</h1>
                                 </div>
                                 <div className='codice-partita'>
                                     <FontAwesomeIcon icon={faTicket} className='codice-partita-icon'/>
-                                    <input type="text" placeholder="NomePartita-XXXXX" value={inviteCode} onChange={(e) => setInviteCode(e.target.value)}/>
+                                    <input type="text" placeholder="NomePartita-XXXXX" value={inviteCode !== 'null-null' ? inviteCode : ''} onChange={(e) => setInviteCode(e.target.value)}/>
                                 </div>
                                 <div className='partecipa-partita'>
                                     <Button variant="primary" className='partecipa-button' onClick={handleJoinGame}> 
@@ -257,7 +256,6 @@ function Popup (props){
                         </div>
                         </>
                     }
-
                     {
                         props.type==="Impostazioni-partita" && 
                         <>
@@ -265,36 +263,65 @@ function Popup (props){
                             <button className="close-btn" onClick={() => props.setTrigger(false)}> <FontAwesomeIcon icon={faTimes} /> </button>
                             <div className="contenitore-impostazioni">
                                 <div className="titolo-popup">
-                                    <h1>Seleziona Film</h1>
+                                    <h1>Seleziona {activeGame.variabiliRoom.impostazioni === 'Generi' ? 'Generi' : 'Film'}</h1>
                                 </div>
                                 <div className='lista-elementi'>
                                     <div className='container-elementi'>
-                                        <ListGroup className='lista-film'>
-                                            {films.map((film) => (
-                                                <ListGroup.Item key={film.id} className='lista-film-item'>
-                                                    <div className='film-item' key={film.id} onClick={() => handleCheckboxChange(film)}>
-                                                        <img src={"https://image.tmdb.org/t/p/w780" + film.poster_path} alt={film.title} draggable="false"/> 
-                                                    </div>
-                                                    <p onClick={() => handleCheckboxChange(film)}>{film.title}</p>
-                                                    <input 
-                                                        type="checkbox" 
-                                                        checked={selectedFilms.includes(film)} 
-                                                        onChange={() => handleCheckboxChange(film)} 
-                                                    />
-                                                </ListGroup.Item>
-                                            ))}
-                                        </ListGroup>    
+                                        {films.length > 0 &&
+                                            <ListGroup className='lista-film'>
+                                                {films.map((film) => (
+                                                    <ListGroup.Item key={film.id} className='lista-film-item'>
+                                                        <div className='film-item' key={film.id} onClick={() => handleCheckboxChange(film)}>
+                                                            <img src={"https://image.tmdb.org/t/p/w780" + film.poster_path} alt={film.title} draggable="false"/> 
+                                                        </div>
+                                                        <p onClick={() => handleCheckboxChange(film)}>{film.title}</p>
+                                                        <input 
+                                                            type="checkbox" 
+                                                            checked={selectedFilms.includes(film)} 
+                                                            onChange={() => handleCheckboxChange(film)} 
+                                                        />
+                                                    </ListGroup.Item>
+                                                ))}
+                                            </ListGroup>  
+                                        }
+                                        {genre && 
+                                            <p>{genre}</p>
+                                        }
                                     </div>                       
                                 </div>
+                                {activeGame.variabiliRoom.impostazioni !== 'Generi' &&
                                 <div className='invia-impostazioni'>
                                     <Button variant="primary" className='impostazioni-button' onClick={handleConfirm}> 
                                         <h2>Conferma</h2>
                                     </Button>
                                 </div>
+            }
                             </div> 
                         </div>
                         </>
-
+                    }
+                    {
+                        props.type==="MatchHistory" &&
+                        <>
+                        <div className="popup">
+                            <button className="close-btn" onClick={() => props.setTrigger(false)}> <FontAwesomeIcon icon={faTimes} /> </button>
+                            <div className="contenitore-match">
+                                <div className='titolo-popup'>
+                                    <h1>Match History</h1>
+                                </div>
+                                <div className='lista-match-container'>
+                                    <p>Non ancora disponibile</p>
+                                    {/*<ListGroup className='lista-match'>
+                                        {matches.map((match) => (
+                                            <ListGroup.Item key={match.id} className='match-element'>
+                                                
+                                            </ListGroup.Item>
+                                        ))}
+                                    </ListGroup> */}
+                                </div>
+                            </div>
+                        </div>
+                        </>
                     }
         </div>
         ) : ""

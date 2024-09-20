@@ -211,7 +211,7 @@ function MatchRoomPage() {
             <h3>Classifica finale</h3>
             <ul className='lista-classifica'>
               {
-                activeGame.risposta.classifica.map((p) => <li>
+                activeGame.risposta.classifica.map((p) => <li className={activeGame.risposta.classifica.findIndex((film) => film.film.id === p.film.id) === 0 ? 'primo' : ''}>
                                                             <img src={'https://image.tmdb.org/t/p/w780'+p.film.poster_path} alt={p.film.title} />
                                                             <h3>{activeGame.risposta.classifica.findIndex((film) => film.film.id === p.film.id) + 1}° </h3>
                                                             <p>punti: {p.punteggio}</p>
@@ -228,7 +228,7 @@ function MatchRoomPage() {
             <h3>Classifica finale</h3>
             <ul className='lista-classifica'>
               {
-                activeGame.risposta.classifica.map((p) => <li>
+                activeGame.risposta.classifica.map((p) => <li className={activeGame.risposta.classifica.findIndex((film) => film.film.id === p.film.id) === 0 ? 'primo' : ''}>
                                                             
                                                             <img src={'https://image.tmdb.org/t/p/w780'+p.film.poster_path} alt={p.film.title} />
                                                             <h3>{activeGame.risposta.classifica.findIndex((film) => film.film.id === p.film.id) + 1}° </h3>

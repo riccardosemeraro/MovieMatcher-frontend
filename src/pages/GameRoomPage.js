@@ -15,6 +15,7 @@ function GameRoomPage({invite}) {
 
   const [buttonPopup, setButtonPopup] = useState(false);
   const [buttonPopup2, setButtonPopup2] = useState(invite ? invite : false);
+  const [buttonPopup3, setButtonPopup3] = useState(false);
 
   const { value: server, setValue: setServer } = useContext(ServerStateContext); //stato del server
 
@@ -39,9 +40,12 @@ function GameRoomPage({invite}) {
       {
         buttonPopup2 && <Popup trigger={buttonPopup2} setTrigger={setButtonPopup2} type='Partecipa-a-partita' /> 
       }
-      <Button variant="primary" className='game-button' onClick={()=> alert('In arrivo')}> 
+      <Button variant="primary" className='game-button' onClick={()=> setButtonPopup3(true)}> 
         <h2 className='titolo-bottone'>Match History</h2>
       </Button>
+      {
+        buttonPopup3 && <Popup trigger={buttonPopup3} setTrigger={setButtonPopup3} type='MatchHistory' /> 
+      }
     </div>
   );
 }

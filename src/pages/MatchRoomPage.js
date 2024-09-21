@@ -211,9 +211,9 @@ function MatchRoomPage() {
             <h3>Classifica finale</h3>
             <ul className='lista-classifica'>
               {
-                activeGame.risposta.classifica.map((p) => <li className={activeGame.risposta.classifica.findIndex((film) => film.film.id === p.film.id) === 0 ? 'primo' : ''}>
+                activeGame.variabiliRoom.classifica.map((p) => <li className={activeGame.variabiliRoom.classifica.findIndex((film) => film.film.id === p.film.id) === 0 ? 'primo' : ''}>
                                                             <img src={'https://image.tmdb.org/t/p/w780'+p.film.poster_path} alt={p.film.title} />
-                                                            <h3>{activeGame.risposta.classifica.findIndex((film) => film.film.id === p.film.id) + 1}° </h3>
+                                                            <h3>{activeGame.variabiliRoom.classifica.findIndex((film) => film.film.id === p.film.id) + 1}° </h3>
                                                             <p>punti: {p.punteggio}</p>
                                                           </li>)
               }
@@ -228,10 +228,10 @@ function MatchRoomPage() {
             <h3>Classifica finale</h3>
             <ul className='lista-classifica'>
               {
-                activeGame.risposta.classifica.map((p) => <li className={activeGame.risposta.classifica.findIndex((film) => film.film.id === p.film.id) === 0 ? 'primo' : ''}>
+                activeGame.variabiliRoom.classifica.map((p) => <li className={activeGame.variabiliRoom.classifica.findIndex((film) => film.film.id === p.film.id) === 0 ? 'primo' : ''}>
                                                             
                                                             <img src={'https://image.tmdb.org/t/p/w780'+p.film.poster_path} alt={p.film.title} />
-                                                            <h3>{activeGame.risposta.classifica.findIndex((film) => film.film.id === p.film.id) + 1}° </h3>
+                                                            <h3>{activeGame.variabiliRoom.classifica.findIndex((film) => film.film.id === p.film.id) + 1}° </h3>
                                                             
                                                             <p>punti: {p.punteggio}</p>
                                                           </li>)

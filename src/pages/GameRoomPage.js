@@ -11,7 +11,9 @@ import LoadingGif from '../components/loadingGif';
 
 import { ServerStateContext } from '../contexts/serverStateContextProvider';
 
-function GameRoomPage({invite}) {
+import axios from 'axios';
+
+function GameRoomPage({invite, token}) {
 
   const [buttonPopup, setButtonPopup] = useState(false);
   const [buttonPopup2, setButtonPopup2] = useState(invite ? invite : false);
@@ -40,11 +42,11 @@ function GameRoomPage({invite}) {
       {
         buttonPopup2 && <Popup trigger={buttonPopup2} setTrigger={setButtonPopup2} type='Partecipa-a-partita' /> 
       }
-      <Button variant="primary" className='game-button' onClick={()=> setButtonPopup3(true)}> 
+      <Button variant="primary" className='game-button' onClick={setButtonPopup3}> 
         <h2 className='titolo-bottone'>Match History</h2>
       </Button>
       {
-        buttonPopup3 && <Popup trigger={buttonPopup3} setTrigger={setButtonPopup3} type='MatchHistory' /> 
+        buttonPopup3 && <Popup trigger={buttonPopup3} setTrigger={setButtonPopup3} type='MatchHistory' token={token} /> 
       }
     </div>
   );

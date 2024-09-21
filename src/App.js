@@ -107,12 +107,12 @@ function App() {
               <Route path="/profile" element={<AuthenticationGuard component={() => <ProfilePage token={authToken} />} />} />
               
 
-              <Route path="/gameRoom" element={<ActiveGameContextProvider><AuthenticationGuard component={GameRoomPage} /></ActiveGameContextProvider>} />
+              <Route path="/gameRoom" element={<ActiveGameContextProvider><AuthenticationGuard component={() => <GameRoomPage token={authToken} />} /></ActiveGameContextProvider>} />
               <Route path="/gameRoom/lobby" element={<ActiveGameContextProvider><AuthenticationGuard component={() => <LobbyPage token={authToken} />} /></ActiveGameContextProvider>} />
               <Route path="/gameRoom/matchRoom" element={<ActiveGameContextProvider><AuthenticationGuard component={MatchRoomPage} /></ActiveGameContextProvider>} />
 
               {/*<Route path="/gameRoom-invite" element={<ActiveGameContextProvider><AuthenticationGuard component={GameRoomInvite}/></ActiveGameContextProvider>}/>*/}
-              <Route path="/gameRoom-invite" element={<ActiveGameContextProvider><AuthenticationGuard component={() => <GameRoomPage invite={true} />} /></ActiveGameContextProvider>} />
+              <Route path="/gameRoom-invite" element={<ActiveGameContextProvider><AuthenticationGuard component={() => <GameRoomPage invite={true} token={authToken}/>} /></ActiveGameContextProvider>} />
 
               <Route path="/film/:idName" element={<FilmPage token={authToken}/>} />
               

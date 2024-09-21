@@ -2,7 +2,7 @@ import '../style/popup.css'
 import Button from 'react-bootstrap/Button';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faFilm, faEdit, faTicket } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faFilm, faEdit, faTicket, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { act, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { ListGroup } from 'react-bootstrap';
@@ -28,6 +28,7 @@ function Popup (props){
     const [title, setTitle] = useState('');
     const [selectedFilms, setSelectedFilms] = useState([]);
     const [genre, setGenre] = useState();
+    const [matches, setMatches] = useState([]);
 
     const [inviteCode, setInviteCode] = useState();
 
@@ -54,6 +55,22 @@ function Popup (props){
 
     };
 
+    const handleGetHistory = () => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        console.log('token: ', token);
+        console.log('user: ', user);
+
+        axios.get('https://moviematcher-backend.onrender.com/user/getMyHistoryMatch', 
+          { headers: {Authorization: 'Bearer '+ token , nickname: user.nickname} })
+          .then((response) => {
+            console.log(response.data);
+            setMatches(response.data.historyMatch);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      };
+
     const handleCreateGame = () => {
         if (socketPopup) {
             socketPopup.emit('creaPartita', {
@@ -64,15 +81,15 @@ function Popup (props){
         }
     };
 
-    const handleJoinGame = () => {
+    const handleJoinGame = (roomName, roomId) => {
+
+        console.log('roomName: ', roomName, 'roomId: ', roomId);
+
         if (socketPopup) {
-
-            console.log("DIOCANE");
-
             socketPopup.emit('partecipaPartita', {
                 username: JSON.parse(localStorage.getItem('user')).nickname,
-                roomName: document.querySelector('.codice-partita input').value.split('-')[0],
-                roomId: document.querySelector('.codice-partita input').value.split('-')[1]
+                roomName: roomName,
+                roomId: roomId
             });
         }
     };
@@ -93,6 +110,12 @@ function Popup (props){
             });
         }
     };
+
+    useEffect(() => {
+        if(props.type === 'MatchHistory'){
+            handleGetHistory();
+        }
+    }, [props.trigger]);
 
     useEffect(() => {
 
@@ -248,7 +271,7 @@ function Popup (props){
                                     <input type="text" placeholder="NomePartita-XXXXX" value={inviteCode !== 'null-null' ? inviteCode : ''} onChange={(e) => setInviteCode(e.target.value)}/>
                                 </div>
                                 <div className='partecipa-partita'>
-                                    <Button variant="primary" className='partecipa-button' onClick={handleJoinGame}> 
+                                    <Button variant="primary" className='partecipa-button' onClick={() => handleJoinGame(document.querySelector('.codice-partita input').value.split('-')[0], document.querySelector('.codice-partita input').value.split('-')[1])}> 
                                         <h2>Partecipa a partita</h2>
                                     </Button>
                                 </div>
@@ -303,21 +326,25 @@ function Popup (props){
                     {
                         props.type==="MatchHistory" &&
                         <>
-                        <div className="popup">
+                        <div className="popup-impostazioni">
                             <button className="close-btn" onClick={() => props.setTrigger(false)}> <FontAwesomeIcon icon={faTimes} /> </button>
                             <div className="contenitore-match">
                                 <div className='titolo-popup'>
                                     <h1>Match History</h1>
                                 </div>
                                 <div className='lista-match-container'>
-                                    <p>Non ancora disponibile</p>
-                                    {/*<ListGroup className='lista-match'>
-                                        {matches.map((match) => (
-                                            <ListGroup.Item key={match.id} className='match-element'>
-                                                
-                                            </ListGroup.Item>
-                                        ))}
-                                    </ListGroup> */}
+                                    {/* */}
+                                    <ListGroup className='lista-match'>
+                                        {matches.length >0 ? matches.map((match) => (
+                                            <ListGroup.Item key={match.roomId} className='match-element'>                                                
+                                                <p>Partita: <br/> {match.roomName}-{match.roomId}</p>
+                                                <p>Stato: <br/>{match.stato}</p>
+                                                {match.stato === 'Aperta' ? <button onClick={() => handleJoinGame(match.roomName, match.roomId)}>Entra in partita <FontAwesomeIcon icon={faArrowRight} /></button> : match.stato === 'Terminata' ? <p>Vincitore: <br/>{match.listaFilm[0].film.title}</p> : <p></p>}
+                                            </ListGroup.Item>  
+                                            ))
+                                        : <p>Non ci sono match</p>
+                            }
+                                    </ListGroup>
                                 </div>
                             </div>
                         </div>

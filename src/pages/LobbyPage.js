@@ -119,6 +119,7 @@ function LobbyPage({token}) {
         });
 
         socketLobby.on('rispostaAvviaPartita', (data) => {
+            
             console.log('Risposta dal server: ', data);
             setActiveGame(data);
             alert('Partita avviata, buon divertimento!');

@@ -86,6 +86,12 @@ function Popup (props){
         console.log('roomName: ', roomName, 'roomId: ', roomId);
 
         if (socketPopup) {
+<<<<<<< HEAD
+=======
+
+            
+
+>>>>>>> adfa0072ac39bceb0c64b8c874e4748613c1b7e5
             socketPopup.emit('partecipaPartita', {
                 username: JSON.parse(localStorage.getItem('user')).nickname,
                 roomName: roomName,

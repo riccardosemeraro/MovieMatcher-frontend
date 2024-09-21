@@ -251,8 +251,17 @@
         justify-content: center;
         margin: 20px;
         width: auto;
-        height: 100%;
+        height: auto;
 
+        border: 2px solid white;
+        border-radius: 50px;
+
+        position: fixed;
+        top: 90%;
+        left: 50%;
+        transform: translate(-90%, -50%); /* Trasla l'elemento per centrarlo */
+
+        z-index: 1000;
     }
 
     .esci-finale button{

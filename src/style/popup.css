@@ -1201,8 +1201,6 @@
         display: none; /* Per Chrome, Safari e Opera */
     }
 
-    
-
     .match-element{
         display: grid;
         grid-template-columns: 1fr 1fr 1fr; /* Tre colonne di larghezza uguale */

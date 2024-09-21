@@ -339,7 +339,7 @@ function Popup (props){
                                             <ListGroup.Item key={match.roomId} className='match-element'>                                                
                                                 <p>Partita: <br/> {match.roomName}-{match.roomId}</p>
                                                 <p>Stato: <br/>{match.stato}</p>
-                                                {match.stato === 'Aperta' ? <button onClick={() => handleJoinGame(match.roomName, match.roomId)}>Entra in partita <FontAwesomeIcon icon={faArrowRight} /></button> : match.stato === 'Terminata' ? <p>Vincitore: <br/>{match.listaFilm[0].film.title}</p> : <p></p>}
+                                                {match.stato === 'Aperta' ? <button onClick={() => handleJoinGame(match.roomName, match.roomId)}>Entra &nbsp; <FontAwesomeIcon icon={faArrowRight} /></button> : match.stato === 'Terminata' ? <p>Vincitore: <br/>{match.listaFilm[0].film.title}</p> : <p></p>}
                                             </ListGroup.Item>  
                                             ))
                                         : <p>Non ci sono match</p>

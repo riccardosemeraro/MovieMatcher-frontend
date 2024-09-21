@@ -1,10 +1,20 @@
+html{
+  scrollbar-width: none; /* Per Firefox */
+  -ms-overflow-style: none; /* Per Internet Explorer e Edge */
+}
+
+html::-webkit-scrollbar {
+  /* Nascondo la scrollbar */
+  display: none; /* Per Chrome, Safari e Opera */
+}
+
 body{
   background-color: #000000;
+
 }
 
 .App {
   text-align: center;
-  
 }
 
 .App-logo {

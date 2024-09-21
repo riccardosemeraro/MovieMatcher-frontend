@@ -67,7 +67,7 @@ function Popup (props){
     const handleJoinGame = () => {
         if (socketPopup) {
 
-            console.log("DIOCANE");
+            
 
             socketPopup.emit('partecipaPartita', {
                 username: JSON.parse(localStorage.getItem('user')).nickname,

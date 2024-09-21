@@ -98,7 +98,7 @@ function LobbyPage({token}) {
     useEffect(() => {
         handleGetDataRoom();
 
-        //socketLobby.off(); //Rimuovi i listener precedenti per evitare duplicati (pulisce il buffer)
+        socketLobby.off(); //Rimuovi i listener precedenti per evitare duplicati (pulisce il buffer)
 
         socketLobby.on('rispostaGetRoom', (data) => {
             setActiveGame(data);
@@ -119,6 +119,7 @@ function LobbyPage({token}) {
         });
 
         socketLobby.on('rispostaAvviaPartita', (data) => {
+            
             console.log('Risposta dal server: ', data);
             setActiveGame(data);
             alert('Partita avviata, buon divertimento!');
